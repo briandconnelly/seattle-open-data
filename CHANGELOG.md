@@ -23,6 +23,9 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Fixed
 
+- Point and location columns no longer fail: numbers parsed from nested JSON are emitted as plain numbers.
+- The 24 KiB result budget is enforced on the complete serialized result, including the cursor and the escaped text copy.
+- DISTINCT queries page with every selected key as a tie-breaker.
 - Never follow redirects, so the app token cannot leave data.seattle.gov; stream responses and stop reading at the 8 MiB cap.
 - Describe reports rate limits, rejected tokens, and access refusals instead of degrading silently; failed place-field stats say `unavailable`, not `timeout`.
 - `assigned_fraction` comes from a single grouped snapshot, so it cannot go negative.

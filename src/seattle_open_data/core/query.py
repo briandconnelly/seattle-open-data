@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import re
 import time
+from decimal import Decimal
 from typing import TYPE_CHECKING, Any
 from urllib.parse import urlencode
 
@@ -29,14 +30,16 @@ from seattle_open_data.core.models import CoverageWarning, Detail, QueryResult, 
 from seattle_open_data.core.text import strip_control
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from seattle_open_data.core.http import RowStream, SodaClient
 
 _AGGREGATE = re.compile(r"\b(count|sum|avg|min|max|stddev_pop|stddev_samp)\s*\(", re.IGNORECASE)
 _IDENTIFIER = re.compile(r"[:@A-Za-z_][\w:@]*")
 _DIRECTION = re.compile(r"\s+(asc|desc)(\s+nulls\s+(first|last))?\s*$", re.IGNORECASE)
 _VIEW_TTL_SECONDS = 3600
-#: Room kept for the cursor and flags when packing rows against the byte budget.
-_ENVELOPE_RESERVE = 1024
+#: Room for the JSON-RPC envelope and protocol fields around the tool result.
+_ENVELOPE_RESERVE = 512
 _TOOL = "seattle_data_query_dataset"
 _DEFAULT_PAGE_SIZE = 100
 
@@ -168,19 +171,21 @@ async def _run_clauses(
     if detail == "full":
         _attach_urls(result, dataset_id, params, plan)
 
-    packed = _pack(result, rows)
-    result.rows, result.returned_rows = packed, len(packed)
-    emitted_total = emitted_before + len(packed)
-    more = len(stream.rows) > len(packed)
-    if more and emitted_total >= QUERY_LOGICAL_CAP:
-        result.truncated = True
-        result.truncation_reason = "row_cap"
-        result.truncation_hint = (
-            f"Paged queries stop at {QUERY_LOGICAL_CAP:,} rows. Aggregate with select/group_by, "
-            "narrow where, or hand the user download_url (detail='full')."
-        )
-    elif more:
-        compact = {k: v for k, v in clauses.items() if v is not None}
+    compact = {k: v for k, v in clauses.items() if v is not None}
+
+    def settle(count: int) -> None:
+        _reset_page(result, rows[:count])
+        emitted_total = emitted_before + count
+        if len(stream.rows) <= count:
+            return
+        if emitted_total >= QUERY_LOGICAL_CAP:
+            result.truncated = True
+            result.truncation_reason = "row_cap"
+            result.truncation_hint = (
+                f"Paged queries stop at {QUERY_LOGICAL_CAP:,} rows. Aggregate with "
+                "select/group_by, narrow where, or hand the user download_url (detail='full')."
+            )
+            return
         next_state: dict[str, Any] = {
             "ds": dataset_id,
             "c": compact,
@@ -188,9 +193,11 @@ async def _run_clauses(
             "ps": page_size,
         }
         if plan["kind"] == "keyset":
-            next_state["last"] = stream.rows[len(packed) - 1].get(":id")
+            next_state["last"] = stream.rows[count - 1].get(":id")
         result.has_more = True
         result.next_cursor = cursors.encode("query", next_state)
+
+    _fit(result, rows, settle)
     return result
 
 
@@ -217,9 +224,13 @@ def _plan(
         where.append(_within_circle(dataset_id, near, types, places))
 
     hidden: set[str] = set()
-    if aggregate:
+    ordered = {_bare(o) for o in order_by}
+    if distinct:
         kind = "offset"
-        order = order_by + [g for g in group_by if _bare(g) not in {_bare(o) for o in order_by}]
+        order = order_by + [k for k in _select_keys(select) if _bare(k) not in ordered]
+    elif aggregate:
+        kind = "offset"
+        order = order_by + [g for g in group_by if _bare(g) not in ordered]
     elif order_by:
         kind = "offset"
         order = [*order_by, ":id"]
@@ -240,6 +251,21 @@ def _plan(
     if clauses.get("search_text"):
         params["$q"] = clauses["search_text"]
     return {"params": params, "where": where, "kind": kind, "hidden": hidden}
+
+
+_ALIAS = re.compile(r"\s+as\s+([A-Za-z_][\w]*)\s*$", re.IGNORECASE)
+
+
+def _select_keys(select: list[str]) -> list[str]:
+    """Each selected column's sort key: its alias, else the expression, without DISTINCT."""
+    keys = []
+    for index, item in enumerate(select):
+        expression = item.strip()
+        if index == 0 and expression.lower().startswith("distinct "):
+            expression = expression[len("distinct ") :].strip()
+        alias = _ALIAS.search(expression)
+        keys.append(alias.group(1) if alias else expression)
+    return keys
 
 
 def _bare(expression: str) -> str:
@@ -315,15 +341,18 @@ async def _run_soql(
         url = f"https://{PUBLIC_HOST}/resource/{dataset_id}.json?" + urlencode(params)
         _set_url(result, "query_url", url)
         result.effective_query = soql
-    packed = _pack(result, rows)
-    result.rows, result.returned_rows = packed, len(packed)
-    if stream.more or len(packed) < len(rows):
-        result.truncated = True
-        result.truncation_reason = "raw_soql_not_paged"
-        result.truncation_hint = (
-            f"Raw SoQL returns one page. Set LIMIT {len(packed)} and advance OFFSET by "
-            f"{len(packed)}, or use clauses mode for cursor paging."
-        )
+
+    def settle(count: int) -> None:
+        _reset_page(result, rows[:count])
+        if stream.more or count < len(rows):
+            result.truncated = True
+            result.truncation_reason = "raw_soql_not_paged"
+            result.truncation_hint = (
+                f"Raw SoQL returns one page. Set LIMIT {count} and advance OFFSET by "
+                f"{count}, or use clauses mode for cursor paging."
+            )
+
+    _fit(result, rows, settle)
     return result
 
 
@@ -341,22 +370,57 @@ def _visible(stream: RowStream, hidden: set[str]) -> tuple[list[str], list[str]]
 
 def _row(raw: dict[str, Any], names: list[str]) -> dict[str, Any]:
     """SODA2 omits null keys; every row gets every visible column."""
-    return {name: strip_control(raw.get(name)) for name in names}
+    return {name: _plain(strip_control(raw.get(name))) for name in names}
 
 
-def _pack(result: QueryResult, rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Fit whole rows so the final tool result, which carries the JSON twice, stays in budget."""
-    base = len(json.dumps(result.model_dump(mode="json", exclude_none=True), separators=(",", ":")))
-    budget = RESULT_BYTE_BUDGET // 2 - base - _ENVELOPE_RESERVE
-    packed: list[dict[str, Any]] = []
+def _plain(value: Any) -> Any:
+    """ijson yields Decimal for JSON numbers (e.g. GeoJSON coordinates); emit plain numbers."""
+    if isinstance(value, Decimal):
+        return int(value) if value == value.to_integral_value() else float(value)
+    if isinstance(value, dict):
+        return {k: _plain(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_plain(v) for v in value]
+    return value
+
+
+def _reset_page(result: QueryResult, rows: list[dict[str, Any]]) -> None:
+    result.rows, result.returned_rows = rows, len(rows)
+    result.has_more, result.next_cursor = False, None
+    result.truncated, result.truncation_reason, result.truncation_hint = False, None, None
+
+
+def wire_size(result: QueryResult) -> int:
+    """Bytes of the tool result as `mcp/result.success` serializes it, text copy included."""
+    payload = result.model_dump(mode="json", exclude_none=True)
+    text = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+    wire = {
+        "content": [{"type": "text", "text": text}],
+        "structuredContent": payload,
+        "isError": False,
+    }
+    return len(json.dumps(wire, ensure_ascii=False, separators=(",", ":")).encode())
+
+
+def _estimate(rows: list[dict[str, Any]], budget: int) -> int:
+    """A fast upper bound on how many rows fit; `_fit` corrects it against the real size."""
     used = 0
-    for row in rows:
-        size = len(json.dumps(row, separators=(",", ":"), ensure_ascii=False).encode()) + 1
-        if used + size > budget:
-            break
-        packed.append(row)
-        used += size
-    if rows and not packed:
+    for count, row in enumerate(rows):
+        used += 2 * len(json.dumps(row, separators=(",", ":"), ensure_ascii=False).encode())
+        if used > budget:
+            return count
+    return len(rows)
+
+
+def _fit(result: QueryResult, rows: list[dict[str, Any]], settle: Callable[[int], None]) -> None:
+    """Settle the page on the most whole rows whose complete serialized result fits the budget."""
+    budget = RESULT_BYTE_BUDGET - _ENVELOPE_RESERVE
+    count = _estimate(rows, budget)
+    settle(count)
+    while count > 0 and wire_size(result) > budget:
+        count -= 1
+        settle(count)
+    if rows and count == 0:
         raise SeattleDataError(
             ErrorCode.ROW_TOO_LARGE,
             "A single row exceeds the response byte budget.",
@@ -367,7 +431,6 @@ def _pack(result: QueryResult, rows: list[dict[str, Any]]) -> list[dict[str, Any
                 arguments={"dataset_id": result.dataset_id},
             ),
         )
-    return packed
 
 
 def _warnings(text: str, places: list[dict[str, Any]]) -> list[CoverageWarning]:
