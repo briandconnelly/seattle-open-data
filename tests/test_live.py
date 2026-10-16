@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import pytest
 
+from seattle_open_data.core.guides import GUIDES
 from seattle_open_data.core.http import SodaClient, set_client
 from tests.conftest import wire
 
@@ -45,3 +46,14 @@ async def test_region_layer_label_columns(live):
     }.items():
         view = await client.view(layer)
         assert label in {c["fieldName"] for c in view["columns"]}, layer
+
+
+@pytest.mark.parametrize(
+    "example",
+    [e for g in GUIDES for e in g.examples],
+    ids=lambda e: e.question[:40],
+)
+async def test_guide_examples_run(live, client, example):
+    result = wire(await client.call_tool_mcp("seattle_data_query_dataset", example.arguments))
+    assert result["isError"] is False, result["structuredContent"]
+    assert result["structuredContent"]["returned_rows"] > 0

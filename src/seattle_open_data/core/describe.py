@@ -28,12 +28,14 @@ from seattle_open_data.core.errors import (
     Repair,
     SeattleDataError,
 )
+from seattle_open_data.core.guides import BY_DATASET
 from seattle_open_data.core.models import (
     Column,
     ColumnStats,
     Coverage,
     DescribeResult,
     Detail,
+    ExampleQuery,
     GeoColumn,
     GeoUnusable,
     PlaceField,
@@ -42,6 +44,7 @@ from seattle_open_data.core.models import (
     RowCount,
     TimeSemantics,
 )
+from seattle_open_data.core.reference import topic_uri
 from seattle_open_data.core.text import clean, html_to_text
 
 if TYPE_CHECKING:
@@ -116,6 +119,7 @@ async def describe(
     time_columns = [c for c in data_columns if c.get("dataTypeName") in TIME_TYPES]
     coverage_columns = _coverage_columns(facts_id, time_columns)
     places = place_specs(facts_id, all_columns)
+    guide = BY_DATASET.get(facts_id)
 
     row_count = _Outcome()
     coverage = {c["fieldName"]: _Outcome() for c in coverage_columns}
@@ -169,6 +173,13 @@ async def describe(
         time_semantics=[_time(facts_id, c) for c in time_columns],
         sample_rows=_fill(sample.value, data_columns)
         if sample_rows and sample.status == "ok"
+        else None,
+        guide_uri=topic_uri("guides", guide.guide_id) if guide else None,
+        # Examples name their dataset: a filter view links its parent's guide, without examples.
+        example_queries=[
+            ExampleQuery(question=e.question, arguments=e.arguments) for e in guide.examples
+        ]
+        if guide and guide.dataset_id == dataset_id
         else None,
         source=make_source(retrieved=True),
     )

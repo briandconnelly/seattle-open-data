@@ -57,6 +57,7 @@ ignore = ["PLR0913", "PLR0917", "PLR2004"]
 [tool.ruff.lint.per-file-ignores]
 # Reference prose and worked JSON examples read better unwrapped.
 "src/seattle_open_data/core/reference.py" = ["E501"]
+"src/seattle_open_data/core/guides.py" = ["E501"]
 "tests/**" = ["ARG", "PLR2004", "S101", "TC002", "TC003", "PT018", "PLC0415", "RUF002", "RUF003"]
 
 [tool.ruff.format]

@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING
 
 from seattle_open_data.constants import URI_SCHEME
 from seattle_open_data.core import reference_service
-from seattle_open_data.core.errors import ErrorCode, ErrorDetails, Repair, SeattleDataError
 from seattle_open_data.core.reference import CAPABILITIES
 
 if TYPE_CHECKING:
@@ -103,14 +102,4 @@ def register_resources(mcp: FastMCP) -> None:
         mime_type="text/markdown",
     )
     def guide(guide_id: str) -> str:
-        del guide_id  # Caller text is never echoed [6.offending-value].
-        raise SeattleDataError(
-            ErrorCode.REFERENCE_NOT_FOUND,
-            "No dataset guide at this URI.",
-            details=ErrorDetails(field="uri", reason="Guides arrive in a later pre-release."),
-            repair=Repair(
-                next_step="list_guides",
-                tool="seattle_data_get_reference",
-                arguments={"topic": "guides"},
-            ),
-        )
+        return _item("guides", guide_id)

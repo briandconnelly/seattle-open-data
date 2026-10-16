@@ -138,7 +138,7 @@ async def test_request_ids_differ_per_call(client):
 @pytest.mark.parametrize(
     ("uri", "code"),
     [
-        ("seattle-data://guides/fire-911", "reference_not_found"),
+        ("seattle-data://guides/no-such-guide", "reference_not_found"),
         ("seattle-data://soql/joins", "reference_not_found"),
         ("seattle-data://nowhere", "reference_not_found"),
     ],

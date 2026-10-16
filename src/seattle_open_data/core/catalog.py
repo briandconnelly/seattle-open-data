@@ -13,7 +13,9 @@ from seattle_open_data.constants import (
 from seattle_open_data.core import cursor as cursors
 from seattle_open_data.core.context import make_source
 from seattle_open_data.core.errors import Repair
+from seattle_open_data.core.guides import BY_DATASET
 from seattle_open_data.core.models import DatasetSummary, Detail, Queryability, SearchResult
+from seattle_open_data.core.reference import topic_uri
 from seattle_open_data.core.text import clean, html_to_text
 
 if TYPE_CHECKING:
@@ -157,6 +159,13 @@ async def _fold(client: SodaClient, results: list[Any], detail: Detail) -> list[
     return out
 
 
+def _guide_uri(dataset_id: str, parents: list[str]) -> str | None:
+    guide = BY_DATASET.get(dataset_id) or next(
+        (BY_DATASET[p] for p in parents if p in BY_DATASET), None
+    )
+    return topic_uri("guides", guide.guide_id) if guide else None
+
+
 def _summarize(item: dict[str, Any], detail: Detail) -> DatasetSummary:
     resource = item.get("resource") or {}
     asset_type = str(resource.get("type") or "unknown")
@@ -172,6 +181,7 @@ def _summarize(item: dict[str, Any], detail: Detail) -> DatasetSummary:
         portal_url=public_url(item.get("permalink")) or f"https://{PUBLIC_HOST}/d/{dataset_id}",
         updated_at=resource.get("data_updated_at") or resource.get("updatedAt"),
         derived_from=parents[0] if asset_type == "filter" and parents else None,
+        guide_uri=_guide_uri(dataset_id, parents),
         external_url=_access_point(item) if reach == "external" else None,
         category=clean(classification.get("domain_category")),
         description=html_to_text(resource.get("description"), limit=1000)
