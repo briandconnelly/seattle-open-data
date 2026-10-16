@@ -94,7 +94,7 @@ CAPABILITIES = f"""\
 - For computed-region place fields, filter on `value`, not `label`.
 - When a place field has no `values`, list them with `select: [field, "count(*) AS n"]` and `group_by: [field]` before filtering.
 - For all rows, never page through them: give the user `download_url` (query with `detail: "full"`), or split the query by `where`.
-- When `truncated` is true, aggregate or narrow the query instead of paging further.
+- When `truncation_reason` is `"row_cap"`, aggregate or narrow the query instead of paging further.
 - On `cursor_expired`, rerun the query from page one.
 - For raw SoQL, set LIMIT ≤ page_size (max {QUERY_PAGE_SIZE_MAX}) and advance OFFSET yourself.
 

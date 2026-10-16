@@ -107,3 +107,27 @@ def test_guide_body_holds_no_directives(guide):
 def test_capabilities_states_a_closed_set_stability_tier():
     assert "pre-release" not in CAPABILITIES
     assert re.search(r"^- Stability: (stable|preview|experimental) ", CAPABILITIES, re.MULTILINE)
+
+
+# --- PR #6 review: rules keep the scope their facts had -------------------------
+
+
+def test_truncation_rule_is_scoped_to_row_cap():
+    # Raw SoQL truncation (`raw_soql_not_paged`) is recovered by advancing OFFSET.
+    rules = _section(CAPABILITIES, "Rules")
+    assert "When `truncated` is true" not in rules
+    assert '`truncation_reason` is `"row_cap"`' in rules
+
+
+def test_crime_date_rule_allows_the_reporting_column():
+    crime = next(g for g in GUIDES if g.guide_id == "spd-crime")
+    date_rule = next(rule for rule in crime.rules if "offense_date" in rule)
+    assert "report_date_time" in date_rule
+    filtered = {ex.arguments["where"].split()[0] for ex in crime.examples}
+    assert all(column in date_rule for column in filtered)
+
+
+def test_fire_calls_caveat_is_scoped_to_all_types():
+    fire = next(g for g in GUIDES if g.guide_id == "fire-911")
+    caveat = next(rule for rule in fire.rules if "fire calls" in rule)
+    assert "all response types" in caveat

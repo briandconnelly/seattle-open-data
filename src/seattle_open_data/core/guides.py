@@ -82,7 +82,7 @@ No text neighborhood field. Use the computed-region columns from `seattle_data_d
             ),
         ),
         rules=(
-            'When reporting counts of "fire calls", say they cover the whole dataset, which is mostly medical.',
+            'When a "fire calls" count spans all response types, say it covers every dispatch, most of them medical.',
             "Never use `:@computed_region_cyqu_gs94` or `:@computed_region_2day_rhn5` for counts.",
         ),
     ),
@@ -183,7 +183,7 @@ One offense. A report (`report_number`) can contain several offenses: 1,568,385 
         ),
         rules=(
             "Count offenses with `count(*)` and reports with `count(distinct report_number)`.",
-            "Always filter `offense_date` to the period you mean.",
+            "Always bound the date column to the period you mean: `offense_date` for when offenses occurred, `report_date_time` for when they were reported.",
             "For trends that include years before 2017, use precinct, sector, or beat, never `neighborhood`.",
         ),
     ),
