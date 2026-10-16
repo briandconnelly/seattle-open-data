@@ -36,9 +36,10 @@ async def test_search_uses_catalog_alias_and_tabular_scope(client, tools_list, s
     assert fire["queryability"] == "supported"
     assert fire["portal_url"].startswith("https://data.seattle.gov/")
     assert "description" not in fire, "descriptions are full-detail only"
-    sent = soda.requests[0] if hasattr(soda, "requests") else ""
-    if sent:
-        assert "cos-data.seattle.gov" in sent and "dataset,filter" in sent
+    if hasattr(soda, "requests"):
+        # The external-asset lookup runs concurrently, so the primary request is not always first.
+        primary = [r for r in soda.requests if "dataset,filter" in r]
+        assert len(primary) == 1 and "cos-data.seattle.gov" in primary[0]
 
 
 @pytest.mark.soda_fixture("search_all_pages")

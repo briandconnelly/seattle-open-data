@@ -4,6 +4,14 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Added
+
+- `seattle_data_search_datasets` helps agents tell a real match from a near miss:
+  - `match_evidence` lists, per result, which query words its title, tags, column names, or description contain, and which they lack. It reports overlap, not relevance, and never filters or reorders results.
+  - The first page of a tabular search also returns up to 3 `external_matches` (federated ArcGIS or external links, not queryable here) and `external_search_status`. The lookup runs alongside the search; if it fails, the search still succeeds.
+  - When no result contains a query word, `suggestion` offers one alternative search call.
+- A new rule in `instructions` and the capability summary: treat search results as candidates, and say so when none fits.
+
 ## [0.1.0] - 2026-10-16
 
 First release: a read-only, agent-friendly MCP server for Seattle Open Data (data.seattle.gov, Socrata SODA2).

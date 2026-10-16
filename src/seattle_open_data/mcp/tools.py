@@ -109,7 +109,9 @@ async def seattle_data_search_datasets(
 ) -> ToolResult:
     """Find Seattle datasets by topic. Call first when you lack a dataset id.
 
-    Only results with queryability "supported" can be described or queried.
+    Results are candidates: match_evidence lists the query words each one's metadata
+    lacks. Only queryability "supported" can be described or queried; a tabular search
+    also returns up to 3 external_matches, which cannot.
     Example: {"query": "fire 911"}. Typically 1-3 s.
     """
     arguments.check_search(
