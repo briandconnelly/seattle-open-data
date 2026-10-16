@@ -56,17 +56,13 @@ jobs:
       - name: Test (pytest + coverage)
         run: uv run pytest --cov=seattle_open_data --cov-report=term
 
+  # Build the wheel, sdist, and .mcpb, and smoke-test them on every OS (shared with release.yml).
   build:
-    name: Build distributions
-    runs-on: ubuntu-latest
+    name: Build
     needs: test
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
-        with:
-          enable-cache: true
-          prune-cache: true
-      - run: uv build
+    uses: ./.github/workflows/build.yml
+    with:
+      cache: true
 
   # One stable required-check name for branch protection; the matrix names vary.
   ci-success:

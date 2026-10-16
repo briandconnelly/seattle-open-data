@@ -1,0 +1,89 @@
+name: Build
+
+# Build the wheel, sdist, and .mcpb bundle, then start the server from the wheel and the bundle on
+# every desktop OS. Called by ci.yml on every PR and by release.yml before anything is published,
+# so a release ships exactly what this workflow built and checked.
+
+on:
+  workflow_call:
+    inputs:
+      cache:
+        description: "Use the uv cache (CI). Release builds pass false to build from scratch."
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build distributions and bundle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          enable-cache: ${{ inputs.cache }}
+          prune-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
+        with:
+          node-version: "22"
+          package-manager-cache: false
+
+      - name: Build wheel and sdist
+        run: uv build
+
+      - name: Install mcpb CLI
+        run: npm install -g @anthropic-ai/mcpb@2.1.2 # pin for reproducible bundles
+
+      - name: Build .mcpb bundle (allowlisted staging + archive check)
+        run: uv run python scripts/build_bundle.py
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+
+  smoke:
+    name: Smoke test (${{ matrix.os }})
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          enable-cache: ${{ inputs.cache }}
+          prune-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Sync dependencies (the smoke test's MCP client)
+        run: uv sync --locked
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: dist
+          path: dist/
+
+      - name: Start the server from the wheel
+        run: uv run python scripts/smoke_test.py --wheel dist/*.whl
+
+      - name: Start the server from the .mcpb bundle
+        run: uv run python scripts/smoke_test.py --bundle dist/*.mcpb
