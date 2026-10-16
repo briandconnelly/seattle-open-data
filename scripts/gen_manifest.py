@@ -86,6 +86,9 @@ def _tools() -> list[dict[str, str]]:
     return asyncio.run(_extract())
 
 
+ICONS = (("icon.png", "512x512"), ("icon-128.png", "128x128"))
+
+
 def build_manifest() -> dict:
     project = tomllib.loads(PYPROJECT.read_text(encoding="utf-8"))["project"]
     author = project["authors"][0]
@@ -99,6 +102,8 @@ def build_manifest() -> dict:
         "version": project["version"],
         "description": project["description"],
         "author": {"name": author["name"], "email": author["email"]},
+        "icon": "icon.png",
+        "icons": [{"src": src, "size": size} for src, size in ICONS],
     }
     # URLs appear only once pyproject declares them; never point at a repo that may not exist.
     if repo_url:

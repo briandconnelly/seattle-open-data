@@ -24,4 +24,4 @@ An agent-friendly MCP server for Seattle Open Data. The design, its decision log
 
 - Feature branches with a type prefix (`feat/`, `fix/`, `docs/`, ...); never commit directly to `main`.
 - Conventional Commits.
-- Keep a CHANGELOG entry under `## [Unreleased]` for every user-visible change.
+- Keep a CHANGELOG entry under `## [Unreleased]` for every user-visible change. Before a version is tagged, its section is still open: a change that will ship in it goes there, not under Unreleased.

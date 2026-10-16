@@ -24,6 +24,8 @@ RUNTIME_FILES = (
     "README.md",
     "LICENSE",
     ".python-version",
+    "icon.png",
+    "icon-128.png",
 )
 RUNTIME_TREE = "src/seattle_open_data"
 REQUIRED = (
