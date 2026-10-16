@@ -132,7 +132,13 @@ class SodaClient:
         view = await self.get_json(
             f"https://{PUBLIC_HOST}/api/views/{dataset_id}.json", dataset_id=dataset_id
         )
-        if not isinstance(view, dict) or not isinstance(view.get("columns", []), list):
+        # A 200 error object would otherwise read as a non-tabular asset and be cached as one.
+        if (
+            not isinstance(view, dict)
+            or view.get("error")
+            or not view.get("id")
+            or not isinstance(view.get("columns", []), list)
+        ):
             raise shape_error("Expected a dataset metadata object.")
         return view
 
@@ -168,27 +174,29 @@ class _AsyncReader:
         self._buffer = b""
         self.total = 0
 
+    async def _pull(self) -> bool:
+        """Buffer one more chunk under the size cap; False at end of stream."""
+        try:
+            chunk = await anext(self._chunks)
+        except StopAsyncIteration:
+            return False
+        self.total += len(chunk)
+        if self.total > UPSTREAM_MAX_BYTES:
+            raise _too_large()
+        self._buffer += chunk
+        return True
+
     async def first_byte(self) -> bytes:
         """The first non-whitespace byte, without consuming it."""
         while not self._buffer.lstrip():
-            try:
-                chunk = await anext(self._chunks)
-            except StopAsyncIteration:
+            if not await self._pull():
                 return b""
-            self.total += len(chunk)
-            self._buffer += chunk
         return self._buffer.lstrip()[:1]
 
     async def read(self, size: int = -1) -> bytes:
         while size < 0 or len(self._buffer) < size:
-            try:
-                chunk = await anext(self._chunks)
-            except StopAsyncIteration:
+            if not await self._pull():
                 break
-            self.total += len(chunk)
-            if self.total > UPSTREAM_MAX_BYTES:
-                raise _too_large()
-            self._buffer += chunk
         if size < 0:
             out, self._buffer = self._buffer, b""
         else:

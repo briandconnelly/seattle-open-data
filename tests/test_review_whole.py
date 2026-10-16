@@ -17,6 +17,7 @@ from seattle_open_data.core.reference import ERROR_CODES_BY_TOOL, INSTRUCTIONS
 from tests.conftest import wire
 
 VIEW = {
+    "id": "aaaa-bbbb",
     "assetType": "dataset",
     "viewType": "tabular",
     "columns": [
@@ -159,6 +160,7 @@ async def test_wide_schema_with_no_rows_stays_in_budget(client):
 # --- 4. region-label failures are visible --------------------------------------
 
 REGION_VIEW = {
+    "id": "aaaa-bbbb",
     "assetType": "dataset",
     "viewType": "tabular",
     "columns": [

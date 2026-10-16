@@ -144,7 +144,12 @@ async def test_deadline_does_not_strand_queued_coroutines(monkeypatch):
 
     class Slow:
         async def view(self, dataset_id):
-            return {"assetType": "dataset", "viewType": "tabular", "columns": columns}
+            return {
+                "id": dataset_id,
+                "assetType": "dataset",
+                "viewType": "tabular",
+                "columns": columns,
+            }
 
         async def soql(self, dataset_id, params, timeout=None):
             await anyio.sleep(1)

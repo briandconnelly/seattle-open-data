@@ -30,6 +30,8 @@ _EXTERNAL = frozenset({"federated_href", "href"})
 _FOLDED = frozenset({"map", "chart", "visualization", "calendar", "form"})
 
 _DEFAULT_PAGE_SIZE = 10
+#: Bounds cursor size; a duplicate can reappear only after this many results.
+_SEEN_CAP = 200
 _RESTART = Repair(next_step="restart_search", tool="seattle_data_search_datasets", arguments={})
 
 
@@ -79,8 +81,10 @@ async def search(
         query, asset_scope, category = state["q"], state["scope"], state["cat"]
         offset = int(state["off"])
         page_size = page_size or int(state.get("ps", _DEFAULT_PAGE_SIZE))
+        earlier = [str(i) for i in state.get("seen", [])]
     else:
         offset = 0
+        earlier = []
     page_size = page_size or _DEFAULT_PAGE_SIZE
 
     params: dict[str, Any] = {
@@ -103,7 +107,7 @@ async def search(
     results = body["results"]
     total = int(body["resultSetSize"])
 
-    datasets = await _fold(client, results, detail)
+    datasets = await _fold(client, results, detail, already=set(earlier))
     next_offset = offset + len(results)
     has_more = bool(results) and next_offset < total
     next_cursor = (
@@ -115,6 +119,8 @@ async def search(
                 "cat": category,
                 "off": next_offset,
                 "ps": page_size,
+                # Folded map views can repeat a dataset from an earlier page; remember recent ids.
+                "seen": [*earlier, *(d.dataset_id for d in datasets)][-_SEEN_CAP:],
             },
         )
         if has_more
@@ -134,8 +140,13 @@ def _access_point(item: dict[str, Any]) -> str | None:
     return url or public_url(item.get("link"))
 
 
-async def _fold(client: SodaClient, results: list[Any], detail: Detail) -> list[DatasetSummary]:
-    """Replace each map or chart match with its parent dataset, once, in rank order."""
+async def _fold(
+    client: SodaClient, results: list[Any], detail: Detail, *, already: set[str]
+) -> list[DatasetSummary]:
+    """Replace each map or chart match with its parent dataset, once, at its first rank.
+
+    `already` holds datasets emitted on earlier pages, which are not repeated.
+    """
     slots: list[DatasetSummary | str] = []
     for item in results:
         resource = item.get("resource") or {}
@@ -145,9 +156,13 @@ async def _fold(client: SodaClient, results: list[Any], detail: Detail) -> list[
                 slots.append(str(parents[0]))
         else:
             slots.append(_summarize(item, detail))
-    present = {s.dataset_id for s in slots if isinstance(s, DatasetSummary)}
-    missing = sorted({s for s in slots if isinstance(s, str) and s not in present})
-    parents: dict[str, DatasetSummary] = {}
+    # Seeding with this page's summaries lets a map ranked above its own parent keep that rank.
+    parents: dict[str, DatasetSummary] = {
+        s.dataset_id: s for s in slots if isinstance(s, DatasetSummary)
+    }
+    missing = sorted(
+        {s for s in slots if isinstance(s, str) and s not in parents and s not in already}
+    )
     if missing:
         body = await client.get_json(
             DISCOVERY_API,
@@ -162,7 +177,7 @@ async def _fold(client: SodaClient, results: list[Any], detail: Detail) -> list[
             summary = _summarize(item, detail)
             parents[summary.dataset_id] = summary
     out: list[DatasetSummary] = []
-    seen: set[str] = set()
+    seen = set(already)
     for slot in slots:
         summary = parents.get(slot) if isinstance(slot, str) else slot
         if summary is not None and summary.dataset_id not in seen:

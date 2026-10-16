@@ -17,7 +17,7 @@ COLUMNS: list[dict[str, Any]] = [
     {"fieldName": "name", "dataTypeName": "text"},
     {"fieldName": "report_location", "dataTypeName": "point"},
 ]
-VIEW = {"assetType": "dataset", "viewType": "tabular", "columns": COLUMNS}
+VIEW = {"id": "aaaa-bbbb", "assetType": "dataset", "viewType": "tabular", "columns": COLUMNS}
 
 
 def install(rows, fields=("name", "report_location"), types=("text", "point")):
