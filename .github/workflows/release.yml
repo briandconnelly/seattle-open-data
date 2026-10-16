@@ -1,12 +1,23 @@
 name: Release
 
-# On a v* tag: verify versions agree, build the wheel, sdist, and .mcpb bundle, and
-# create a GitHub Release carrying all three. PyPI publishing stays off until the
-# repository variable PUBLISH_PYPI is "true" (and a `pypi` trusted publisher exists).
+# On a v* tag: verify versions agree and the full gate passes, build and smoke-test the wheel,
+# sdist, and .mcpb (build.yml), publish the wheel and sdist to PyPI (the `pypi` environment
+# requires a maintainer's approval), then create a GitHub Release carrying all three files.
+#
+# Run it manually (workflow_dispatch) to rehearse without a tag: the same verify, build, and smoke
+# test, plus an optional upload to TestPyPI that exercises trusted publishing end to end. A manual
+# run never touches PyPI or GitHub Releases.
 
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      publish_to:
+        description: "Where a rehearsal publishes the wheel and sdist"
+        type: choice
+        options: [none, testpypi]
+        default: none
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -17,7 +28,7 @@ permissions:
 
 jobs:
   verify:
-    name: Verify version consistency
+    name: Verify versions and gate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -32,32 +43,35 @@ jobs:
       - name: Sync dependencies
         run: uv sync --locked
 
-      - name: Tag matches pyproject, manifest, and CHANGELOG versions
+      - name: pyproject, manifest, CHANGELOG (and the tag, if any) agree
+        env:
+          # Empty on a manual run from a branch: there is no tag to compare.
+          TAG: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
         run: |
-          uv run python - "${GITHUB_REF_NAME#v}" <<'PY'
+          uv run python - "$TAG" <<'PY'
           import json, re, sys, tomllib
           from pathlib import Path
 
-          tag = sys.argv[1]
+          raw_tag = sys.argv[1]
           pyproject = tomllib.loads(Path("pyproject.toml").read_text())["project"]["version"]
           manifest = json.loads(Path("manifest.json").read_text())["version"]
           # Latest released section: the first `## [X.Y.Z]` heading, skipping [Unreleased].
           m = re.search(r"^## \[(\d+\.\d+\.\d+[^\]]*)\]", Path("CHANGELOG.md").read_text(), re.M)
           changelog = m.group(1) if m else None
 
+          versions = {"manifest.json": manifest, "latest CHANGELOG": changelog}
+          if raw_tag:
+              # Strip only the prefix: a bare `v` tag leaves "", which must fail, not skip.
+              versions["git tag"] = raw_tag.removeprefix("v")
           errors = [
-              f"git tag {tag!r} != {name} version {value!r}"
-              for name, value in (
-                  ("pyproject", pyproject),
-                  ("manifest.json", manifest),
-                  ("latest CHANGELOG", changelog),
-              )
-              if value != tag
+              f"{name} version {value!r} != pyproject version {pyproject!r}"
+              for name, value in versions.items()
+              if value != pyproject
           ]
           if errors:
               print("\n".join(errors))
               sys.exit(1)
-          print(f"OK: tag, pyproject, manifest.json, and CHANGELOG all agree on {tag}")
+          print(f"OK: {', '.join(['pyproject', *versions])} all agree on {pyproject}")
           PY
 
       - name: Manifest is in sync with the live server
@@ -71,47 +85,22 @@ jobs:
           uv run pytest
 
   build:
-    name: Build distributions and bundle
+    name: Build
     needs: verify
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
-        with:
-          enable-cache: false # release artifacts never build from a restored cache
-
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
-        with:
-          node-version: "22"
-          package-manager-cache: false
-
-      - name: Build wheel and sdist
-        run: uv build
-
-      - name: Install mcpb CLI
-        run: npm install -g @anthropic-ai/mcpb@2.1.2 # pin for reproducible bundles
-
-      - name: Build .mcpb bundle (allowlisted staging + archive check)
-        run: uv run python scripts/build_bundle.py
-
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
-        with:
-          name: dist
-          path: dist/
-          if-no-files-found: error
+    uses: ./.github/workflows/build.yml
+    with:
+      cache: false # release artifacts never build from a restored cache
 
   publish:
     name: Publish to PyPI
     needs: build
-    if: vars.PUBLISH_PYPI == 'true'
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
       id-token: write # OIDC trusted publishing
-    environment: pypi
+    environment:
+      name: pypi # requires a maintainer's approval
+      url: https://pypi.org/p/seattle-open-data
     steps:
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
@@ -127,13 +116,36 @@ jobs:
           # Reruns after a later failure must not trip PyPI's duplicate-file error.
           skip-existing: true
 
+  publish-testpypi:
+    name: Publish to TestPyPI (rehearsal)
+    needs: build
+    if: github.event_name == 'workflow_dispatch' && inputs.publish_to == 'testpypi'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # OIDC trusted publishing
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/seattle-open-data
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: dist
+          path: dist/
+
+      - name: Drop the bundle; TestPyPI takes only the wheel and sdist
+        run: rm -f dist/*.mcpb
+
+      - name: Publish to TestPyPI
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          # TestPyPI never accepts a version twice; a repeat rehearsal is a no-op upload.
+          skip-existing: true
+
   release:
     name: Create GitHub Release
-    needs: [build, publish]
-    # Runs when publish succeeded or was skipped because PyPI publishing is off.
-    if: >-
-      always() && needs.build.result == 'success' &&
-      (needs.publish.result == 'success' || needs.publish.result == 'skipped')
+    needs: publish
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
       contents: write

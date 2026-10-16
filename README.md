@@ -47,7 +47,7 @@ uv run python evals/report.py <out_dir> --answers
 
 ## Release
 
-Bump the version in `pyproject.toml`, run `make manifest`, move the CHANGELOG `[Unreleased]` entries under the new version, merge, then push a `vX.Y.Z` tag. The release workflow checks that the versions agree, builds the wheel, sdist, and `.mcpb`, and attaches all three to a GitHub Release. Publishing to PyPI is off until the repository variable `PUBLISH_PYPI` is `true`.
+Tag `vX.Y.Z` after bumping the version: the release workflow builds and smoke-tests the wheel, sdist, and `.mcpb`, publishes to PyPI after maintainer approval, and attaches all three to a GitHub Release. See [docs/releasing.md](docs/releasing.md) for the steps, the TestPyPI rehearsal, and one-time setup.
 
 ## License
 
