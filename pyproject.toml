@@ -24,6 +24,7 @@ dependencies = [
     "httpx>=0.28",
     "ijson>=3.3",
     "pydantic>=2",
+    "tzdata>=2025.2",
 ]
 
 [project.scripts]

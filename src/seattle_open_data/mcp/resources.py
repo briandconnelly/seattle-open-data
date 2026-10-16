@@ -103,9 +103,10 @@ def register_resources(mcp: FastMCP) -> None:
         mime_type="text/markdown",
     )
     def guide(guide_id: str) -> str:
+        del guide_id  # Caller text is never echoed [6.offending-value].
         raise SeattleDataError(
             ErrorCode.REFERENCE_NOT_FOUND,
-            f"No dataset guide {guide_id!r}.",
+            "No dataset guide at this URI.",
             details=ErrorDetails(field="uri", reason="Guides arrive in a later pre-release."),
             repair=Repair(
                 next_step="list_guides",

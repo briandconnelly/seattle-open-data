@@ -9,9 +9,12 @@ from __future__ import annotations
 
 import re
 from enum import StrEnum
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel, ConfigDict, Field
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping, Sequence
 
 
 class ErrorCode(StrEnum):
@@ -123,7 +126,8 @@ _POSITION_KEYS = ("line", "column", "row", "col")
 
 
 def _soql_position(body: dict[str, Any]) -> dict[str, int] | None:
-    position = body.get("position") or (body.get("data") or {}).get("position")
+    data = body.get("data")
+    position = body.get("position") or (data.get("position") if isinstance(data, dict) else None)
     if not isinstance(position, dict):
         source = body.get("source")
         position = source.get("position") if isinstance(source, dict) else None
@@ -134,13 +138,19 @@ def _soql_position(body: dict[str, Any]) -> dict[str, int] | None:
 
 
 _SOQL_CODE = re.compile(r"query\.soql\.[a-z.-]+")
+#: Upstream codes are echoed only when they look symbolic [3.sec-sanitize].
+_SYMBOLIC = re.compile(r"[a-z0-9_.-]{1,64}")
+
+
+def _symbolic(value: Any) -> str | None:
+    return value if isinstance(value, str) and _SYMBOLIC.fullmatch(value) else None
 
 
 def _soql_code(body: dict[str, Any]) -> str | None:
     """SODA2 puts the code in `errorCode`, `code`, or only inside `message` text."""
     for key in ("errorCode", "code"):
-        value = body.get(key)
-        if isinstance(value, str) and value.startswith("query.soql."):
+        value = _symbolic(body.get(key))
+        if value is not None and value.startswith("query.soql."):
             return value
     match = _SOQL_CODE.search(str(body.get("message", "")))
     return match.group(0) if match else None
@@ -197,7 +207,7 @@ def map_upstream_error(  # noqa: PLR0911 - one return per upstream failure class
             ),
         )
 
-    upstream_code = body.get("code") if isinstance(body.get("code"), str) else None
+    upstream_code = _symbolic(body.get("code"))
     if status == 403:
         message = str(body.get("message", "")).lower()
         if token_configured and "app_token" in message.replace(" ", "_"):
@@ -273,7 +283,7 @@ def _describe_repair(dataset_id: str | None, next_step: str, **arguments: Any) -
 # --------------------------------------------------------------------------
 
 
-def from_validation_errors(errors: list[dict[str, Any]], *, tool: str) -> SeattleDataError:
+def from_validation_errors(errors: Sequence[Mapping[str, Any]], *, tool: str) -> SeattleDataError:
     """Build `invalid_argument` from pydantic's `ValidationError.errors()`.
 
     Received values are never echoed in `details.value`: any parameter can carry a

@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Any
 
 from fastmcp import FastMCP
 from fastmcp.exceptions import McpError, NotFoundError
+from fastmcp.exceptions import ValidationError as FastMCPValidationError
 from fastmcp.server.middleware import Middleware
 from pydantic import ValidationError
 
@@ -55,9 +56,11 @@ def _find(exc: BaseException, kind: type[BaseException]) -> Any:
 def _to_error(exc: BaseException, tool: str) -> SeattleDataError:
     if (domain := _find(exc, SeattleDataError)) is not None:
         return domain
-    if (invalid := _find(exc, ValidationError)) is not None:
+    # FastMCP raises its own ValidationError, caused by pydantic's, only for argument
+    # validation. Pydantic errors from a handler body arrive wrapped in ToolError: server bugs.
+    if isinstance(exc, FastMCPValidationError) and isinstance(exc.__cause__, ValidationError):
         return from_validation_errors(
-            invalid.errors(include_url=False, include_input=False), tool=tool
+            exc.__cause__.errors(include_url=False, include_input=False), tool=tool
         )
     logger.exception("unexpected failure in %s", tool)
     return SeattleDataError(ErrorCode.INTERNAL_ERROR, "The server failed unexpectedly.")

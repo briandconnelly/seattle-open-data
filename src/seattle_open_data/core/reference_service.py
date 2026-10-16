@@ -66,7 +66,7 @@ def read(topic: str, item_id: str | None, chunk_id: str | None) -> ReferenceResu
     if document is None:
         raise SeattleDataError(
             ErrorCode.REFERENCE_NOT_FOUND,
-            f"No reference item {item_id!r} under topic {topic!r}.",
+            f"No such reference item under topic '{topic}'.",
             details=ErrorDetails(
                 field="item_id",
                 reason="Unknown item.",
@@ -77,7 +77,7 @@ def read(topic: str, item_id: str | None, chunk_id: str | None) -> ReferenceResu
     if chunk_id is not None:
         raise SeattleDataError(
             ErrorCode.REFERENCE_NOT_FOUND,
-            f"Reference item {item_id!r} is not chunked.",
+            "This reference item is not chunked.",
             details=ErrorDetails(field="chunk_id", reason="This item has a single body."),
             repair=Repair(
                 next_step="read_item", tool=_TOOL, arguments={"topic": topic, "item_id": item_id}

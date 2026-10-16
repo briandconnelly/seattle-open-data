@@ -85,10 +85,10 @@ def check_query(args: dict[str, Any]) -> None:
 def check_reference(args: dict[str, Any]) -> None:
     tool = "seattle_data_get_reference"
     topic = args.get("topic") or "index"
-    if args.get("item_id") is not None and topic == "index":
+    if args.get("item_id") is not None and topic in ("index", "capabilities"):
         _reject(
             ["topic", "item_id"],
-            "item_id requires a topic other than 'index'.",
+            f"Topic '{topic}' has no items; item_id needs soql, errors, or guides.",
             tool=tool,
             repair=Repair(next_step="list_topics", tool=tool, arguments={}),
         )
