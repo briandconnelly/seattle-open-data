@@ -100,3 +100,20 @@ async def test_stream_rows_reads_pretty_printed_json():
     assert out.rows == [{":id": "row-1", "name": "a"}]
     assert out.more is True
     assert out.fields == [":id", "name"]
+
+
+@pytest.mark.parametrize("value", ["${user_config.app_token}", "  ", ""])
+async def test_unset_or_unexpanded_token_means_anonymous(monkeypatch, value):
+    """Claude Desktop passes an optional, blank MCPB setting through as the literal
+    `${user_config.app_token}`; Socrata's firewall answers that header with a 403."""
+    monkeypatch.setenv("SOCRATA_APP_TOKEN", value)
+    seen = {}
+
+    def handler(request):
+        seen["header"] = request.headers.get("X-App-Token")
+        return httpx.Response(200, json={})
+
+    client = SodaClient(transport=httpx.MockTransport(handler))
+    await client.get_json("https://data.seattle.gov/api/views/x.json")
+    assert client.token_configured is False
+    assert seen["header"] is None

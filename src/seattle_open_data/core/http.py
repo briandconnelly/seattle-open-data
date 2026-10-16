@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
+import re
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
@@ -21,11 +23,25 @@ from seattle_open_data.core.errors import (
 )
 
 TOKEN_ENV = "SOCRATA_APP_TOKEN"
+#: An MCPB host can pass a blank optional setting through unexpanded, e.g. Claude Desktop
+#: sends "${user_config.app_token}"; Socrata's firewall answers that header with a 403.
+_UNEXPANDED = re.compile(r"\$\{[^}]*\}")
+
+logger = logging.getLogger("seattle_open_data")
+
+
+def configured_token() -> str | None:
+    """SOCRATA_APP_TOKEN, or None when it is unset, blank, or an unexpanded placeholder."""
+    token = (os.environ.get(TOKEN_ENV) or "").strip()
+    if _UNEXPANDED.fullmatch(token):
+        logger.warning("%s is an unexpanded placeholder; querying anonymously", TOKEN_ENV)
+        return None
+    return token or None
 
 
 class SodaClient:
     def __init__(self, transport: httpx.AsyncBaseTransport | None = None) -> None:
-        token = os.environ.get(TOKEN_ENV) or None
+        token = configured_token()
         headers = {"User-Agent": f"seattle-open-data/{__version__}", "Accept": "application/json"}
         if token:
             headers["X-App-Token"] = token
