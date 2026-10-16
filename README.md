@@ -17,26 +17,43 @@ An agent-friendly [MCP](https://modelcontextprotocol.io/) server for [Seattle Op
 | `seattle_data_query_dataset` | Bounded reads and aggregates (SoQL clauses or raw SoQL) |
 | `seattle_data_get_reference` | Capability summary, SoQL help, guides, error catalog |
 
-## Run
+## Install
+
+The server runs over stdio. The `uvx` commands below need [uv](https://docs.astral.sh/uv/).
+
+**Claude Desktop:** download `seattle-open-data-<version>.mcpb` from the [latest release](https://github.com/briandconnelly/seattle-open-data/releases/latest) and open it with Claude Desktop.
+
+**Claude Code:**
 
 ```bash
-uv run seattle-open-data          # stdio
+claude mcp add seattle-open-data -- uvx seattle-open-data
 ```
 
-Claude Code:
+**Codex:**
 
 ```bash
-claude mcp add seattle-open-data -- uv run --directory /path/to/seattle-open-data seattle-open-data
+codex mcp add seattle-open-data -- uvx seattle-open-data
 ```
 
-Optional: set `SOCRATA_APP_TOKEN` to use a Socrata application token. A rejected token is reported as `app_token_rejected`, never silently dropped.
+**Any other MCP client:** run `uvx seattle-open-data` as a stdio server:
 
-To build the installable MCPB bundle (needs the `mcpb` CLI): `make mcpb`.
+```json
+{
+  "mcpServers": {
+    "seattle-open-data": { "command": "uvx", "args": ["seattle-open-data"] }
+  }
+}
+```
+
+**Optional app token:** set `SOCRATA_APP_TOKEN` to use a [Socrata application token](https://dev.socrata.com/docs/app-tokens.html), for example `claude mcp add seattle-open-data -e SOCRATA_APP_TOKEN=... -- uvx seattle-open-data`. The bundle asks for it in Claude Desktop's settings. A rejected token is reported as `app_token_rejected`, never silently dropped.
 
 ## Develop
 
+From a checkout:
+
 ```bash
 uv sync
+uv run seattle-open-data                                  # run the server over stdio
 uv run pytest
 uv run ruff check && uv run ruff format --check && uv run ty check
 UPDATE_SNAPSHOTS=1 uv run pytest tests/test_contract.py   # after an intended tool-surface change
@@ -44,6 +61,8 @@ uv run pytest --run-integration -m integration            # live tests against d
 uv run python evals/run.py [--host claude|codex] <out_dir> [task_id ...]
 uv run python evals/report.py <out_dir> --answers
 ```
+
+To build the MCPB bundle locally (needs the `mcpb` CLI): `make mcpb`.
 
 ## Release
 
