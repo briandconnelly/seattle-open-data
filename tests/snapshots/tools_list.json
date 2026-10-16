@@ -369,7 +369,8 @@
                     "beat",
                     "zip",
                     "council_district",
-                    "census_tract"
+                    "census_tract",
+                    "other"
                   ],
                   "type": "string"
                 },
@@ -422,6 +423,9 @@
                     "timeout"
                   ],
                   "type": "string"
+                },
+                "value_count": {
+                  "type": "integer"
                 },
                 "values": {
                   "items": {

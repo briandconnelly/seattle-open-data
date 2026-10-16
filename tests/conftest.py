@@ -47,3 +47,34 @@ async def tools_list(client) -> dict[str, Any]:
 @pytest.fixture
 async def input_schemas(tools_list) -> dict[str, dict[str, Any]]:
     return {t["name"]: t["inputSchema"] for t in tools_list["tools"]}
+
+
+class _NoNetwork:
+    async def handle_async_request(self, request):
+        raise AssertionError(f"unit test tried to reach the network: {request.url}")
+
+
+@pytest.fixture(autouse=True)
+def no_network():
+    from seattle_open_data.core.http import SodaClient, set_client
+
+    set_client(SodaClient(transport=_NoNetwork()))  # ty: ignore[invalid-argument-type]
+    yield
+    set_client(None)
+
+
+@pytest.fixture
+def soda(request, no_network):
+    """Record or replay the HTTP fixture named by the test's `soda_fixture` marker."""
+    from seattle_open_data.core.http import SodaClient, set_client
+    from tests.http_fixtures import RECORDING, Recorder, Replay
+
+    marker = request.node.get_closest_marker("soda_fixture")
+    assert marker is not None, "use @pytest.mark.soda_fixture(name)"
+    name, overrides = marker.args[0], marker.kwargs.get("overrides")
+    transport = Recorder(name) if RECORDING and not overrides else Replay(name, overrides)
+    set_client(SodaClient(transport=transport))
+    yield transport
+    set_client(None)
+    if isinstance(transport, Recorder):
+        transport.save()

@@ -2,7 +2,7 @@
 
 An agent-friendly [MCP](https://modelcontextprotocol.io/) server for [Seattle Open Data](https://data.seattle.gov/) (Socrata SODA2).
 
-**Status: pre-release (milestone 1, contract spike).** The tool and error contracts are frozen in tests; `seattle_data_get_reference` works, while search, describe, and query return `not_implemented` until milestones 2 and 3. See [PLAN.md](PLAN.md).
+**Status: pre-release (milestone 2).** Search, describe, and reference work against the live portal; `seattle_data_query_dataset` returns `not_implemented` until milestone 3. See [PLAN.md](PLAN.md).
 
 ## Tools
 

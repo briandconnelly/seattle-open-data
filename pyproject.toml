@@ -39,7 +39,6 @@ dev = [
     "pytest-cov>=5",
     "ruff>=0.15",
     "ty>=0.0.1a1",
-    "vcrpy>=6",
 ]
 
 [build-system]
@@ -73,6 +72,7 @@ addopts = ["-ra", "--strict-markers", "--strict-config"]
 asyncio_mode = "auto"
 markers = [
     "integration: live data.seattle.gov tests (skipped by default; run with --run-integration)",
+    "soda_fixture(name, overrides=None): record or replay tests/fixtures/http/<name>.json",
 ]
 
 [tool.coverage.run]

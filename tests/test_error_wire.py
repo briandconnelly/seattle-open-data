@@ -112,15 +112,10 @@ async def test_combination_failure_is_enveloped(client, input_schemas, tool, arg
     assert ([details["field"]] if "field" in details else details["fields"]) == fields
 
 
-@pytest.mark.parametrize(
-    "tool",
-    ["seattle_data_search_datasets", "seattle_data_describe_dataset", "seattle_data_query_dataset"],
-)
-async def test_unimplemented_tools_say_so(client, input_schemas, tool):
-    args = {} if tool == "seattle_data_search_datasets" else {"dataset_id": "kzjm-xkqj"}
-    envelope = assert_tool_envelope(
-        wire(await client.call_tool_mcp(tool, args)), input_schemas[tool]
-    )
+async def test_unimplemented_query_says_so(client, input_schemas):
+    tool = "seattle_data_query_dataset"
+    result = wire(await client.call_tool_mcp(tool, {"dataset_id": "kzjm-xkqj"}))
+    envelope = assert_tool_envelope(result, input_schemas[tool])
     assert envelope["code"] == ErrorCode.NOT_IMPLEMENTED
     assert envelope["repair"]["tool"] == "seattle_data_get_reference"
 
@@ -140,7 +135,7 @@ async def test_request_ids_differ_per_call(client):
     ids = set()
     for _ in range(3):
         result = wire(
-            await client.call_tool_mcp("seattle_data_describe_dataset", {"dataset_id": "kzjm-xkqj"})
+            await client.call_tool_mcp("seattle_data_query_dataset", {"dataset_id": "kzjm-xkqj"})
         )
         ids.add(result["structuredContent"]["request_id"])
     assert len(ids) == 3

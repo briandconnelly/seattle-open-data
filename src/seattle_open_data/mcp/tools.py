@@ -18,8 +18,9 @@ from seattle_open_data.constants import (
     SAMPLE_ROWS_MAX,
     SEARCH_PAGE_SIZE_MAX,
 )
-from seattle_open_data.core import arguments, reference_service
+from seattle_open_data.core import arguments, catalog, describe, reference_service
 from seattle_open_data.core.errors import ErrorCode, Repair, SeattleDataError
+from seattle_open_data.core.http import get_client
 from seattle_open_data.core.models import (
     DescribeResult,
     Detail,
@@ -115,7 +116,16 @@ async def seattle_data_search_datasets(
             "detail": detail,
         }
     )
-    raise _not_implemented("seattle_data_search_datasets")
+    result = await catalog.search(
+        get_client(),
+        query=query,
+        asset_scope=asset_scope or "tabular",
+        category=category,
+        page_size=page_size or 10,
+        cursor=cursor,
+        detail=detail or "summary",
+    )
+    return success(result)
 
 
 async def seattle_data_describe_dataset(
@@ -141,8 +151,14 @@ async def seattle_data_describe_dataset(
     Example: {"dataset_id": "kzjm-xkqj", "detail": "full"}.
     Typically 1-3 s; up to about 20 s on very large datasets.
     """
-    del dataset_id, column_query, sample_rows, detail
-    raise _not_implemented("seattle_data_describe_dataset")
+    result = await describe.describe(
+        get_client(),
+        dataset_id=dataset_id,
+        column_query=column_query,
+        sample_rows=sample_rows or 0,
+        detail=detail or "summary",
+    )
+    return success(result)
 
 
 async def seattle_data_query_dataset(

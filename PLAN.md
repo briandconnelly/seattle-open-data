@@ -62,7 +62,7 @@ Labels on each fact:
 - Verified: on Fire 911, the council-district layer `cyqu-gs94` is mostly null. Over all time it has district 1 = 107,991, district 2 = 57,522, district 3 = 1, null = 2,050,366; districts 4–7 never appear.
 - (review) In September 2026 the MCPP, beat, and zip region layers were about 99% filled, against about 8% for the tract and council layers.
 - (review) Region layers were last updated in 2015–16. The council layer likely predates the 2022 redistricting. `q256-3sug` holds national 2010 ZCTAs.
-- (review) Region-layer label columns:
+- Verified (milestone 2): region-layer label columns, sizes, and update dates:
 
   | layer | label column |
   | --- | --- |
@@ -544,7 +544,7 @@ All calls are blocking `tools/call` [7.execution-mode].
 | 7 Long-running | answered | §7; tasks N/A |
 | 8 Token efficiency | **pending** (M3) | Contract in §4–§5: summary/full, byte-budgeted pages, paging by query kind, HTML stripped, system columns hidden. Untested until the M3 fixtures run |
 | 9 Versioning | answered | Deterministic ordering; deprecation window; open top-level output for additions (§8); `listChanged` not advertised; fingerprint deferred per [9.fingerprint] |
-| Data facts | partly answered | Verified: catalog alias, computed-region coverage, council-layer nulls, place-field vocabularies and placeholders, `cachedContents` gaps. Reviewer-only and still to re-verify in M2: `:id` keyset equivalence, layer label columns and vintages, the 1,000-row default, stream-stop |
+| Data facts | partly answered | Verified: catalog alias, computed-region coverage, council-layer nulls, place-field vocabularies and placeholders, `cachedContents` gaps; in M2 also layer label columns and dates, `within_circle` on a `point` column (121,985 Fire calls within 500 m of downtown), Fire 911 `datetime` as Pacific wall-clock time, and catalog `parent_fxf`/`access_points`. Still reviewer-only, for M3: `:id` keyset equivalence, the 1,000-row default, stream-stop |
 
 ## 11. Product decisions (Brian, 2026-10-15)
 
@@ -600,3 +600,8 @@ No open product questions remain. Engineering unknowns are tracked as **pending*
 | Validation `details.value` | Omit free-text values only | Never echo received argument values; only server- or catalog-minted values | Milestone 1 implementation (simpler rule; disclosed in the error catalog) |
 | `instructions` length | Unconstrained | Keep short: Codex repeats it in every tool description | Milestone 1 host capture |
 | Legacy floor | 2025-11-25 | Codex CLI 0.162.1 negotiates 2025-06-18 and is served; legacy handshake tested in CI | Milestone 1 host capture |
+| Test fixtures | vcrpy cassettes | A small record/replay `httpx` transport (`tests/http_fixtures.py`) that can also simulate timeouts and outages; vcrpy removed | Milestone 2 implementation |
+| Describe aggregates | One 10 s phase for everything | Phase 1: row count, coverage, sample (10 s). Phase 2, full detail only: place-field grouping, at most 4 at once (10 s) | Milestone 2: running both phases together timed out even the SPD row count |
+| `assigned_fraction` | From a separate unassigned-count query | From the grouping itself, reported only when all groups (≤100) came back, so it is exact | Milestone 2 implementation |
+| Federated `external_url` | Catalog `link` | The entry's ArcGIS access point from catalog metadata | Milestone 2 probe |
+| Filter views | Own facts | Inherit their parent's curated facts (place fields, time evidence) | Milestone 2 probe |

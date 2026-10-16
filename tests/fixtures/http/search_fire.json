@@ -1,0 +1,180 @@
+{
+ "api.us.socrata.com/api/catalog/v1?[[\"domains\", \"cos-data.seattle.gov\"], [\"limit\", \"3\"], [\"offset\", \"0\"], [\"only\", \"dataset,filter\"], [\"q\", \"fire 911\"], [\"search_context\", \"data.seattle.gov\"]]": {
+  "body": {
+   "resultSetSize": 1,
+   "results": [
+    {
+     "classification": {
+      "categories": [],
+      "domain_category": "Public Safety",
+      "domain_metadata": [
+       {
+        "key": "Department_Department",
+        "value": "Seattle Fire Department"
+       },
+       {
+        "key": "Common-Core_Publisher",
+        "value": "data.seattle.gov"
+       },
+       {
+        "key": "Common-Core_Contact-Email",
+        "value": "open.data@seattle.gov"
+       },
+       {
+        "key": "Refresh-Frequency_Frequency",
+        "value": "Near Realtime"
+       }
+      ],
+      "domain_tags": [
+       "dispatch e911",
+       "911",
+       "fire",
+       "seattle",
+       "sfd mobile"
+      ],
+      "tags": []
+     },
+     "creator": {
+      "display_name": "Ward, Evan L",
+      "id": "w8f2-69ad",
+      "user_type": "interactive"
+     },
+     "link": "https://data.seattle.gov/Public-Safety/Seattle-Real-Time-Fire-911-Calls/kzjm-xkqj",
+     "metadata": {
+      "domain": "data.seattle.gov",
+      "license": "Public Domain"
+     },
+     "owner": {
+      "display_name": "Ward, Evan L",
+      "id": "w8f2-69ad",
+      "user_type": "interactive"
+     },
+     "permalink": "https://data.seattle.gov/d/kzjm-xkqj",
+     "resource": {
+      "attribution": "City of Seattle",
+      "attribution_link": "http://web5.seattle.gov/MNM/incidentresponse.aspx",
+      "backend": "nbe",
+      "blob_mime_type": null,
+      "columns_datatype": [
+       "Number",
+       "Text",
+       "Number",
+       "Number",
+       "Text",
+       "Text",
+       "Calendar date",
+       "Point",
+       "Number",
+       "Number",
+       "Number",
+       "Number"
+      ],
+      "columns_description": [
+       "",
+       "Response Type",
+       "This is the longitude value. Lines of longitude run perpendicular to lines of latitude, and all pass through both poles.",
+       "This is the latitude value. Lines of latitude are parallel to the equator.",
+       "",
+       "Location of Incident",
+       "The date and time of the call.",
+       "",
+       "",
+       "",
+       "",
+       ""
+      ],
+      "columns_field_name": [
+       ":@computed_region_kuhn_3gp2",
+       "type",
+       "longitude",
+       "latitude",
+       "incident_number",
+       "address",
+       "datetime",
+       "report_location",
+       ":@computed_region_ru88_fbhk",
+       ":@computed_region_2day_rhn5",
+       ":@computed_region_cyqu_gs94",
+       ":@computed_region_q256_3sug"
+      ],
+      "columns_format": [
+       {},
+       {},
+       {
+        "precisionStyle": "standard"
+       },
+       {
+        "precisionStyle": "standard"
+       },
+       {
+        "align": "right",
+        "precisionStyle": "standard"
+       },
+       {},
+       {
+        "align": "left"
+       },
+       {},
+       {},
+       {},
+       {},
+       {}
+      ],
+      "columns_name": [
+       "SPD Beats",
+       "Type",
+       "Longitude",
+       "Latitude",
+       "Incident Number",
+       "Address",
+       "Datetime",
+       "Report Location",
+       "Seattle Police Department Micro Community Policing Plan Areas",
+       "2010 Census Tracts",
+       "City Council Districts",
+       "Zip Codes"
+      ],
+      "contact_email": "open.data@seattle.gov",
+      "createdAt": "2010-01-08T21:48:17.000Z",
+      "data_updated_at": "2026-10-16T02:41:02.000Z",
+      "description": "Provides Seattle Fire Department 911 dispatches. Updated every 5 minutes.",
+      "download_count": 61951,
+      "hide_from_data_json": false,
+      "id": "kzjm-xkqj",
+      "lens_display_type": "table",
+      "lens_view_type": "tabular",
+      "locked": false,
+      "metadata_updated_at": "2025-01-29T16:56:29.000Z",
+      "name": "Seattle Real Time Fire 911 Calls",
+      "page_views": {
+       "page_views_last_month": 40096,
+       "page_views_last_month_log": 15.291206679894753,
+       "page_views_last_week": 32158,
+       "page_views_last_week_log": 14.972934925448401,
+       "page_views_total": 325011,
+       "page_views_total_log": 18.310133460334477
+      },
+      "parent_fxf": [],
+      "provenance": "official",
+      "publication_date": "2019-04-26T00:00:46.000Z",
+      "resource_name": "fire-911",
+      "type": "dataset",
+      "updatedAt": "2026-10-16T02:41:02.000Z"
+     }
+    }
+   ],
+   "timings": {
+    "searchMillis": [
+     10,
+     7
+    ],
+    "serviceMillis": 23
+   },
+   "warnings": []
+  },
+  "headers": {
+   "content-type": "application/json;charset=utf-8"
+  },
+  "status": 200
+ }
+}

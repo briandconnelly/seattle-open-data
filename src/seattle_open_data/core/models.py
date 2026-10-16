@@ -15,7 +15,7 @@ Queryability = Literal["supported", "external", "unsupported", "unknown"]
 Origin = Literal["live_query", "cached_metadata"]
 Reliability = Literal["ok", "partial", "unreliable"]
 PlaceKind = Literal[
-    "neighborhood", "precinct", "sector", "beat", "zip", "council_district", "census_tract"
+    "neighborhood", "precinct", "sector", "beat", "zip", "council_district", "census_tract", "other"
 ]
 
 
@@ -105,6 +105,7 @@ class PlaceField(Closed):
     source: Literal["column", "computed_region"]
     reliability: Reliability
     reliability_reason: str | None = None
+    value_count: int | None = None
     values: list[PlaceValue] | None = None
     placeholder_values: list[PlaceholderValue] | None = None
     assigned_fraction: float | None = None

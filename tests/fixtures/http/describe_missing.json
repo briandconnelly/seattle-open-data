@@ -1,0 +1,16 @@
+{
+ "data.seattle.gov/api/views/abcd-1234.json?[]": {
+  "body": {
+   "code": "not_found",
+   "data": {
+    "id": "abcd-1234"
+   },
+   "error": true,
+   "message": "Not found"
+  },
+  "headers": {
+   "content-type": "application/json; charset=utf-8"
+  },
+  "status": 404
+ }
+}
