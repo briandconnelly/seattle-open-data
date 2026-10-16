@@ -38,7 +38,7 @@ Tools carry everything an agent must be able to do. Resources carry static refer
 
 All four tools share these properties:
 - **Annotations:** `readOnlyHint: true` and `openWorldHint: true`, except `seattle_data_get_reference`, which has `openWorldHint: false`. No destructive or idempotent hints [3.annotation-defaults].
-- **`detail`:** `"summary" | "full"`, default `summary`. It changes field density only, never row count [8.detail-row-count] [8.detail-orthogonal].
+- **`detail`** (search, describe, and query; not the reference tool): `"summary" | "full"`, default `summary`. It changes field density only, never row count [8.detail-row-count] [8.detail-orthogonal].
 - **Schemas:** JSON Schema 2020-12, with `outputSchema` on all four [3.output-schema], frozen by `tests/snapshots/tools_list.json`.
   - Input objects are closed.
   - **Output:** each tool's top-level result object is open (`additionalProperties: true`), documented as the forward-compatible extension point for minor-release additions. Nested output objects are closed [3.closed-schemas] [9.additive-direction].
@@ -121,7 +121,7 @@ All four tools share these properties:
    - **Returns:**
      - Column descriptors, `rows[]`, `returned_rows`, `has_more`, `next_cursor`, `truncated`, `truncation_reason`, `consistency`, and `coverage_warnings`.
      - In `full`: `query_url`, a reproducible SODA2 URL, and the effective query.
-     - In `full`, clauses mode only: **`download_url`**, the same query as a SODA2 `.csv` URL with `$limit` set to `row_count`.
+     - In `full`, clauses mode only: **`download_url`**, the same query as a SODA2 `.csv` URL with a fixed `$limit` of 1,000,000,000 (`DOWNLOAD_LIMIT`), so the export is bounded only by the query itself.
        - The server builds this URL but never fetches it.
        - This is the answer to "I need every row" without server-side bulk export, and it keeps bulk data out of the agent's context.
        - It is omitted, with `download_url_omitted: true`, when longer than 2 KiB.
@@ -194,7 +194,8 @@ Old or sparse region layers stay visible, flagged `unreliable`, and are never us
   - HMAC-signed with a 32-byte random key held **in process memory**. A restart invalidates all cursors, which then fail with `cursor_expired`, the same recovery path as expiry.
   - Contents: cursor format version; `dataset_id`; the normalized clauses query and ordering; the first page's `page_size`; the cumulative `emitted_count`; `last_emitted_id` (keyset only); `issued_at`.
   - Cursors expire after 1 hour.
-  - A tampered or unparseable cursor fails with `invalid_cursor`.
+  - A cursor whose signature does not verify fails with `cursor_expired`: after a restart the key is new, so a tampered cursor and a pre-restart cursor are indistinguishable, and both recover by restarting.
+  - A cursor that cannot be decoded, has an unsupported format version, belongs to another tool, or (query) was issued for a different `dataset_id` fails with `invalid_cursor`.
   - The cursor advances only past rows actually emitted, and changing `page_size` never resets `emitted_count`.
   - Query text inside a cursor is never echoed in errors [3.sec-handle-modes] [8.cursor-lifetime].
 - **Logical cap:** a paged query emits at most 10,000 rows in total.
@@ -242,16 +243,16 @@ Upstream error mapping is endpoint-aware: SoQL codes come only from `/resource`,
 
 | code | temporary | repair (`next_step`: tool + arguments) |
 | --- | --- | --- |
-| `no_such_column` | false | `inspect_columns`: `seattle_data_describe_dataset({dataset_id, column_query: <the unknown name>})`; candidates go in `details` |
+| `no_such_column` (including upstream `query.soql.no-such-column`) | false | `inspect_columns`: `seattle_data_describe_dataset({dataset_id, detail: "full"})`, the full schema; upstream code and position go in `details` |
 | `column_not_geographic` | false | `inspect_geography`: `seattle_data_describe_dataset({dataset_id, detail: "full"})`; `alternative` names the place fields as a non-equivalent substitute |
-| `soql_syntax_error` (every upstream `query.soql.*` code; position optional) | false | `read_syntax`: `seattle_data_get_reference({topic: "soql", item_id: "syntax"})`; upstream code and position go in `details`. Positions are dropped in clauses mode: they index the assembled query, which the agent never wrote |
+| `soql_syntax_error` (every other upstream `query.soql.*` code; position optional) | false | `read_syntax`: `seattle_data_get_reference({topic: "soql", item_id: "syntax"})`; upstream code and position go in `details`. Positions are dropped in clauses mode: they index the assembled query, which the agent never wrote |
 | `dataset_not_found` | false | `browse`: `seattle_data_search_datasets({})`; `alternative` says the id may belong to another portal |
-| `dataset_not_queryable` | false | `find_tabular`: `seattle_data_search_datasets({asset_scope: "tabular"})`; `alternative` gives the external link |
+| `dataset_not_queryable` | false | For a view that renders its parent, `describe_parent`: `seattle_data_describe_dataset({dataset_id: <parent>})`. Otherwise `find_tabular`: `seattle_data_search_datasets({asset_scope: "tabular"})`; `alternative` gives the external link |
 | `app_token_rejected` | false | `read_auth`: `seattle_data_get_reference({topic: "errors", item_id: "authentication"})` (operator action) |
 | `upstream_forbidden` | false | none |
 | `rate_limited` | true | none: `temporary: true` already means retry unchanged after `retry_after_ms` (from Retry-After); a literal retry repair would echo caller text |
 | `query_timeout` | true | `narrow`: the same tool and `dataset_id`; `alternative` suggests aggregation or a tighter `where` |
-| `cursor_expired`, `invalid_cursor` | false | `restart_from_first_page`: `seattle_data_query_dataset({dataset_id})`; `alternative` says to resend the original clauses |
+| `cursor_expired`, `invalid_cursor` | false | Query: `restart_from_first_page`: `seattle_data_query_dataset({dataset_id})`; `alternative` says to resend the original clauses. Search: `restart_search`: `seattle_data_search_datasets({})` |
 | `reference_not_found` | false | `list_items`: `seattle_data_get_reference({topic})`; `details.candidates` lists valid ids. Also the resource not-found code (JSON-RPC -32602) |
 | `internal_error` | false | none; logged with `request_id` |
 | `row_too_large`, `invalid_argument`, `upstream_unavailable` | per code | per catalog |
