@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 def _topic_index(topic: str) -> str:
     return json.dumps(
-        reference_service.read(topic, None, None).model_dump(
+        reference_service.read(topic, None).model_dump(
             mode="json", exclude_none=True, exclude={"source"}
         )
     )
@@ -32,7 +32,7 @@ def _index_reader(topic: str) -> Callable[[], str]:
 
 
 def _item(topic: str, item_id: str) -> str:
-    result = reference_service.read(topic, item_id, None)
+    result = reference_service.read(topic, item_id)
     return result.body or ""
 
 

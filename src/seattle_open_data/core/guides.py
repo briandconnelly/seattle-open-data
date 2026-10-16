@@ -24,12 +24,19 @@ class Guide:
     description: str
     body: str
     examples: tuple[Example, ...]
+    #: Binding rules for this dataset, rendered ahead of the facts in `body`.
+    rules: tuple[str, ...] = ()
 
     def render(self) -> str:
         examples = "\n".join(
             f"- {e.question}\n  ```json\n  {json.dumps(e.arguments)}\n  ```" for e in self.examples
         )
-        return f"# {self.title} (`{self.dataset_id}`)\n\n{self.body.strip()}\n\n## Example queries\n\n{examples}\n"
+        rules = "".join(f"- {rule}\n" for rule in self.rules)
+        rules = f"## Rules\n{rules}\n" if rules else ""
+        return (
+            f"# {self.title} (`{self.dataset_id}`)\n\n{rules}{self.body.strip()}\n\n"
+            f"## Example queries\n\n{examples}\n"
+        )
 
 
 GUIDES: tuple[Guide, ...] = (
@@ -43,7 +50,7 @@ GUIDES: tuple[Guide, ...] = (
 One Seattle Fire Department dispatch (incident). In September 2026, 9,601 rows had 9,601 distinct `incident_number` values, so `count(*)` counts incidents.
 
 ## Key fields
-- `type`: response type. Most calls are medical: Aid Response and Medic Response together are about two thirds of all rows. "Fire calls" in ordinary speech usually means this whole dataset; say so when reporting counts.
+- `type`: response type. Most calls are medical: Aid Response and Medic Response together are about two thirds of all rows. "Fire calls" in ordinary speech usually means this whole dataset.
 - `datetime`: dispatch time, Pacific wall-clock (verified against the live clock), no timezone suffix.
 - `report_location` (point): use with `near`. `latitude`/`longitude` are plain numbers.
 
@@ -51,7 +58,7 @@ One Seattle Fire Department dispatch (incident). In September 2026, 9,601 rows h
 No text neighborhood field. Use the computed-region columns from `seattle_data_describe_dataset` with `detail: "full"`:
 - `:@computed_region_ru88_fbhk`: SPD MCPP neighborhoods (about 99.6% assigned). CAPITOL HILL is `8`, NORTH CAPITOL HILL is `44`.
 - `:@computed_region_q256_3sug`: ZIP code areas (2010).
-- `:@computed_region_cyqu_gs94` (council districts) and `:@computed_region_2day_rhn5` (census tracts) are about 92% null and predate 2022 boundaries: do not use them for counts.
+- `:@computed_region_cyqu_gs94` (council districts) and `:@computed_region_2day_rhn5` (census tracts) are about 92% null and predate 2022 boundaries.
 """,
         (
             Example(
@@ -74,6 +81,10 @@ No text neighborhood field. Use the computed-region columns from `seattle_data_d
                 },
             ),
         ),
+        rules=(
+            'When a "fire calls" count spans all response types, say it covers every dispatch, most of them medical.',
+            "Never use `:@computed_region_cyqu_gs94` or `:@computed_region_2day_rhn5` for counts.",
+        ),
     ),
     Guide(
         "spd-calls",
@@ -82,13 +93,13 @@ No text neighborhood field. Use the computed-region columns from `seattle_data_d
         "Seattle Police calls for service; rows are dispatches, so count distinct cad_event_number.",
         """
 ## What a row is
-One dispatch of one unit to a call, not one call. In September 2026 there were 52,009 rows but 29,708 distinct `cad_event_number` values. Count calls with `count(distinct cad_event_number)`; `count(*)` overstates calls by about 75%.
+One dispatch of one unit to a call, not one call. In September 2026 there were 52,009 rows but 29,708 distinct `cad_event_number` values; `count(*)` overstates calls by about 75%.
 
 ## Key fields
 - `cad_event_number`: the call.
 - `initial_call_type`, `final_call_type`, `call_type`, `priority`.
 - `cad_event_original_time_queued`: when the call was queued (Pacific wall-clock, no timezone suffix).
-- About 11 million rows: aggregate, and always filter on time.
+- About 11 million rows.
 
 ## Area filters
 - `dispatch_precinct` (UPPERCASE: EAST, NORTH, SOUTH, SOUTHWEST, WEST), `dispatch_sector`, `dispatch_beat`, `dispatch_neighborhood` (MCPP names, e.g. CAPITOL HILL).
@@ -97,7 +108,7 @@ One dispatch of one unit to a call, not one call. In September 2026 there were 5
 - `dispatch_latitude`/`dispatch_longitude` are text and partly `REDACTED`: `near` cannot be used.
 
 ## Not crimes
-These are calls for service. For reported offenses use SPD Crime Data (`tazs-3rd5`).
+These are calls for service, not reported offenses.
 """,
         (
             Example(
@@ -122,6 +133,12 @@ These are calls for service. For reported offenses use SPD Crime Data (`tazs-3rd
                 },
             ),
         ),
+        rules=(
+            "Count calls with `count(distinct cad_event_number)`.",
+            "Always filter on time.",
+            "Aggregate rows rather than listing them.",
+            "For reported offenses, use SPD Crime Data (`tazs-3rd5`) instead.",
+        ),
     ),
     Guide(
         "spd-crime",
@@ -130,16 +147,16 @@ These are calls for service. For reported offenses use SPD Crime Data (`tazs-3rd
         "Reported offenses (NIBRS); one report can hold several offenses; neighborhood is about half placeholders.",
         """
 ## What a row is
-One offense. A report (`report_number`) can contain several offenses: 1,568,385 rows cover 1,381,049 reports. Count offenses with `count(*)`, reports with `count(distinct report_number)`.
+One offense. A report (`report_number`) can contain several offenses: 1,568,385 rows cover 1,381,049 reports.
 
 ## Key fields
 - `offense_category` (e.g. violent, property groupings), `offense_sub_category`, `nibrs_offense_code_description`, `nibrs_crime_against_category`.
-- `offense_date`: when the offense started. Some rows carry placeholder dates as early as 1900-01-01: always filter to the period you mean.
+- `offense_date`: when the offense started. Some rows carry placeholder dates as early as 1900-01-01.
 - `report_date_time`: when it was reported, which can differ from `offense_date`.
 
 ## Area filters
 - `precinct` (Title case: East, North, South, Southwest, West), `sector`, `beat`: about 99% assigned.
-- `neighborhood`: `-` for nearly every offense from 2008 to 2016 (so about 48% of all rows), but only 1-4% missing from 2017 on. Neighborhood counts are fine for recent years and meaningless before 2017; for long trends use precinct, sector, or beat.
+- `neighborhood`: `-` for nearly every offense from 2008 to 2016 (so about 48% of all rows), but only 1-4% missing from 2017 on. Neighborhood counts are fine for recent years and meaningless before 2017.
 - `latitude`/`longitude` are text, blurred to the hundred block: `near` cannot be used.
 """,
         (
@@ -163,6 +180,11 @@ One offense. A report (`report_number`) can contain several offenses: 1,568,385 
                     "order_by": ["reports DESC"],
                 },
             ),
+        ),
+        rules=(
+            "Count offenses with `count(*)` and reports with `count(distinct report_number)`.",
+            "Always bound the date column to the period you mean: `offense_date` for when offenses occurred, `report_date_time` for when they were reported.",
+            "For trends that include years before 2017, use precinct, sector, or beat, never `neighborhood`.",
         ),
     ),
     Guide(
@@ -224,11 +246,11 @@ One permit (`permitnum`). Filter views such as Issued Building Permits (`8tqq-u7
 One hour. `fremont_bridge` is the total for both sidewalks; it counts bikes and scooters together.
 
 ## Direction labels
-`fremont_bridge_nb` and `fremont_bridge_sb` are per-sidewalk counts, not travel directions: the sensors count passes regardless of direction. The publisher's own metadata disagrees about which sidewalk each column is, so report the total unless the user insists, and flag the ambiguity if you split.
+`fremont_bridge_nb` and `fremont_bridge_sb` are per-sidewalk counts, not travel directions: the sensors count passes regardless of direction. The publisher's own metadata disagrees about which sidewalk each column is.
 
 ## Time
 - `date`: the hour, Pacific wall-clock (`calendar_date` in metadata, `floating_timestamp` in query results).
-- Updated monthly: on 2026-10-15 the newest hour was 2026-09-30T23:00. Check `data_coverage` before answering "this month"; a missing month is not zero riders.
+- Updated monthly: on 2026-10-15 the newest hour was 2026-09-30T23:00.
 """,
         (
             Example(
@@ -257,6 +279,10 @@ One hour. `fremont_bridge` is the total for both sidewalks; it counts bikes and 
                 },
             ),
         ),
+        rules=(
+            "Report `fremont_bridge` (the total) unless the user asks for a split; when you split, say the sidewalk labels are ambiguous.",
+            'Check `data_coverage` before answering "this month"; never report a missing month as zero riders.',
+        ),
     ),
     Guide(
         "use-of-force",
@@ -265,7 +291,7 @@ One hour. `fremont_bridge` is the total for both sidewalks; it counts bikes and 
         "Use-of-force records by Seattle Police officers; one row per subject, several per incident.",
         """
 ## What a row is
-One subject in one use-of-force incident (`uniqueid`). 19,451 rows cover 18,444 incidents (`incident_num`); one incident has up to 9 rows. Count incidents with `count(distinct incident_num)`.
+One subject in one use-of-force incident (`uniqueid`). 19,451 rows cover 18,444 incidents (`incident_num`); one incident has up to 9 rows.
 
 ## Key fields
 - `incident_type`: Level 1 (most common), Level 2, Level 3, and Level 3 - OIS (officer-involved shooting).
@@ -291,6 +317,7 @@ One subject in one use-of-force incident (`uniqueid`). 19,451 rows cover 18,444 
                 },
             ),
         ),
+        rules=("Count incidents with `count(distinct incident_num)`.",),
     ),
     Guide(
         "road-weather",
@@ -302,7 +329,7 @@ One subject in one use-of-force incident (`uniqueid`). 19,451 rows cover 18,444 
 One station reading: `roadsurfacetemperature` and `airtemperature` in degrees Fahrenheit, at `datetime`, for `stationname` (with `stationlocation`, a point).
 
 ## Freshness
-The publisher says the dataset holds only the most recent 48 hours and updates hourly. On 2026-10-15 the newest reading was 2026-06-16T15:30 across 6 stations: the feed appears to have stopped. Always check `data_coverage` and tell the user how old the readings are; do not present them as current conditions.
+The publisher says the dataset holds only the most recent 48 hours and updates hourly. On 2026-10-15 the newest reading was 2026-06-16T15:30 across 6 stations: the feed appears to have stopped.
 """,
         (
             Example(
@@ -314,6 +341,10 @@ The publisher says the dataset holds only the most recent 48 hours and updates h
                     "order_by": ["latest DESC"],
                 },
             ),
+        ),
+        rules=(
+            "Always check `data_coverage` and tell the user how old the readings are.",
+            "Never present the readings as current conditions.",
         ),
     ),
 )

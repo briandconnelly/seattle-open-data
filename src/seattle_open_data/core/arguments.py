@@ -92,13 +92,6 @@ def check_reference(args: dict[str, Any]) -> None:
             tool=tool,
             repair=Repair(next_step="list_topics", tool=tool, arguments={}),
         )
-    if args.get("chunk_id") is not None and args.get("item_id") is None:
-        _reject(
-            ["item_id", "chunk_id"],
-            "chunk_id requires item_id.",
-            tool=tool,
-            repair=Repair(next_step="list_items", tool=tool, arguments={"topic": topic}),
-        )
 
 
 def _as_text(value: Any) -> str:

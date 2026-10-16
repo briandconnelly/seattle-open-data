@@ -15,7 +15,7 @@ from seattle_open_data.core.reference import (
 _TOOL = "seattle_data_get_reference"
 
 
-def read(topic: str, item_id: str | None, chunk_id: str | None) -> ReferenceResult:
+def read(topic: str, item_id: str | None) -> ReferenceResult:
     if topic == "index":
         return ReferenceResult(
             topic="index",
@@ -73,15 +73,6 @@ def read(topic: str, item_id: str | None, chunk_id: str | None) -> ReferenceResu
                 candidates=[d.item_id for d in entry.documents] or None,
             ),
             repair=Repair(next_step="list_items", tool=_TOOL, arguments={"topic": topic}),
-        )
-    if chunk_id is not None:
-        raise SeattleDataError(
-            ErrorCode.REFERENCE_NOT_FOUND,
-            "This reference item is not chunked.",
-            details=ErrorDetails(field="chunk_id", reason="This item has a single body."),
-            repair=Repair(
-                next_step="read_item", tool=_TOOL, arguments={"topic": topic, "item_id": item_id}
-            ),
         )
     return ReferenceResult(
         topic=topic,

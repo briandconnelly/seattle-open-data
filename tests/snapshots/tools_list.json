@@ -160,7 +160,7 @@
         "openWorldHint": true,
         "readOnlyHint": true
       },
-      "description": "Decide whether and how to query a dataset: columns, live row count, data_coverage\n(actual time range), place fields for \"in <area>\" questions (with reliability),\nand geo columns for `near`.\n\nCall before querying a dataset whose columns you do not know. For area questions use\ndetail=\"full\" and filter on `value`, not label; an area may span several values.\nExample: {\"dataset_id\": \"kzjm-xkqj\", \"detail\": \"full\"}.\nTypically 1-3 s; fails with query_timeout after 30 s.",
+      "description": "Decide whether and how to query a dataset: columns, live row count, data_coverage\n(actual time range), place fields for \"in <area>\" questions (with reliability),\nand geo columns for `near`.\n\nCall before querying a dataset whose columns you do not know.\nFor area questions, use detail=\"full\".\nFilter a place field on its `value`, never its label; an area may span several values.\nExample: {\"dataset_id\": \"kzjm-xkqj\", \"detail\": \"full\"}.\nTypically 1-3 s; fails with query_timeout after 30 s.",
       "inputSchema": {
         "additionalProperties": false,
         "properties": {
@@ -603,6 +603,7 @@
             "type": "string"
           },
           "group_by": {
+            "description": "e.g. [\"type\"]; omit for no grouping.",
             "items": {
               "maxLength": 4096,
               "minLength": 1,
@@ -612,6 +613,7 @@
             "type": "array"
           },
           "having": {
+            "description": "Predicate on aggregated rows, e.g. \"n > 10\"; omit for none.",
             "maxLength": 4096,
             "minLength": 1,
             "type": "string"
@@ -659,7 +661,7 @@
             "type": "object"
           },
           "order_by": {
-            "description": "e.g. [\"n DESC\"]; omit for arbitrary order. DESC lists nulls first.",
+            "description": "e.g. [\"n DESC\"]; omit for arbitrary order. DESC lists nulls first: for most recent, add `col IS NOT NULL` to where.",
             "items": {
               "maxLength": 4096,
               "minLength": 1,
@@ -697,7 +699,7 @@
             "type": "string"
           },
           "where": {
-            "description": "SoQL predicate, e.g. \"datetime >= '2026-09-01T00:00:00'\" (no Z, no now()).",
+            "description": "SoQL predicate, e.g. \"datetime >= '2026-09-01T00:00:00'\". Never append Z or call now(); both fail. Omit for all rows.",
             "maxLength": 4096,
             "minLength": 1,
             "type": "string"
@@ -858,20 +860,6 @@
       "inputSchema": {
         "additionalProperties": false,
         "properties": {
-          "chunk_id": {
-            "description": "Omit; no item is chunked.",
-            "maxLength": 64,
-            "minLength": 1,
-            "type": "string"
-          },
-          "detail": {
-            "description": "Ignored.",
-            "enum": [
-              "summary",
-              "full"
-            ],
-            "type": "string"
-          },
           "item_id": {
             "description": "An item from the topic's entries; omit for the topic index.",
             "maxLength": 64,
@@ -897,9 +885,6 @@
         "additionalProperties": true,
         "properties": {
           "body": {
-            "type": "string"
-          },
-          "chunk_id": {
             "type": "string"
           },
           "entries": {
@@ -928,9 +913,6 @@
               "type": "object"
             },
             "type": "array"
-          },
-          "next_chunk_id": {
-            "type": "string"
           },
           "source": {
             "additionalProperties": false,
