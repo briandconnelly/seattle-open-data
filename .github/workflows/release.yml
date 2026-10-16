@@ -48,11 +48,11 @@ jobs:
           # Empty on a manual run from a branch: there is no tag to compare.
           TAG: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
         run: |
-          uv run python - "${TAG#v}" <<'PY'
+          uv run python - "$TAG" <<'PY'
           import json, re, sys, tomllib
           from pathlib import Path
 
-          tag = sys.argv[1]
+          raw_tag = sys.argv[1]
           pyproject = tomllib.loads(Path("pyproject.toml").read_text())["project"]["version"]
           manifest = json.loads(Path("manifest.json").read_text())["version"]
           # Latest released section: the first `## [X.Y.Z]` heading, skipping [Unreleased].
@@ -60,8 +60,9 @@ jobs:
           changelog = m.group(1) if m else None
 
           versions = {"manifest.json": manifest, "latest CHANGELOG": changelog}
-          if tag:
-              versions["git tag"] = tag
+          if raw_tag:
+              # Strip only the prefix: a bare `v` tag leaves "", which must fail, not skip.
+              versions["git tag"] = raw_tag.removeprefix("v")
           errors = [
               f"{name} version {value!r} != pyproject version {pyproject!r}"
               for name, value in versions.items()
