@@ -891,6 +891,9 @@
             "items": {
               "additionalProperties": false,
               "properties": {
+                "dataset_id": {
+                  "type": "string"
+                },
                 "description": {
                   "type": "string"
                 },

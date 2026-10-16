@@ -198,6 +198,7 @@ class ReferenceEntry(Closed):
     title: str
     description: str
     uri: str
+    dataset_id: str | None = None
 
 
 class ReferenceResult(Open):

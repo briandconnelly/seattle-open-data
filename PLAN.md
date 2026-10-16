@@ -277,6 +277,7 @@ A known dataset id and known fields need no preliminary call.
 - `seattle-data://errors/{section_id}`
 
 Index entries carry title, description, size, and version [2.index-not-bodies].
+Guide index entries also carry `dataset_id`, so the curated index doubles as a list of flagship datasets that can go straight to describe or query.
 Every reference item and guide is a single body under a stable URI; nothing is chunked in v1, so [4.chunk-fetch-path] does not apply.
 Guides open with a `## Rules` section; the facts follow it [2.rules-then-context].
 Cache hints: resource reads, the native lists, and `server/discover` use `cacheScope: "public"` and `ttlMs: 3600000` [8.cacheable-results].

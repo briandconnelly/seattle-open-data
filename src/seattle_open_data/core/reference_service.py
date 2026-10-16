@@ -56,6 +56,7 @@ def read(topic: str, item_id: str | None) -> ReferenceResult:
                     title=d.title,
                     description=d.description,
                     uri=topic_uri(topic, d.item_id),
+                    dataset_id=d.dataset_id,
                 )
                 for d in entry.documents
             ],

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+
 import jsonschema
 import pytest
 
@@ -35,6 +37,19 @@ async def test_guide_reachable_by_tool_and_resource(client, guide):
     resource = await client.read_resource(f"seattle-data://guides/{guide.guide_id}")
     assert tool["structuredContent"]["body"] == resource[0].text == guide.render()
     assert guide.dataset_id in resource[0].text
+
+
+async def test_guide_index_entries_carry_dataset_id(client):
+    tool = wire(await client.call_tool_mcp("seattle_data_get_reference", {"topic": "guides"}))
+    resource = json.loads((await client.read_resource("seattle-data://guides"))[0].text)
+    expected = {g.guide_id: g.dataset_id for g in GUIDES}
+    for index in (tool["structuredContent"], resource):
+        assert {e["item_id"]: e["dataset_id"] for e in index["entries"]} == expected
+
+
+async def test_non_guide_index_entries_omit_dataset_id(client):
+    tool = wire(await client.call_tool_mcp("seattle_data_get_reference", {"topic": "soql"}))
+    assert all("dataset_id" not in e for e in tool["structuredContent"]["entries"])
 
 
 @pytest.mark.soda_fixture("describe_fire_summary")
