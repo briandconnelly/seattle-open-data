@@ -1,5 +1,9 @@
 # seattle-open-data
 
+[![CI](https://github.com/briandconnelly/seattle-open-data/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/briandconnelly/seattle-open-data/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fbriandconnelly%2Fseattle-open-data%2Fmain%2Fpyproject.toml)](pyproject.toml)
+[![License: MIT](https://img.shields.io/github/license/briandconnelly/seattle-open-data)](LICENSE)
+
 An agent-friendly [MCP](https://modelcontextprotocol.io/) server for [Seattle Open Data](https://data.seattle.gov/) (Socrata SODA2).
 
 **Stability: preview (0.1.0).** All four tools work against the live portal, with curated guides for seven flagship datasets. See [evals/results](evals/results) for the agent evaluation.
