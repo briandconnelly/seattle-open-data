@@ -139,7 +139,7 @@ One offense. A report (`report_number`) can contain several offenses: 1,568,385 
 
 ## Area filters
 - `precinct` (Title case: East, North, South, Southwest, West), `sector`, `beat`: about 99% assigned.
-- `neighborhood`: about 48% of rows are `-`. Neighborhood counts undercount badly; prefer precinct, sector, or beat, and say so if a neighborhood is required.
+- `neighborhood`: `-` for nearly every offense from 2008 to 2016 (so about 48% of all rows), but only 1-4% missing from 2017 on. Neighborhood counts are fine for recent years and meaningless before 2017; for long trends use precinct, sector, or beat.
 - `latitude`/`longitude` are text, blurred to the hundred block: `near` cannot be used.
 """,
         (

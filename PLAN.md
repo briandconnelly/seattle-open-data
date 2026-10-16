@@ -80,7 +80,7 @@ Labels on each fact:
   | SPD Call Data | `dispatch_precinct` | 6 | UPPERCASE; `UNKNOWN` 88,989 |
   | SPD Call Data | `dispatch_sector` | 19 | |
   | SPD Call Data | `dispatch_beat` | 158 | |
-  | SPD Crime Data `tazs-3rd5` (1.57M rows) | `neighborhood` | 62 | **`-` 745,994 (about 48%)**; also `UNKNOWN`, `OOJ`, `FK ERROR` |
+  | SPD Crime Data `tazs-3rd5` (1.57M rows) | `neighborhood` | 62 | **`-` 745,994 (about 48%)**, almost all before 2017: 98-100% placeholders 2008-2016, 1-4% since (verified by year after the eval run); also `UNKNOWN`, `OOJ`, `FK ERROR` |
   | SPD Crime Data | `precinct` | 7 | Title case (`East`); `-`, `OOJ` |
   | Use of Force `ppi5-g2bj` | `precinct` | 9 | `-`, `0`, `X`, `OOJ` |
   | Building Permits `76t5-zqzr` | `originalzip` | 46 | |

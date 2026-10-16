@@ -87,7 +87,8 @@ PLACE_FIELDS: dict[str, dict[str, dict[str, str]]] = {
         "neighborhood": {
             "kind": "neighborhood",
             "reliability": "partial",
-            "reason": "About 48% of rows are '-'; neighborhood counts undercount badly.",
+            "reason": "Placeholder ('-') for nearly all offenses before 2017; 1-4% missing since. "
+            "Do not use for 2008-2016.",
         },
         "precinct": {"kind": "precinct", "reliability": "ok"},
         "sector": {"kind": "sector", "reliability": "ok"},
