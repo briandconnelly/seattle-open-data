@@ -79,13 +79,14 @@ async def search(
     if category:
         params["categories"] = category
     if asset_scope == "tabular":
-        params["only"] = "dataset,filter"
+        # Maps and charts are requested only to be folded into their parent datasets.
+        params["only"] = "dataset,filter,map,chart"
 
     body = await client.get_json(DISCOVERY_API, params)
     results = body.get("results", []) if isinstance(body, dict) else []
     total = int(body.get("resultSetSize", 0)) if isinstance(body, dict) else 0
 
-    datasets = [summary for item in results if (summary := _summarize(item, detail)) is not None]
+    datasets = await _fold(client, results, detail)
     next_offset = offset + len(results)
     has_more = bool(results) and next_offset < total
     next_cursor = (
@@ -110,11 +111,46 @@ def _access_point(item: dict[str, Any]) -> str | None:
     return url or public_url(item.get("link"))
 
 
-def _summarize(item: dict[str, Any], detail: Detail) -> DatasetSummary | None:
+async def _fold(client: SodaClient, results: list[Any], detail: Detail) -> list[DatasetSummary]:
+    """Replace each map or chart match with its parent dataset, once, in rank order."""
+    slots: list[DatasetSummary | str] = []
+    for item in results:
+        resource = item.get("resource") or {}
+        if str(resource.get("type")) in _FOLDED:
+            parents = resource.get("parent_fxf") or []
+            if parents:
+                slots.append(str(parents[0]))
+        else:
+            slots.append(_summarize(item, detail))
+    present = {s.dataset_id for s in slots if isinstance(s, DatasetSummary)}
+    missing = sorted({s for s in slots if isinstance(s, str) and s not in present})
+    parents: dict[str, DatasetSummary] = {}
+    if missing:
+        body = await client.get_json(
+            DISCOVERY_API,
+            {
+                "domains": CATALOG_DOMAIN,
+                "search_context": PUBLIC_HOST,
+                "ids": missing,
+                "limit": len(missing),
+            },
+        )
+        for item in body.get("results", []) if isinstance(body, dict) else []:
+            summary = _summarize(item, detail)
+            parents[summary.dataset_id] = summary
+    out: list[DatasetSummary] = []
+    seen: set[str] = set()
+    for slot in slots:
+        summary = parents.get(slot) if isinstance(slot, str) else slot
+        if summary is not None and summary.dataset_id not in seen:
+            seen.add(summary.dataset_id)
+            out.append(summary)
+    return out
+
+
+def _summarize(item: dict[str, Any], detail: Detail) -> DatasetSummary:
     resource = item.get("resource") or {}
     asset_type = str(resource.get("type") or "unknown")
-    if asset_type in _FOLDED:
-        return None
     dataset_id = str(resource.get("id", ""))
     reach = queryability(asset_type)
     parents = resource.get("parent_fxf") or []

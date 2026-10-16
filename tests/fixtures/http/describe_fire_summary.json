@@ -1097,7 +1097,7 @@
     "read"
    ],
    "rowIdentifierColumnId": 405818858,
-   "rowsUpdatedAt": 1792118462,
+   "rowsUpdatedAt": 1792119944,
    "rowsUpdatedBy": "pfbu-yuv5",
    "tableAuthor": {
     "disabledAt": 1638810231,
@@ -1130,7 +1130,7 @@
  "data.seattle.gov/resource/kzjm-xkqj.json?[[\"$select\", \"count(*) AS n\"]]": {
   "body": [
    {
-    "n": "2215899"
+    "n": "2215905"
    }
   ],
   "headers": {
@@ -1141,7 +1141,7 @@
  "data.seattle.gov/resource/kzjm-xkqj.json?[[\"$select\", \"min(datetime) AS lo, max(datetime) AS hi\"]]": {
   "body": [
    {
-    "hi": "2026-10-15T19:38:00.000",
+    "hi": "2026-10-15T20:04:00.000",
     "lo": "2003-11-07T09:30:48.000"
    }
   ],

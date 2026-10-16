@@ -16,6 +16,12 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Fixed
 
+- Never follow redirects, so the app token cannot leave data.seattle.gov; stream responses and stop reading at the 8 MiB cap.
+- Describe reports rate limits, rejected tokens, and access refusals instead of degrading silently; failed place-field stats say `unavailable`, not `timeout`.
+- `assigned_fraction` comes from a single grouped snapshot, so it cannot go negative.
+- Search folds map and chart matches into their parent datasets instead of dropping them.
+- Time coverage falls back to cached bounds on timeout.
+- A describe deadline no longer leaves queued aggregate coroutines unawaited.
 - Declare `tzdata` so the server starts without a system timezone database (Windows).
 - A pydantic error raised inside a handler is `internal_error`, not the caller's `invalid_argument`.
 - Upstream error codes are echoed only when symbolic; unknown reference and guide ids are never echoed.

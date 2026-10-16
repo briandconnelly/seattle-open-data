@@ -549,6 +549,184 @@
       "domain_metadata": [
        {
         "key": "Department_Department",
+        "value": "Department of Finance and Administrative Services"
+       },
+       {
+        "key": "Common-Core_Publisher",
+        "value": "data.seattle.gov"
+       },
+       {
+        "key": "Common-Core_Contact-Email",
+        "value": "open.data@seattle.gov"
+       },
+       {
+        "key": "Refresh-Frequency_Frequency",
+        "value": "Daily"
+       }
+      ],
+      "domain_tags": [
+       "neighborhood",
+       "service request",
+       "customer"
+      ],
+      "tags": []
+     },
+     "creator": {
+      "display_name": "Bolinger, Brandon",
+      "id": "eng5-32q9",
+      "user_type": "interactive"
+     },
+     "link": "https://data.seattle.gov/City-Administration/Customer-Service-Requests/5ngg-rpne",
+     "metadata": {
+      "domain": "data.seattle.gov",
+      "license": "Public Domain"
+     },
+     "owner": {
+      "display_name": "Bolinger, Brandon",
+      "id": "eng5-32q9",
+      "user_type": "interactive"
+     },
+     "permalink": "https://data.seattle.gov/d/5ngg-rpne",
+     "resource": {
+      "attribution": "City of Seattle",
+      "attribution_link": null,
+      "backend": "nbe",
+      "blob_mime_type": null,
+      "columns_datatype": [
+       "Number",
+       "Text",
+       "Calendar date",
+       "Text",
+       "Number",
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Number",
+       "Text",
+       "Text",
+       "Text",
+       "Number",
+       "Text",
+       "Point"
+      ],
+      "columns_description": [
+       "The X (state plane) coordinate of the service request location",
+       "The USPS postal code for the service request location",
+       "The date and time the service request was created",
+       "The channel through which the service request was received",
+       "The Y (state plane) coordinate of the service request location",
+       "The department primarily responsible for the service request type",
+       "The unique record number of the service request",
+       "Seattle Police Department precinct for the service request location",
+       "Seattle City Council district for the service request location",
+       "The latitude coordinate of the service request location",
+       "Community reporting area for the service request location",
+       "The name of the service requested",
+       "The current status of the service request",
+       "The longitude coordinate of the service request location",
+       "The location of the service request",
+       "Georeferenced column for map visualizations"
+      ],
+      "columns_field_name": [
+       "x_value",
+       "zipcode",
+       "createddate",
+       "methodreceivedname",
+       "y_value",
+       "departmentname",
+       "servicerequestnumber",
+       "policeprecinct",
+       "councildistrict",
+       "latitude",
+       "community_reporting_area",
+       "webintakeservicerequests",
+       "servicerequeststatusname",
+       "longitude",
+       "location",
+       "latitude_longitude"
+      ],
+      "columns_format": [
+       {
+        "noCommas": "true"
+       },
+       {},
+       {
+        "view": "date_time"
+       },
+       {},
+       {
+        "noCommas": "true"
+       },
+       {},
+       {},
+       {},
+       {},
+       {
+        "noCommas": "true"
+       },
+       {},
+       {},
+       {},
+       {
+        "noCommas": "true"
+       },
+       {},
+       {}
+      ],
+      "columns_name": [
+       "X_Value",
+       "ZIP Code",
+       "Created Date",
+       "Method Received",
+       "Y_Value",
+       "City Department",
+       "Service Request Number",
+       "Police Precinct",
+       "Council District",
+       "Latitude",
+       "Community Reporting Area",
+       "Service Request Type",
+       "Status",
+       "Longitude",
+       "Location",
+       "Latitude/Longitude"
+      ],
+      "contact_email": "open.data@seattle.gov",
+      "createdAt": "2024-04-08T22:00:20.000Z",
+      "data_updated_at": "2026-10-15T15:30:37.000Z",
+      "description": "This data set contains selected information for service requests, for service request types that are or were available to the public via the Customer Service Requests web portal and/or Find It, Fix It mobile app.",
+      "download_count": 16986,
+      "hide_from_data_json": false,
+      "id": "5ngg-rpne",
+      "lens_display_type": "table",
+      "lens_view_type": "tabular",
+      "locked": false,
+      "metadata_updated_at": "2026-10-15T15:26:59.000Z",
+      "name": "Customer Service Requests",
+      "page_views": {
+       "page_views_last_month": 2142,
+       "page_views_last_month_log": 11.065416134676548,
+       "page_views_last_week": 1086,
+       "page_views_last_week_log": 10.08613622502731,
+       "page_views_total": 23643,
+       "page_views_total_log": 14.529186505250891
+      },
+      "parent_fxf": [],
+      "provenance": "official",
+      "publication_date": "2025-06-24T21:20:14.000Z",
+      "resource_name": null,
+      "type": "dataset",
+      "updatedAt": "2026-10-15T15:30:37.000Z"
+     }
+    },
+    {
+     "classification": {
+      "categories": [],
+      "domain_category": "City Administration",
+      "domain_metadata": [
+       {
+        "key": "Department_Department",
         "value": "Seattle Public Utilities"
        },
        {
@@ -734,184 +912,6 @@
       "resource_name": null,
       "type": "dataset",
       "updatedAt": "2026-10-15T22:31:57.000Z"
-     }
-    },
-    {
-     "classification": {
-      "categories": [],
-      "domain_category": "City Administration",
-      "domain_metadata": [
-       {
-        "key": "Department_Department",
-        "value": "Department of Finance and Administrative Services"
-       },
-       {
-        "key": "Common-Core_Publisher",
-        "value": "data.seattle.gov"
-       },
-       {
-        "key": "Common-Core_Contact-Email",
-        "value": "open.data@seattle.gov"
-       },
-       {
-        "key": "Refresh-Frequency_Frequency",
-        "value": "Daily"
-       }
-      ],
-      "domain_tags": [
-       "neighborhood",
-       "service request",
-       "customer"
-      ],
-      "tags": []
-     },
-     "creator": {
-      "display_name": "Bolinger, Brandon",
-      "id": "eng5-32q9",
-      "user_type": "interactive"
-     },
-     "link": "https://data.seattle.gov/City-Administration/Customer-Service-Requests/5ngg-rpne",
-     "metadata": {
-      "domain": "data.seattle.gov",
-      "license": "Public Domain"
-     },
-     "owner": {
-      "display_name": "Bolinger, Brandon",
-      "id": "eng5-32q9",
-      "user_type": "interactive"
-     },
-     "permalink": "https://data.seattle.gov/d/5ngg-rpne",
-     "resource": {
-      "attribution": "City of Seattle",
-      "attribution_link": null,
-      "backend": "nbe",
-      "blob_mime_type": null,
-      "columns_datatype": [
-       "Number",
-       "Text",
-       "Calendar date",
-       "Text",
-       "Number",
-       "Text",
-       "Text",
-       "Text",
-       "Text",
-       "Number",
-       "Text",
-       "Text",
-       "Text",
-       "Number",
-       "Text",
-       "Point"
-      ],
-      "columns_description": [
-       "The X (state plane) coordinate of the service request location",
-       "The USPS postal code for the service request location",
-       "The date and time the service request was created",
-       "The channel through which the service request was received",
-       "The Y (state plane) coordinate of the service request location",
-       "The department primarily responsible for the service request type",
-       "The unique record number of the service request",
-       "Seattle Police Department precinct for the service request location",
-       "Seattle City Council district for the service request location",
-       "The latitude coordinate of the service request location",
-       "Community reporting area for the service request location",
-       "The name of the service requested",
-       "The current status of the service request",
-       "The longitude coordinate of the service request location",
-       "The location of the service request",
-       "Georeferenced column for map visualizations"
-      ],
-      "columns_field_name": [
-       "x_value",
-       "zipcode",
-       "createddate",
-       "methodreceivedname",
-       "y_value",
-       "departmentname",
-       "servicerequestnumber",
-       "policeprecinct",
-       "councildistrict",
-       "latitude",
-       "community_reporting_area",
-       "webintakeservicerequests",
-       "servicerequeststatusname",
-       "longitude",
-       "location",
-       "latitude_longitude"
-      ],
-      "columns_format": [
-       {
-        "noCommas": "true"
-       },
-       {},
-       {
-        "view": "date_time"
-       },
-       {},
-       {
-        "noCommas": "true"
-       },
-       {},
-       {},
-       {},
-       {},
-       {
-        "noCommas": "true"
-       },
-       {},
-       {},
-       {},
-       {
-        "noCommas": "true"
-       },
-       {},
-       {}
-      ],
-      "columns_name": [
-       "X_Value",
-       "ZIP Code",
-       "Created Date",
-       "Method Received",
-       "Y_Value",
-       "City Department",
-       "Service Request Number",
-       "Police Precinct",
-       "Council District",
-       "Latitude",
-       "Community Reporting Area",
-       "Service Request Type",
-       "Status",
-       "Longitude",
-       "Location",
-       "Latitude/Longitude"
-      ],
-      "contact_email": "open.data@seattle.gov",
-      "createdAt": "2024-04-08T22:00:20.000Z",
-      "data_updated_at": "2026-10-15T15:30:37.000Z",
-      "description": "This data set contains selected information for service requests, for service request types that are or were available to the public via the Customer Service Requests web portal and/or Find It, Fix It mobile app.",
-      "download_count": 16986,
-      "hide_from_data_json": false,
-      "id": "5ngg-rpne",
-      "lens_display_type": "table",
-      "lens_view_type": "tabular",
-      "locked": false,
-      "metadata_updated_at": "2026-10-15T15:26:59.000Z",
-      "name": "Customer Service Requests",
-      "page_views": {
-       "page_views_last_month": 2142,
-       "page_views_last_month_log": 11.065416134676548,
-       "page_views_last_week": 1086,
-       "page_views_last_week_log": 10.08613622502731,
-       "page_views_total": 23643,
-       "page_views_total_log": 14.529186505250891
-      },
-      "parent_fxf": [],
-      "provenance": "official",
-      "publication_date": "2025-06-24T21:20:14.000Z",
-      "resource_name": null,
-      "type": "dataset",
-      "updatedAt": "2026-10-15T15:30:37.000Z"
      }
     },
     {
@@ -6691,10 +6691,10 @@
    ],
    "timings": {
     "searchMillis": [
-     15,
-     6
+     21,
+     9
     ],
-    "serviceMillis": 28
+    "serviceMillis": 41
    },
    "warnings": []
   },
@@ -7360,10 +7360,10 @@
    ],
    "timings": {
     "searchMillis": [
-     16,
+     11,
      6
     ],
-    "serviceMillis": 30
+    "serviceMillis": 24
    },
    "warnings": []
   },

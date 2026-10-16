@@ -45,6 +45,8 @@ from seattle_open_data.core.models import (
 from seattle_open_data.core.text import clean, html_to_text
 
 if TYPE_CHECKING:
+    from collections.abc import Awaitable, Callable, Iterable
+
     from seattle_open_data.core.http import SodaClient
 
 _COORDINATE = re.compile(r"(^|_)(lat|latitude|lon|lng|long|longitude)$")
@@ -59,21 +61,41 @@ class _Outcome:
     def __init__(self) -> None:
         self.value: Any = None
         self.status: Literal["ok", "timeout", "unavailable"] = "timeout"
+        self.error: SeattleDataError | None = None
 
 
-async def _bounded(outcome: _Outcome, work: Any) -> None:
+#: Failures the caller must see as the result of describe itself, not as a degraded field.
+_ACTIONABLE = frozenset(
+    {ErrorCode.APP_TOKEN_REJECTED, ErrorCode.UPSTREAM_FORBIDDEN, ErrorCode.RATE_LIMITED}
+)
+
+
+async def _bounded(outcome: _Outcome, work: Callable[..., Awaitable[Any]], *args: Any) -> None:
     try:
-        outcome.value = await work
+        outcome.value = await work(*args)
         outcome.status = "ok"
     except SeattleDataError as exc:
+        outcome.error = exc
         outcome.status = (
             "timeout" if exc.envelope.code == ErrorCode.QUERY_TIMEOUT else "unavailable"
         )
 
 
-async def _limited(limiter: anyio.CapacityLimiter, outcome: _Outcome, work: Any) -> None:
+async def _limited(
+    limiter: anyio.CapacityLimiter,
+    outcome: _Outcome,
+    work: Callable[..., Awaitable[Any]],
+    *args: Any,
+) -> None:
+    # The coroutine is created only after a slot frees, so a deadline never strands one.
     async with limiter:
-        await _bounded(outcome, work)
+        await _bounded(outcome, work, *args)
+
+
+def _raise_actionable(outcomes: Iterable[_Outcome]) -> None:
+    for outcome in outcomes:
+        if outcome.error is not None and outcome.error.envelope.code in _ACTIONABLE:
+            raise outcome.error
 
 
 async def describe(
@@ -102,13 +124,14 @@ async def describe(
     # the row count made even the row count time out.
     with anyio.move_on_after(DESCRIBE_AGGREGATE_TIMEOUT_SECONDS):
         async with anyio.create_task_group() as tg:
-            tg.start_soon(_bounded, row_count, _count(client, dataset_id))
+            tg.start_soon(_bounded, row_count, _count, client, dataset_id)
             for name, outcome in coverage.items():
-                tg.start_soon(_bounded, outcome, _min_max(client, dataset_id, name))
+                tg.start_soon(_bounded, outcome, _min_max, client, dataset_id, name)
             if sample_rows:
                 tg.start_soon(
-                    _bounded, sample, _sample(client, dataset_id, data_columns, sample_rows)
+                    _bounded, sample, _sample, client, dataset_id, data_columns, sample_rows
                 )
+    _raise_actionable([row_count, sample, *coverage.values()])
 
     place_stats = {p["column"]: _Outcome() for p in places} if detail == "full" else {}
     if place_stats:
@@ -117,8 +140,9 @@ async def describe(
             async with anyio.create_task_group() as tg:
                 for name, outcome in place_stats.items():
                     tg.start_soon(
-                        _limited, limiter, outcome, _value_groups(client, dataset_id, name)
+                        _limited, limiter, outcome, _value_groups, client, dataset_id, name
                     )
+        _raise_actionable(place_stats.values())
 
     labels = await _region_labels(client, places, place_stats) if place_stats else {}
 
@@ -132,12 +156,10 @@ async def describe(
         title=clean(view.get("name"), limit=200) or dataset_id,
         queryability="supported",
         row_count=_row_count(row_count, all_columns),
-        data_coverage=[_coverage(name, outcome) for name, outcome in coverage.items()],
+        data_coverage=[_coverage(c, coverage[c["fieldName"]]) for c in coverage_columns],
         columns=columns,
         stats_available=any(c.get("cachedContents") for c in data_columns),
-        place_fields=[
-            _place_field(p, place_stats.get(p["column"]), labels, row_count) for p in places
-        ],
+        place_fields=[_place_field(p, place_stats.get(p["column"]), labels) for p in places],
         geo_columns=[
             GeoColumn(column=c["fieldName"], type=c["dataTypeName"])
             for c in data_columns
@@ -303,8 +325,15 @@ def _row_count(outcome: _Outcome, columns: list[dict[str, Any]]) -> RowCount:
     return RowCount(status=outcome.status)
 
 
-def _coverage(column: str, outcome: _Outcome) -> Coverage:
+def _coverage(meta: dict[str, Any], outcome: _Outcome) -> Coverage:
+    column = meta["fieldName"]
     if outcome.status != "ok":
+        cached = meta.get("cachedContents") or {}
+        lo, hi = _scalar(cached.get("smallest")), _scalar(cached.get("largest"))
+        if lo or hi:
+            return Coverage(
+                column=column, min=lo, max=hi, origin="cached_metadata", status=outcome.status
+            )
         return Coverage(column=column, status=outcome.status)
     return Coverage(
         column=column,
@@ -349,7 +378,6 @@ def _place_field(
     spec: dict[str, Any],
     groups: _Outcome | None,
     labels: dict[str, dict[str, str]],
-    row_count: _Outcome,
 ) -> PlaceField:
     field = PlaceField(
         column=spec["column"],
@@ -364,7 +392,7 @@ def _place_field(
     field.label_column = spec.get("label_column")
     field.boundary_vintage = spec.get("vintage")
     if groups.status != "ok":
-        field.stats_status = "timeout"
+        field.stats_status = groups.status
         return field
     field.stats_status = "ok"
     placeholders = [
@@ -394,10 +422,12 @@ def _place_field(
             ),
             key=lambda v: v.label,
         )
-        # Exact only when every group came back; otherwise a rare placeholder could be missed.
-        if row_count.status == "ok" and row_count.value:
+        # Exact only when every group came back, and taken from that one snapshot: a row
+        # count from another query can disagree with the groups as the data changes.
+        total = sum(int(r["n"]) for r in groups.value)
+        if total:
             unassigned = sum(p.rows for p in placeholders)
-            field.assigned_fraction = round(1 - unassigned / row_count.value, 4)
+            field.assigned_fraction = round(1 - unassigned / total, 4)
     return field
 
 

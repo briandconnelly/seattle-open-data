@@ -420,7 +420,8 @@
                 "stats_status": {
                   "enum": [
                     "ok",
-                    "timeout"
+                    "timeout",
+                    "unavailable"
                   ],
                   "type": "string"
                 },

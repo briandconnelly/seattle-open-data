@@ -112,7 +112,7 @@ class PlaceField(Closed):
     layer_id: str | None = None
     label_column: str | None = None
     boundary_vintage: str | None = None
-    stats_status: Literal["ok", "timeout"] | None = None
+    stats_status: Literal["ok", "timeout", "unavailable"] | None = None
 
 
 class GeoColumn(Closed):

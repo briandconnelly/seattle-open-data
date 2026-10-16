@@ -31,7 +31,8 @@ class SodaClient:
             transport=transport,
             headers=headers,
             timeout=httpx.Timeout(UPSTREAM_TIMEOUT_SECONDS, connect=10.0),
-            follow_redirects=True,
+            # A redirect would carry X-App-Token to wherever it points; none is expected.
+            follow_redirects=False,
         )
 
     async def aclose(self) -> None:
@@ -46,7 +47,8 @@ class SodaClient:
         timeout: float = UPSTREAM_TIMEOUT_SECONDS,
     ) -> Any:
         try:
-            response = await self._http.get(url, params=params, timeout=timeout)
+            async with self._http.stream("GET", url, params=params, timeout=timeout) as response:
+                content = await _read_capped(response)
         except httpx.TimeoutException as exc:
             raise SeattleDataError(
                 ErrorCode.QUERY_TIMEOUT,
@@ -58,14 +60,8 @@ class SodaClient:
                 "The upstream service could not be reached.",
                 details=ErrorDetails(reason=type(exc).__name__),
             ) from exc
-        if len(response.content) > UPSTREAM_MAX_BYTES:
-            raise SeattleDataError(
-                ErrorCode.UPSTREAM_UNAVAILABLE,
-                "The upstream response exceeded the size limit.",
-                details=ErrorDetails(reason=f"More than {UPSTREAM_MAX_BYTES} bytes."),
-                temporary=False,
-            )
-        body = _json_or_none(response)
+        _reject_redirect(response)
+        body = _parse_json(content)
         if response.status_code >= 400:
             raise map_upstream_error(
                 response.status_code,
@@ -99,9 +95,39 @@ class SodaClient:
         return rows if isinstance(rows, list) else []
 
 
-def _json_or_none(response: httpx.Response) -> Any:
+def _too_large() -> SeattleDataError:
+    return SeattleDataError(
+        ErrorCode.UPSTREAM_UNAVAILABLE,
+        "The upstream response exceeded the size limit.",
+        details=ErrorDetails(reason=f"More than {UPSTREAM_MAX_BYTES} bytes."),
+        temporary=False,
+    )
+
+
+async def _read_capped(response: httpx.Response) -> bytes:
+    """Read the decoded body, stopping as soon as it passes the cap."""
+    chunks: list[bytes] = []
+    total = 0
+    async for chunk in response.aiter_bytes():
+        total += len(chunk)
+        if total > UPSTREAM_MAX_BYTES:
+            raise _too_large()
+        chunks.append(chunk)
+    return b"".join(chunks)
+
+
+def _reject_redirect(response: httpx.Response) -> None:
+    if response.is_redirect:
+        raise SeattleDataError(
+            ErrorCode.UPSTREAM_UNAVAILABLE,
+            "The upstream service answered with an unexpected redirect.",
+            details=ErrorDetails(reason=f"HTTP {response.status_code}."),
+        )
+
+
+def _parse_json(content: bytes) -> Any:
     try:
-        return response.json()
+        return json.loads(content) if content else None
     except (json.JSONDecodeError, UnicodeDecodeError):
         return None
 
