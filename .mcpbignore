@@ -1,0 +1,46 @@
+# Defense in depth only: scripts/build_bundle.py packs an allowlisted staging copy and
+# verifies the archive. mcpb does not read .gitignore.
+
+.env
+.env.*
+.git/
+.github/
+.venv/
+venv/
+dist/
+build/
+wheels/
+*.egg-info/
+
+# Tests, docs, dev tooling, local scratch
+tests/
+docs/
+scripts/
+Makefile
+prek.toml
+CLAUDE.md
+AGENTS.md
+.agents/
+.claude/
+.ipynb_checkpoints/
+
+# Caches and build artifacts
+__pycache__/
+*.py[oc]
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+*.mcpb
+
+# OS cruft
+.DS_Store
+PLAN.md
+CHANGELOG.md
+
+# Eval artifacts and local credentials
+evals/
+*.key
+*.pem
+*secret*
+*.mcp.json

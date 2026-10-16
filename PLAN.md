@@ -1,6 +1,6 @@
-# Seattle Open Data MCP — Design Plan (draft v2.2)
+# Seattle Open Data MCP — Design Plan
 
-Status: design only, no code.
+Status: implemented through milestone 4. This document keeps the design as planned; where the build diverged, §12 records the change and the body has been updated to match.
 History:
 - **v1:** Claude and Codex (two rounds via amicus).
 - **v2:** revised after a critical review by an independent Opus 5.5 agent that ran live probes; its headline findings were re-run by Claude.
@@ -62,7 +62,7 @@ Labels on each fact:
 - Verified: on Fire 911, the council-district layer `cyqu-gs94` is mostly null. Over all time it has district 1 = 107,991, district 2 = 57,522, district 3 = 1, null = 2,050,366; districts 4–7 never appear.
 - (review) In September 2026 the MCPP, beat, and zip region layers were about 99% filled, against about 8% for the tract and council layers.
 - (review) Region layers were last updated in 2015–16. The council layer likely predates the 2022 redistricting. `q256-3sug` holds national 2010 ZCTAs.
-- (review) Region-layer label columns:
+- Verified (milestone 2): region-layer label columns, sizes, and update dates:
 
   | layer | label column |
   | --- | --- |
@@ -80,7 +80,7 @@ Labels on each fact:
   | SPD Call Data | `dispatch_precinct` | 6 | UPPERCASE; `UNKNOWN` 88,989 |
   | SPD Call Data | `dispatch_sector` | 19 | |
   | SPD Call Data | `dispatch_beat` | 158 | |
-  | SPD Crime Data `tazs-3rd5` (1.57M rows) | `neighborhood` | 62 | **`-` 745,994 (about 48%)**; also `UNKNOWN`, `OOJ`, `FK ERROR` |
+  | SPD Crime Data `tazs-3rd5` (1.57M rows) | `neighborhood` | 62 | **`-` 745,994 (about 48%)**, almost all before 2017: 98-100% placeholders 2008-2016, 1-4% since (verified by year after the eval run); also `UNKNOWN`, `OOJ`, `FK ERROR` |
   | SPD Crime Data | `precinct` | 7 | Title case (`East`); `-`, `OOJ` |
   | Use of Force `ppi5-g2bj` | `precinct` | 9 | `-`, `0`, `X`, `OOJ` |
   | Building Permits `76t5-zqzr` | `originalzip` | 46 | |
@@ -240,9 +240,9 @@ All four tools share these properties:
      - Text field example: `dispatch_neighborhood = 'CAPITOL HILL'`.
      - Computed-region example: `:@computed_region_ru88_fbhk IN ('8','44')`, using `values` from describe.
      - No server-side name resolver in v1 (§12).
-   - **`coverage_warnings[]`:** emitted when `where` references a place field whose reliability is `partial` or `unreliable`, or whose known placeholder share exceeds 10%.
+   - **`coverage_warnings[]`:** emitted when `where` (or `having`, or raw `soql`) references a place field whose reliability is `partial` or `unreliable`.
      - Fields are matched by identifier against the cached schema.
-     - Each warning carries `{column, reliability, reason, assigned_fraction?}`.
+     - Each warning carries `{column, reliability, reason}`.
      - This is the guard against the silent false zero (fixtures 13–14).
    - **`near?`:** `{column, latitude, longitude, radius_m}`, compiled to `within_circle`.
      - The column is validated against `geo_columns`.
@@ -272,7 +272,7 @@ A known dataset id and known fields need no preliminary call.
 ### Resources (static, process-versioned)
 
 - `seattle-data://capabilities`
-- `seattle-data://guides` and `seattle-data://guides/{guide_id}{?detail}`
+- `seattle-data://guides` and `seattle-data://guides/{guide_id}` (guides have one density, so no `detail`)
 - `seattle-data://soql/{section_id}`
 - `seattle-data://errors/{section_id}`
 
@@ -319,7 +319,7 @@ Dataset-specific pitfalls from §2:
 
 **Transport: SODA2 GET only in v1.**
 - An optional `SOCRATA_APP_TOKEN` is sent as `X-App-Token`.
-- The token is never accepted as a tool argument, never echoed, and never recorded in cassettes.
+- The token is never accepted as a tool argument, never echoed, and never recorded in test fixtures.
 - A rejected configured token is an operator error; the server never silently falls back to anonymous access.
 - A generic 403 maps to `upstream_forbidden` unless the response body proves the token was the cause.
 - SODA3 is evidence-gated (§9).
@@ -407,9 +407,11 @@ Framework argument-validation failures are normalized into this envelope, and a 
 | `dataset_not_queryable` | false | `find_tabular`: `seattle_data_search_datasets({asset_scope: "tabular"})`; `alternative` gives the external link |
 | `app_token_rejected` | false | `read_auth`: `seattle_data_get_reference({topic: "errors", item_id: "authentication"})` (operator action) |
 | `upstream_forbidden` | false | none |
-| `rate_limited` | true | `retry`: the same tool and arguments; `retry_after_ms` from Retry-After |
+| `rate_limited` | true | none: `temporary: true` already means retry unchanged after `retry_after_ms` (from Retry-After); a literal retry repair would echo caller text |
 | `query_timeout` | true | `narrow`: the same tool and `dataset_id`; `alternative` suggests aggregation or a tighter `where` |
 | `cursor_expired`, `invalid_cursor` | false | `restart_from_first_page`: `seattle_data_query_dataset({dataset_id})`; `alternative` says to resend the original clauses |
+| `reference_not_found` | false | `list_items`: `seattle_data_get_reference({topic})`; `details.candidates` lists valid ids. Also the resource not-found code (JSON-RPC -32602) |
+| `internal_error` | false | none; logged with `request_id` |
 | `row_too_large`, `invalid_argument`, `upstream_unavailable` | per code | per catalog |
 
 Free-text offending values (`where`, `soql`) are omitted from `details.value`, and the error catalog discloses that policy [6.offending-value].
@@ -422,7 +424,7 @@ Separately, cwms-tools has two gaps Codex found:
 All calls are blocking `tools/call` [7.execution-mode].
 - **Expected latency** [7.declare-duration]:
   - 1–3 s for metadata;
-  - up to about 20 s for describe (two 10 s aggregate deadlines);
+  - up to 30 s for describe and for query, each bounded as a whole call (metadata fetch included), then `query_timeout`. httpx timeouts alone are per read, so a trickling response needed the overall deadline;
   - up to 30 s for queries, then `query_timeout`.
 
   The latency is stated in the tool descriptions.
@@ -462,7 +464,7 @@ All calls are blocking `tools/call` [7.execution-mode].
 **Stack:** Python, uv, FastMCP 4, Pydantic, httpx, ijson; ruff, ty, prek.
 - Mirror cwms-tools' shared `core/` producers with a thin `mcp/` layer.
 - The Typer CLI and its parity tests come after release.
-- Tests: vcrpy cassettes (token-scrubbed, aggregate-heavy) plus an opt-in live `integration` marker; no volatile exact counts in assertions.
+- Tests: recorded HTTP fixtures (`tests/http_fixtures.py`) plus an opt-in live `integration` marker; no volatile exact counts in assertions.
 
 **Milestones**
 
@@ -533,15 +535,15 @@ All calls are blocking `tools/call` [7.execution-mode].
 | § | Status | Answer |
 | --- | --- | --- |
 | 1 Server | answered | Name and prefix (§3). stdio, logs to stderr. Auth: an optional operator token with three distinct failure modes (none / rejected / generic 403). Implicit state: the cached schemas and an in-memory signing key, both lost on restart and documented. State handles: signed cursors with lifetime, binding, and expiry (§5) |
-| 2 Discovery | **pending** (M1 d) | Capability resource plus the reference tool; negative scope first. The 24 KiB budget and per-client `instructions` prefix lengths are unmeasured [2.instructions-prefix] |
-| 3 Tools | **pending** (M1 a) | Schemas (§4) with the documented open top level and dynamic maps; honest read-only annotations; untrusted-content handling. Idempotency keys, version preconditions, and patch ops are N/A (read-only). Schemas are sketches until the M1 snapshot |
+| 2 Discovery | answered (M1) | Capability resource plus the reference tool; negative scope first. Measured `tools/list`: 13,252 bytes against the 24 KiB budget, enforced in CI. Host captures (docs/host-captures): Codex prefixes `instructions` to every tool description; neither host truncated it. No prefix length is measured, so no prefix claim is made [2.instructions-prefix] |
+| 3 Tools | answered (M1) | Schemas (§4) with the documented open top level and dynamic maps; honest read-only annotations; untrusted-content handling. Idempotency keys, version preconditions, and patch ops are N/A (read-only). Schemas frozen by `tests/snapshots/tools_list.json` |
 | 4 Resources | answered | Static reference resources with templates, the tool fallback, and a 1-hour `ttlMs`. Completion deferred (few, listed ids). Subscriptions N/A (content changes only on upgrade) |
 | 5 Prompts | answered | None in v1 |
-| 6 Failure | **pending** (M1 b) | Envelope and taxonomy (§6) with literal repairs. The per-tool code catalog [6.document-codes] and worked payloads land with the M1 wire tests |
+| 6 Failure | answered (M1) | Envelope and taxonomy (§6) with literal repairs; per-tool code catalog and a worked payload per code at `seattle-data://errors/codes` [6.document-codes]; forced-error wire tests per tool, including framework validation failures |
 | 7 Long-running | answered | §7; tasks N/A |
-| 8 Token efficiency | **pending** (M3) | Contract in §4–§5: summary/full, byte-budgeted pages, paging by query kind, HTML stripped, system columns hidden. Untested until the M3 fixtures run |
+| 8 Token efficiency | answered (M3) | Summary/full, whole-row byte budget (wire result ≤ 24 KiB, tested), paging by query kind, 10,000-row cap with exact-boundary tests, HTML stripped, system columns hidden |
 | 9 Versioning | answered | Deterministic ordering; deprecation window; open top-level output for additions (§8); `listChanged` not advertised; fingerprint deferred per [9.fingerprint] |
-| Data facts | partly answered | Verified: catalog alias, computed-region coverage, council-layer nulls, place-field vocabularies and placeholders, `cachedContents` gaps. Reviewer-only and still to re-verify in M2: `:id` keyset equivalence, layer label columns and vintages, the 1,000-row default, stream-stop |
+| Data facts | answered | Verified: catalog alias, computed-region coverage, council-layer nulls, place-field vocabularies and placeholders, `cachedContents` gaps; in M2 also layer label columns and dates, `within_circle` on a `point` column (121,985 Fire calls within 500 m of downtown), Fire 911 `datetime` as Pacific wall-clock time, and catalog `parent_fxf`/`access_points`. In M3 also: `:id` keyset paging equals OFFSET paging (two datasets), raw SoQL without LIMIT returns 1,000 rows, `$query` plus `$limit` is rejected (400), a 200,000-row response can be closed after 10 rows (3.2 s), and SODA2 accepts `$limit=1000000000` for `download_url` |
 
 ## 11. Product decisions (Brian, 2026-10-15)
 
@@ -593,3 +595,23 @@ No open product questions remain. Engineering unknowns are tracked as **pending*
 | performance.seattle.gov | Open question | Out of scope: KPI-dashboard portal (median 2 columns, mostly stale) | Brian; facts verified by Claude |
 | Bulk export | Open question | No server-side export; `download_url` added (built, never fetched) so an agent can hand over a complete row set | Brian's condition; `download_url` proposed by Claude |
 | ArcGIS, transport | Open questions | Discovery-only; stdio only | Brian |
+| Pre-release codes | Not in taxonomy | `not_implemented` (until M2–M3), `internal_error`, `reference_not_found` | Milestone 1 implementation |
+| Validation `details.value` | Omit free-text values only | Never echo received argument values; only server- or catalog-minted values | Milestone 1 implementation (simpler rule; disclosed in the error catalog) |
+| `instructions` length | Unconstrained | Keep short: Codex repeats it in every tool description | Milestone 1 host capture |
+| Legacy floor | 2025-11-25 | Codex CLI 0.162.1 negotiates 2025-06-18 and is served; legacy handshake tested in CI | Milestone 1 host capture |
+| Test fixtures | vcrpy cassettes | A small record/replay `httpx` transport (`tests/http_fixtures.py`) that can also simulate timeouts and outages; vcrpy removed | Milestone 2 implementation |
+| Describe aggregates | One 10 s phase for everything | Phase 1: row count, coverage, sample (10 s). Phase 2, full detail only: place-field grouping, at most 4 at once (10 s) | Milestone 2: running both phases together timed out even the SPD row count |
+| `assigned_fraction` | From a separate unassigned-count query | From the grouping itself, reported only when all groups (≤100) came back, so it is exact | Milestone 2 implementation |
+| Federated `external_url` | Catalog `link` | The entry's ArcGIS access point from catalog metadata | Milestone 2 probe |
+| Filter views | Own facts | Inherit their parent's curated facts (place fields, time evidence) | Milestone 2 probe |
+| `not_implemented` | Pre-release code | Removed: all four tools implemented | Milestone 3 |
+| Continuation page size | Default 100 when omitted | Cursor carries the first page's `page_size` | Milestone 3: a recorded-fixture test exposed the reset |
+| Raw SoQL bound | Assumed `$limit` could cap it | `$query` + `$limit` is a 400, so the engine reads incrementally and closes the stream after `page_size` rows | Milestone 3 probe |
+| Upstream error positions | Passed through | Dropped in clauses mode: they index the assembled query, which the agent never wrote | Milestone 3 implementation |
+| Fixture recorder | Kept content-type and retry-after only | Also keeps X-SODA2-Fields/Types; tests sharing a fixture merge | Milestone 3: lossy recording silently changed replayed results |
+| Code review | Self-tested only | Codex reviewed each milestone branch; 16 findings, all fixed with regression tests that fail without the fix. Notable: missing `tzdata` (no startup on Windows), app token followed redirects, the size cap buffered before checking, describe hid rate limits and token rejections, negative `assigned_fraction`, Decimal coordinates broke point columns, and the byte budget was only estimated | Codex reviews of milestones 1-3 |
+| Guides | Planned | Seven guides with live-probed facts; every example runs in the integration suite. Probing corrected several unit-of-observation assumptions: SPD call rows are dispatches, crime rows are offenses, use-of-force rows are subjects, and Road Weather stopped updating in June 2026 | Milestone 4 |
+| Eval | 12-14 fixtures planned | 14 tasks run in Claude Code 2.1.301: 14/14 pass; one guide error found (crime neighborhood placeholders are pre-2017) and fixed. See `evals/results/2026-10-15.md` | Milestone 4 eval run |
+| Bundle | `mcpb pack .` | Allowlisted staging copy plus an archive check | Codex review of milestone 4 |
+| Whole-project review | Per-branch reviews only | Kimi (Codex was rate-limited) plus Claude's publication checks: error-catalog examples made to match emitted envelopes (no `rate_limited` repair; no echoed value; cursor reasons per failure); unpopulated `coverage_warnings.assigned_fraction` and unused placeholder-share threshold removed; reference `detail` documented as accepted but ignored; describe duration corrected to about 25 s; stale docs fixed | Pre-publication review |
+| Codex whole-project review | Kimi only | 7 findings, all fixed with regressions: upstream shape validation (no empty success from an error body), whole-call 30 s deadlines, budget check on empty pages, region-label failures surfaced (`labels_available`), describe samples sanitized, endpoint-aware error mapping (catalog 404 is `upstream_unavailable`; SoQL codes only from `/resource`), and an `instructions` head that names its sentinel. A per-tool fault matrix now asserts every emitted code is documented for its tool | Codex whole-project review |

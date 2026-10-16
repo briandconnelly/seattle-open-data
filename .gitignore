@@ -33,10 +33,6 @@ coverage.xml
 htmlcov/
 .hypothesis/
 
-# Test cassettes — recordings are committed, but in-progress recordings are not
-tests/.cassettes/*.tmp
-tests/.cassettes/.rec/
-
 # On-disk cache when redirected to ./cache for dev convenience
 cache/
 

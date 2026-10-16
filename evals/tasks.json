@@ -1,0 +1,100 @@
+[
+  {
+    "id": "01-cold-start",
+    "prompt": "Where can I find Seattle's real-time fire 911 call data, and how current is it?",
+    "expect": "First call seattle_data_search_datasets; identifies kzjm-xkqj; reports freshness from data_coverage."
+  },
+  {
+    "id": "02-calls-vs-crimes",
+    "prompt": "Are Seattle police 911 calls the same thing as crimes? Which dataset should I use to count burglaries in 2025, and how many were there?",
+    "expect": "Distinguishes SPD Call Data (33kz-ixgy) from SPD Crime Data (tazs-3rd5); counts burglary offenses from crime data."
+  },
+  {
+    "id": "03-fire-capitol-hill",
+    "prompt": "How many Seattle Fire Department calls were there in Capitol Hill last month?",
+    "expect": "Uses the MCPP computed region (value 8) for September 2026 via now_local; states whether North Capitol Hill is included; notes most calls are medical."
+  },
+  {
+    "id": "04-spd-council-district",
+    "prompt": "How many Seattle police calls were there in Council District 3 this year, by month?",
+    "expect": "Says SPD call data has no council-district field; offers precinct or neighborhood instead; does not invent a number."
+  },
+  {
+    "id": "05-fremont-this-month",
+    "prompt": "How many bikes have crossed the Fremont Bridge this month?",
+    "expect": "Checks data_coverage, reports that data ends 2026-09-30, and does not answer zero for October."
+  },
+  {
+    "id": "06-permits-near",
+    "prompt": "List building permits within 500 meters of 47.6097, -122.3422.",
+    "expect": "Uses near on 76t5-zqzr location1 with radius_m 500."
+  },
+  {
+    "id": "07-spd-near",
+    "prompt": "How many SPD calls were there within 1 km of 47.6097, -122.3422 in September 2026?",
+    "expect": "Hits column_not_geographic or sees geo_unusable; explains near is impossible; offers a neighborhood or beat alternative as non-equivalent."
+  },
+  {
+    "id": "08-council-boundaries",
+    "prompt": "Get me the boundaries of Seattle's city council districts.",
+    "expect": "Finds a federated ArcGIS entry, returns its external link, does not loop on dataset_not_queryable."
+  },
+  {
+    "id": "09-dst",
+    "prompt": "How many Seattle Fire 911 calls were dispatched between 1:00 and 3:00 am on November 2, 2025, when daylight saving time ended?",
+    "expect": "Queries floating local times and notes the repeated 1-2 am hour is ambiguous in the data."
+  },
+  {
+    "id": "10-wrong-column",
+    "prompt": "Using Seattle dataset kzjm-xkqj, count calls grouped by the call_type column.",
+    "expect": "Gets no_such_column, follows the repair to describe, and groups by type instead."
+  },
+  {
+    "id": "11-pagination",
+    "prompt": "List every Seattle Fire 911 incident number in Capitol Hill (MCPP neighborhood) on September 15, 2026, and tell me how many there are.",
+    "expect": "Pages with next_cursor until has_more is false (or uses one page if it fits); count matches an aggregate."
+  },
+  {
+    "id": "12-rejected-token",
+    "prompt": "How many Seattle Fire 911 calls were there yesterday?",
+    "env": {
+      "SOCRATA_APP_TOKEN": "bogus-token-for-eval"
+    },
+    "expect": "Gets app_token_rejected; tells the user the operator must fix the token; does not retry in a loop."
+  },
+  {
+    "id": "13-fire-district-3",
+    "prompt": "How many fire calls were in Seattle Council District 3 in September 2026?",
+    "expect": "Heeds coverage_warnings for the council-district layer and does not report the near-zero count as the answer."
+  },
+  {
+    "id": "14-crime-capitol-hill",
+    "prompt": "How many crimes were reported in Capitol Hill, Seattle in 2025?",
+    "expect": "Surfaces that about half of neighborhood values are placeholders, or uses precinct/beat and says so."
+  },
+  {
+    "id": "15-ballard-911",
+    "prompt": "How many 911 calls were there in Ballard last week?",
+    "expect": "Uses place values from describe(detail=full): Ballard is BALLARD NORTH and BALLARD SOUTH, never a guessed 'BALLARD'; dates from now_local without Z or now()."
+  },
+  {
+    "id": "16-recent-permits",
+    "prompt": "Show me the 10 most recent Seattle building permits.",
+    "expect": "Orders by a date DESC and excludes null dates; 10 rows."
+  },
+  {
+    "id": "17-weekday-hour",
+    "prompt": "What is the average number of Fremont Bridge bike crossings by hour of the day on weekdays?",
+    "expect": "Aggregates server-side with date_extract_hh and a weekday filter; no row paging."
+  },
+  {
+    "id": "18-up-to-date",
+    "prompt": "Is Seattle's Road Weather Information Stations dataset up to date?",
+    "expect": "Judges by data_coverage (newest reading 2026-06-16), not updated_at; says it is stale."
+  },
+  {
+    "id": "19-all-rows",
+    "prompt": "I need every row of Seattle's Use of Force dataset.",
+    "expect": "Gives download_url from a detail=full query instead of paging the whole dataset."
+  }
+]

@@ -1,0 +1,91 @@
+[project]
+name = "seattle-open-data"
+version = "0.1.0"
+description = "Agent-friendly MCP server for Seattle Open Data (data.seattle.gov, Socrata SODA)."
+readme = "README.md"
+requires-python = ">=3.13"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Brian Connelly", email = "bdc@bconnelly.net" },
+]
+keywords = ["seattle", "open-data", "socrata", "soda", "mcp", "agent"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+]
+dependencies = [
+    "fastmcp>=4.1.0,<4.2",
+    "httpx>=0.28",
+    "ijson>=3.3",
+    "pydantic>=2",
+    "tzdata>=2025.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/briandconnelly/seattle-open-data"
+Repository = "https://github.com/briandconnelly/seattle-open-data"
+Issues = "https://github.com/briandconnelly/seattle-open-data/issues"
+Changelog = "https://github.com/briandconnelly/seattle-open-data/blob/main/CHANGELOG.md"
+
+[project.scripts]
+seattle-open-data = "seattle_open_data.mcp.server:main"
+
+[dependency-groups]
+dev = [
+    "jsonschema>=4.26.0",
+    "prek>=0.2",
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "pytest-cov>=5",
+    "ruff>=0.15",
+    "ty>=0.0.1a1",
+]
+
+[build-system]
+requires = ["uv_build>=0.13.0,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "PIE", "RUF", "PL", "PT", "TID", "TCH", "ARG", "PTH"]
+ignore = ["PLR0913", "PLR0917", "PLR2004"]
+
+[tool.ruff.lint.per-file-ignores]
+# Reference prose and worked JSON examples read better unwrapped.
+"src/seattle_open_data/core/reference.py" = ["E501"]
+"src/seattle_open_data/core/guides.py" = ["E501"]
+"tests/**" = ["ARG", "PLR2004", "S101", "TC002", "TC003", "PT018", "PLC0415", "RUF002", "RUF003"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.ty.src]
+include = ["src", "tests"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-markers", "--strict-config"]
+asyncio_mode = "auto"
+markers = [
+    "integration: live data.seattle.gov tests (skipped by default; run with --run-integration)",
+    "soda_fixture(name, overrides=None): record or replay tests/fixtures/http/<name>.json",
+]
+
+[tool.coverage.run]
+source = ["src/seattle_open_data"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "if __name__ == .__main__.:"]
+show_missing = true

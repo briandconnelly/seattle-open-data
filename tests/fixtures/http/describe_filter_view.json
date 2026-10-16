@@ -1,0 +1,2076 @@
+{
+ "data.seattle.gov/api/views/8tqq-u7ib.json?[]": {
+  "body": {
+   "approvals": [
+    {
+     "reviewedAt": 1579391324,
+     "reviewedAutomatically": true,
+     "state": "approved",
+     "submissionDetails": {
+      "permissionType": "READ"
+     },
+     "submissionId": 7675622,
+     "submissionObject": "public_audience_request",
+     "submissionOutcome": "change_audience",
+     "submissionOutcomeApplication": {
+      "endedAt": 1579391324,
+      "failureCount": 0,
+      "startedAt": 1579391324,
+      "status": "success"
+     },
+     "submittedAt": 1579391324,
+     "submitter": {
+      "displayName": "Allen, Matthew",
+      "id": "cjua-dp33"
+     },
+     "targetAudience": "public",
+     "workflowId": 3127
+    },
+    {
+     "message": "The `strict_permissions` flag must be on to enable internal approvals.",
+     "state": "unsubmittable",
+     "targetAudience": "internal",
+     "workflowId": 4739
+    }
+   ],
+   "assetType": "filter",
+   "attribution": "City of Seattle",
+   "attributionLink": "http://www.seattle.gov/sdci",
+   "averageRating": 0,
+   "category": "Built Environment",
+   "clientContext": {
+    "clientContextVariables": [],
+    "inheritedVariables": {}
+   },
+   "columns": [
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "9891 RENTON AVE S",
+      "non_null": "2117",
+      "null": "7",
+      "smallest": "10001 57TH AVE S",
+      "top": [
+       {
+        "count": "3",
+        "item": "2300 7TH AVE"
+       },
+       {
+        "count": "3",
+        "item": "8321 14TH AVE NW"
+       },
+       {
+        "count": "3",
+        "item": "6521 44TH AVE NE"
+       },
+       {
+        "count": "3",
+        "item": "7714 M L KING JR WAY S"
+       },
+       {
+        "count": "3",
+        "item": "700 5TH AVE"
+       },
+       {
+        "count": "3",
+        "item": "369 REPUBLICAN ST"
+       },
+       {
+        "count": "2",
+        "item": "407 N 50TH ST"
+       },
+       {
+        "count": "2",
+        "item": "14015 LENORA PL N"
+       },
+       {
+        "count": "2",
+        "item": "834 NE 96TH ST"
+       },
+       {
+        "count": "2",
+        "item": "2126 9TH AVE W"
+       },
+       {
+        "count": "2",
+        "item": "3944 S ANGELINE ST"
+       },
+       {
+        "count": "2",
+        "item": "4718 SW HANFORD ST"
+       },
+       {
+        "count": "2",
+        "item": "13001 5TH AVE NE"
+       },
+       {
+        "count": "2",
+        "item": "9410 A 1ST AVE NE"
+       },
+       {
+        "count": "2",
+        "item": "3524 S HOLLY ST"
+       },
+       {
+        "count": "2",
+        "item": "3020 NE 45TH ST"
+       },
+       {
+        "count": "2",
+        "item": "2348 43RD AVE E"
+       },
+       {
+        "count": "2",
+        "item": "3408 BEACON AVE S"
+       },
+       {
+        "count": "2",
+        "item": "319 W DRAVUS ST"
+       },
+       {
+        "count": "2",
+        "item": "9552 4TH AVE NW"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "The street name and number of the project.",
+     "fieldName": "originaladdress1",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555965,
+     "name": "OriginalAddress1",
+     "position": 1,
+     "renderTypeName": "text",
+     "tableColumnId": 49952407,
+     "width": 192
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "7165496-CN",
+      "non_null": "2124",
+      "null": "0",
+      "smallest": "6062967-PH",
+      "top": [
+       {
+        "count": "1",
+        "item": "7040256-CN"
+       },
+       {
+        "count": "1",
+        "item": "7112544-CN"
+       },
+       {
+        "count": "1",
+        "item": "6994779-CN"
+       },
+       {
+        "count": "1",
+        "item": "7100718-CN"
+       },
+       {
+        "count": "1",
+        "item": "6981315-CN"
+       },
+       {
+        "count": "1",
+        "item": "6901014-CN"
+       },
+       {
+        "count": "1",
+        "item": "7100457-CN"
+       },
+       {
+        "count": "1",
+        "item": "7103214-CN"
+       },
+       {
+        "count": "1",
+        "item": "7064685-CN"
+       },
+       {
+        "count": "1",
+        "item": "7039273-CN"
+       },
+       {
+        "count": "1",
+        "item": "7115375-CN"
+       },
+       {
+        "count": "1",
+        "item": "7120281-CN"
+       },
+       {
+        "count": "1",
+        "item": "7102003-CN"
+       },
+       {
+        "count": "1",
+        "item": "7057680-CN"
+       },
+       {
+        "count": "1",
+        "item": "7121862-CN"
+       },
+       {
+        "count": "1",
+        "item": "7097845-CN"
+       },
+       {
+        "count": "1",
+        "item": "7102823-CN"
+       },
+       {
+        "count": "1",
+        "item": "7111746-CN"
+       },
+       {
+        "count": "1",
+        "item": "6965191-CN"
+       },
+       {
+        "count": "1",
+        "item": "6959774-CN"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "The tracking number used to refer to this permit in SDCI's tracking system.",
+     "fieldName": "permitnum",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555966,
+     "name": "PermitNum",
+     "position": 2,
+     "renderTypeName": "text",
+     "tableColumnId": 49952397,
+     "width": 156
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "Vacant Land",
+      "non_null": "2124",
+      "null": "0",
+      "smallest": "Commercial",
+      "top": [
+       {
+        "count": "1641",
+        "item": "Single Family/Duplex"
+       },
+       {
+        "count": "359",
+        "item": "Multifamily"
+       },
+       {
+        "count": "68",
+        "item": "Commercial"
+       },
+       {
+        "count": "26",
+        "item": "Institutional"
+       },
+       {
+        "count": "21",
+        "item": "Vacant Land"
+       },
+       {
+        "count": "9",
+        "item": "Industrial"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "The permit class tells you the type of project.",
+     "fieldName": "permitclass",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555967,
+     "name": "PermitClass",
+     "position": 3,
+     "renderTypeName": "text",
+     "tableColumnId": 49952398,
+     "width": 158
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "Residential",
+      "non_null": "2124",
+      "null": "0",
+      "smallest": "Non-Residential",
+      "top": [
+       {
+        "count": "2000",
+        "item": "Residential"
+       },
+       {
+        "count": "124",
+        "item": "Non-Residential"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "A description of whether the permit is for a residential or non-residential project.",
+     "fieldName": "permitclassmapped",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555968,
+     "name": "PermitClassMapped",
+     "position": 4,
+     "renderTypeName": "text",
+     "tableColumnId": 50470641,
+     "width": 109
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "New",
+      "non_null": "2124",
+      "null": "0",
+      "smallest": "New",
+      "top": [
+       {
+        "count": "2124",
+        "item": "New"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Additional information about the type of permit. For example, whether it is an addition/alternation or a new project.",
+     "fieldName": "permittypedesc",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555969,
+     "name": "PermitTypeDesc",
+     "position": 5,
+     "renderTypeName": "text",
+     "tableColumnId": 50470523,
+     "width": 100
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "WEST SRC two-family dwelling  per plan. (Establish use as townhouse (multifamily residential) per land use code. Construct as two-family dwellings  per plan; review and processing for three records under 6918985)",
+      "non_null": "2124",
+      "null": "0",
+      "smallest": "3/15/21 REM: Expiration date extended to 4/23/21 to allow for completion of site work.  Construct bldg  A  per plans. (Establish use as and construct townhouse buildings and site work including retaining walls  per plans. Reviews and processing for 18 A/P's under 6575774)",
+      "top": [
+       {
+        "count": "10",
+        "item": "Establish use as and construct new single family residence  per plan."
+       },
+       {
+        "count": "7",
+        "item": "Establish use as single-family residence  per land use code.  Construct one-family dwelling  per plan"
+       },
+       {
+        "count": "6",
+        "item": "Establish use as single family residence per land use code. Construct new one family dwelling  per plan."
+       },
+       {
+        "count": "5",
+        "item": "Establish use as and construct new single family residence with attached garage  per plan."
+       },
+       {
+        "count": "5",
+        "item": "Establish use as single family residence per land use code.  Construct new one family dwelling  per plan."
+       },
+       {
+        "count": "5",
+        "item": "Construct new multifamily building  occupy per plan."
+       },
+       {
+        "count": "4",
+        "item": "Allow housing for one new detached dwelling unit  per land use code. Existing detached dwelling to remain. Construct new one-family dwelling  per plan."
+       },
+       {
+        "count": "4",
+        "item": "Establish use as single family residence with attached accessory dwelling unit per land use code. Construct new two family dwelling  per plan."
+       },
+       {
+        "count": "4",
+        "item": "Establish use as and construct a single-family residence  per plans"
+       },
+       {
+        "count": "3",
+        "item": "Construct new one-family dwelling  per plan"
+       },
+       {
+        "count": "3",
+        "item": "Construct Shoring and Clearing and Grading for new townhouse structure  per plan."
+       },
+       {
+        "count": "3",
+        "item": "Establish use as single family residence with attached accessory dwelling unit  per land use code. Construct new two family dwelling  per plan."
+       },
+       {
+        "count": "3",
+        "item": "Establish use as single family residence with attached accessory dwelling unit per land use code. Construct new two-family dwelling  per plan."
+       },
+       {
+        "count": "3",
+        "item": "Establish use as rowhouse per land use code. Construct new townhouse building  per plan."
+       },
+       {
+        "count": "3",
+        "item": "Establish use as housing for two attached dwelling units  per land use code. Construct new two-family dwelling  per plan."
+       },
+       {
+        "count": "3",
+        "item": "Establish use as and construct new single family residence on vacant lot  per plan."
+       },
+       {
+        "count": "3",
+        "item": "Establish use as and construct single family residence with attached garage  per plan."
+       },
+       {
+        "count": "3",
+        "item": "Establish use as housing for one detached dwelling unit  per land use code. Construct new one-family dwelling  per plan."
+       },
+       {
+        "count": "3",
+        "item": "Establish use as single family residence and construct one family dwelling  per plans."
+       },
+       {
+        "count": "3",
+        "item": "Establish use as a single-family residence per the land use code. Construct a one-family dwelling  per plans"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "A brief description of the work that will be done under this permit. This description is subject to change before SDCI issues the permit. The description is generally more stable if we have issued the permit. Very long descriptions have been truncated.",
+     "fieldName": "description",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555970,
+     "name": "Description",
+     "position": 6,
+     "renderTypeName": "text",
+     "tableColumnId": 49952400,
+     "width": 316
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "891.0",
+      "non_null": "2124",
+      "null": "0",
+      "smallest": "-8.0",
+      "top": [
+       {
+        "count": "921",
+        "item": "1.0"
+       },
+       {
+        "count": "470",
+        "item": "2.0"
+       },
+       {
+        "count": "301",
+        "item": "0.0"
+       },
+       {
+        "count": "117",
+        "item": "3.0"
+       },
+       {
+        "count": "88",
+        "item": "4.0"
+       },
+       {
+        "count": "32",
+        "item": "5.0"
+       },
+       {
+        "count": "28",
+        "item": "6.0"
+       },
+       {
+        "count": "14",
+        "item": "8.0"
+       },
+       {
+        "count": "12",
+        "item": "7.0"
+       },
+       {
+        "count": "10",
+        "item": "9.0"
+       },
+       {
+        "count": "10",
+        "item": "-1.0"
+       },
+       {
+        "count": "7",
+        "item": "10.0"
+       },
+       {
+        "count": "6",
+        "item": "14.0"
+       },
+       {
+        "count": "5",
+        "item": "20.0"
+       },
+       {
+        "count": "4",
+        "item": "12.0"
+       },
+       {
+        "count": "3",
+        "item": "26.0"
+       },
+       {
+        "count": "3",
+        "item": "114.0"
+       },
+       {
+        "count": "3",
+        "item": "22.0"
+       },
+       {
+        "count": "3",
+        "item": "70.0"
+       },
+       {
+        "count": "3",
+        "item": "35.0"
+       }
+      ]
+     },
+     "dataTypeName": "number",
+     "description": "The change (net) in the number of housing units for the completed project.",
+     "fieldName": "housingunits",
+     "format": {
+      "align": "right",
+      "precisionStyle": "standard"
+     },
+     "id": 643555971,
+     "name": "HousingUnits",
+     "position": 7,
+     "renderTypeName": "number",
+     "tableColumnId": 49952401,
+     "width": 155
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "59.0",
+      "non_null": "2003",
+      "null": "121",
+      "smallest": "0.0",
+      "top": [
+       {
+        "count": "1857",
+        "item": "0.0"
+       },
+       {
+        "count": "138",
+        "item": "1.0"
+       },
+       {
+        "count": "2",
+        "item": "4.0"
+       },
+       {
+        "count": "1",
+        "item": "9.0"
+       },
+       {
+        "count": "1",
+        "item": "2.0"
+       },
+       {
+        "count": "1",
+        "item": "30.0"
+       },
+       {
+        "count": "1",
+        "item": "6.0"
+       },
+       {
+        "count": "1",
+        "item": "18.0"
+       },
+       {
+        "count": "1",
+        "item": "59.0"
+       }
+      ]
+     },
+     "dataTypeName": "number",
+     "description": "The number of housing units removed during the project.",
+     "fieldName": "housingunitsremoved",
+     "format": {
+      "align": "right",
+      "precisionStyle": "standard"
+     },
+     "id": 643555972,
+     "name": "HousingUnitsRemoved",
+     "position": 8,
+     "renderTypeName": "number",
+     "tableColumnId": 62966929,
+     "width": 128
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "891.0",
+      "non_null": "2003",
+      "null": "121",
+      "smallest": "0.0",
+      "top": [
+       {
+        "count": "908",
+        "item": "1.0"
+       },
+       {
+        "count": "498",
+        "item": "2.0"
+       },
+       {
+        "count": "156",
+        "item": "0.0"
+       },
+       {
+        "count": "112",
+        "item": "3.0"
+       },
+       {
+        "count": "107",
+        "item": "4.0"
+       },
+       {
+        "count": "38",
+        "item": "5.0"
+       },
+       {
+        "count": "29",
+        "item": "6.0"
+       },
+       {
+        "count": "14",
+        "item": "8.0"
+       },
+       {
+        "count": "12",
+        "item": "7.0"
+       },
+       {
+        "count": "10",
+        "item": "9.0"
+       },
+       {
+        "count": "7",
+        "item": "10.0"
+       },
+       {
+        "count": "6",
+        "item": "14.0"
+       },
+       {
+        "count": "5",
+        "item": "20.0"
+       },
+       {
+        "count": "4",
+        "item": "35.0"
+       },
+       {
+        "count": "3",
+        "item": "22.0"
+       },
+       {
+        "count": "3",
+        "item": "26.0"
+       },
+       {
+        "count": "3",
+        "item": "12.0"
+       },
+       {
+        "count": "3",
+        "item": "70.0"
+       },
+       {
+        "count": "3",
+        "item": "114.0"
+       },
+       {
+        "count": "2",
+        "item": "66.0"
+       }
+      ]
+     },
+     "dataTypeName": "number",
+     "description": "The number of housing units added during the project.",
+     "fieldName": "housingunitsadded",
+     "format": {
+      "align": "right",
+      "precisionStyle": "standard"
+     },
+     "id": 643555973,
+     "name": "HousingUnitsAdded",
+     "position": 9,
+     "renderTypeName": "number",
+     "tableColumnId": 62966946,
+     "width": 155
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "2026-10-01T00:00:00.000",
+      "non_null": "2118",
+      "null": "6",
+      "smallest": "2003-06-24T00:00:00.000",
+      "top": [
+       {
+        "count": "25",
+        "item": "2025-08-01T00:00:00.000"
+       },
+       {
+        "count": "15",
+        "item": "2025-06-26T00:00:00.000"
+       },
+       {
+        "count": "14",
+        "item": "2026-03-02T00:00:00.000"
+       },
+       {
+        "count": "13",
+        "item": "2026-04-08T00:00:00.000"
+       },
+       {
+        "count": "13",
+        "item": "2025-10-20T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2025-06-25T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2025-07-14T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2025-08-22T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2025-11-25T00:00:00.000"
+       },
+       {
+        "count": "11",
+        "item": "2025-11-05T00:00:00.000"
+       },
+       {
+        "count": "11",
+        "item": "2025-12-29T00:00:00.000"
+       },
+       {
+        "count": "10",
+        "item": "2024-07-29T00:00:00.000"
+       },
+       {
+        "count": "10",
+        "item": "2025-12-04T00:00:00.000"
+       },
+       {
+        "count": "10",
+        "item": "2025-06-10T00:00:00.000"
+       },
+       {
+        "count": "10",
+        "item": "2024-11-13T00:00:00.000"
+       },
+       {
+        "count": "10",
+        "item": "2025-12-03T00:00:00.000"
+       },
+       {
+        "count": "9",
+        "item": "2025-10-01T00:00:00.000"
+       },
+       {
+        "count": "9",
+        "item": "2025-09-18T00:00:00.000"
+       },
+       {
+        "count": "9",
+        "item": "2025-10-14T00:00:00.000"
+       },
+       {
+        "count": "9",
+        "item": "2026-01-20T00:00:00.000"
+       }
+      ]
+     },
+     "dataTypeName": "calendar_date",
+     "description": "The date SDCI accepted the application as a complete submittal. ",
+     "fieldName": "applieddate",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555974,
+     "name": "AppliedDate",
+     "position": 10,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 138335240,
+     "width": 162
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "370600000.0000",
+      "non_null": "2124",
+      "null": "0",
+      "smallest": "0.0000",
+      "top": [
+       {
+        "count": "13",
+        "item": "532260.0000"
+       },
+       {
+        "count": "7",
+        "item": "266130.0000"
+       },
+       {
+        "count": "7",
+        "item": "1000.0000"
+       },
+       {
+        "count": "6",
+        "item": "391616.0000"
+       },
+       {
+        "count": "6",
+        "item": "300000.0000"
+       },
+       {
+        "count": "6",
+        "item": "500000.0000"
+       },
+       {
+        "count": "6",
+        "item": "139508.0000"
+       },
+       {
+        "count": "6",
+        "item": "191519.0000"
+       },
+       {
+        "count": "5",
+        "item": "173950.0000"
+       },
+       {
+        "count": "5",
+        "item": "1815782.0000"
+       },
+       {
+        "count": "5",
+        "item": "114465.0000"
+       },
+       {
+        "count": "5",
+        "item": "1.0000"
+       },
+       {
+        "count": "5",
+        "item": "309800.0000"
+       },
+       {
+        "count": "5",
+        "item": "358684.0000"
+       },
+       {
+        "count": "4",
+        "item": "310899.0000"
+       },
+       {
+        "count": "4",
+        "item": "286322.0000"
+       },
+       {
+        "count": "4",
+        "item": "20000.0000"
+       },
+       {
+        "count": "4",
+        "item": "356962.0000"
+       },
+       {
+        "count": "4",
+        "item": "335842.0000"
+       },
+       {
+        "count": "4",
+        "item": "396001.0000"
+       }
+      ]
+     },
+     "dataTypeName": "number",
+     "description": "The estimated project cost of the work being proposed is based on fair market value (parts plus labor). The estimated cost (if any) represents the best available information to date, and is subject to change if the project is modified. We do not collect the estimated project cost for all permit types.",
+     "fieldName": "estprojectcost",
+     "format": {
+      "align": "right",
+      "precisionStyle": "standard"
+     },
+     "id": 643555975,
+     "name": "EstProjectCost",
+     "position": 11,
+     "renderTypeName": "number",
+     "tableColumnId": 65952801,
+     "width": 155
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "2026-10-14T00:00:00.000",
+      "non_null": "2124",
+      "null": "0",
+      "smallest": "2004-05-19T00:00:00.000",
+      "top": [
+       {
+        "count": "23",
+        "item": "2026-04-01T00:00:00.000"
+       },
+       {
+        "count": "21",
+        "item": "2026-03-31T00:00:00.000"
+       },
+       {
+        "count": "19",
+        "item": "2026-03-09T00:00:00.000"
+       },
+       {
+        "count": "17",
+        "item": "2026-03-17T00:00:00.000"
+       },
+       {
+        "count": "15",
+        "item": "2026-09-01T00:00:00.000"
+       },
+       {
+        "count": "15",
+        "item": "2025-06-11T00:00:00.000"
+       },
+       {
+        "count": "14",
+        "item": "2026-09-09T00:00:00.000"
+       },
+       {
+        "count": "13",
+        "item": "2026-09-03T00:00:00.000"
+       },
+       {
+        "count": "13",
+        "item": "2026-03-20T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2026-05-13T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2025-08-13T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2026-05-20T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2026-04-14T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2026-08-10T00:00:00.000"
+       },
+       {
+        "count": "11",
+        "item": "2026-04-10T00:00:00.000"
+       },
+       {
+        "count": "11",
+        "item": "2025-11-24T00:00:00.000"
+       },
+       {
+        "count": "11",
+        "item": "2025-12-29T00:00:00.000"
+       },
+       {
+        "count": "11",
+        "item": "2026-04-16T00:00:00.000"
+       },
+       {
+        "count": "11",
+        "item": "2026-02-17T00:00:00.000"
+       },
+       {
+        "count": "10",
+        "item": "2026-06-09T00:00:00.000"
+       }
+      ]
+     },
+     "dataTypeName": "calendar_date",
+     "description": "The date SDCI issued the permit. If there is an Application Date but no Issue Date, this generally means the application is still under review.",
+     "fieldName": "issueddate",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555976,
+     "name": "IssuedDate",
+     "position": 12,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 138335242,
+     "width": 159
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "2028-09-13T00:00:00.000",
+      "non_null": "2121",
+      "null": "3",
+      "smallest": "2018-08-01T00:00:00.000",
+      "top": [
+       {
+        "count": "26",
+        "item": "2027-09-30T00:00:00.000"
+       },
+       {
+        "count": "24",
+        "item": "2027-10-01T00:00:00.000"
+       },
+       {
+        "count": "20",
+        "item": "2027-09-09T00:00:00.000"
+       },
+       {
+        "count": "19",
+        "item": "2027-09-17T00:00:00.000"
+       },
+       {
+        "count": "18",
+        "item": "2028-03-01T00:00:00.000"
+       },
+       {
+        "count": "17",
+        "item": "2028-02-04T00:00:00.000"
+       },
+       {
+        "count": "15",
+        "item": "2026-12-11T00:00:00.000"
+       },
+       {
+        "count": "14",
+        "item": "2028-03-09T00:00:00.000"
+       },
+       {
+        "count": "14",
+        "item": "2027-02-13T00:00:00.000"
+       },
+       {
+        "count": "13",
+        "item": "2028-03-03T00:00:00.000"
+       },
+       {
+        "count": "13",
+        "item": "2027-09-25T00:00:00.000"
+       },
+       {
+        "count": "13",
+        "item": "2027-09-20T00:00:00.000"
+       },
+       {
+        "count": "13",
+        "item": "2028-02-10T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2027-10-14T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2027-10-10T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2027-06-05T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2027-10-16T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2027-05-24T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2028-01-27T00:00:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2027-11-13T00:00:00.000"
+       }
+      ]
+     },
+     "dataTypeName": "calendar_date",
+     "description": "The date the application is due to expire. Generally, this is the date by which work is supposed to be completed (barring renewals or further extensions). If there is not an Expiration Date, this generally means the permit has not been issued.",
+     "fieldName": "expiresdate",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555977,
+     "name": "ExpiresDate",
+     "position": 13,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 138335239,
+     "width": 138
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "Issued",
+      "non_null": "2124",
+      "null": "0",
+      "smallest": "Issued",
+      "top": [
+       {
+        "count": "2124",
+        "item": "Issued"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "The current status in the application/review/inspection life cycle. This status shows the most recent process step that was fully completed.",
+     "fieldName": "statuscurrent",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555978,
+     "name": "StatusCurrent",
+     "position": 14,
+     "renderTypeName": "text",
+     "tableColumnId": 49952406,
+     "width": 154
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "SEATTTLE",
+      "non_null": "2077",
+      "null": "47",
+      "smallest": "Seattle",
+      "top": [
+       {
+        "count": "2074",
+        "item": "SEATTLE"
+       },
+       {
+        "count": "2",
+        "item": "Seattle"
+       },
+       {
+        "count": "1",
+        "item": "SEATTTLE"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "The city for the project's address.",
+     "fieldName": "originalcity",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555979,
+     "name": "OriginalCity",
+     "position": 15,
+     "renderTypeName": "text",
+     "tableColumnId": 49952408,
+     "width": 149
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "WA",
+      "non_null": "2098",
+      "null": "26",
+      "smallest": "WA",
+      "top": [
+       {
+        "count": "2098",
+        "item": "WA"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "The state for the project's address.",
+     "fieldName": "originalstate",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555980,
+     "name": "OriginalState",
+     "position": 16,
+     "renderTypeName": "text",
+     "tableColumnId": 49952409,
+     "width": 148
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "98199",
+      "non_null": "2067",
+      "null": "57",
+      "smallest": "98101",
+      "top": [
+       {
+        "count": "220",
+        "item": "98118"
+       },
+       {
+        "count": "181",
+        "item": "98103"
+       },
+       {
+        "count": "172",
+        "item": "98115"
+       },
+       {
+        "count": "150",
+        "item": "98117"
+       },
+       {
+        "count": "135",
+        "item": "98125"
+       },
+       {
+        "count": "115",
+        "item": "98108"
+       },
+       {
+        "count": "110",
+        "item": "98106"
+       },
+       {
+        "count": "101",
+        "item": "98133"
+       },
+       {
+        "count": "95",
+        "item": "98136"
+       },
+       {
+        "count": "92",
+        "item": "98105"
+       },
+       {
+        "count": "89",
+        "item": "98119"
+       },
+       {
+        "count": "85",
+        "item": "98116"
+       },
+       {
+        "count": "74",
+        "item": "98122"
+       },
+       {
+        "count": "73",
+        "item": "98199"
+       },
+       {
+        "count": "72",
+        "item": "98144"
+       },
+       {
+        "count": "53",
+        "item": "98126"
+       },
+       {
+        "count": "46",
+        "item": "98112"
+       },
+       {
+        "count": "46",
+        "item": "98107"
+       },
+       {
+        "count": "35",
+        "item": "98177"
+       },
+       {
+        "count": "32",
+        "item": "98109"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "The Zip code for the project's address.",
+     "fieldName": "originalzip",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555981,
+     "name": "OriginalZip",
+     "position": 17,
+     "renderTypeName": "text",
+     "tableColumnId": 49952410,
+     "width": 145
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "WYGAL BUILDERS LLC",
+      "non_null": "109",
+      "null": "2015",
+      "smallest": "425 Remodel LLC",
+      "top": [
+       {
+        "count": "7",
+        "item": "Greenbuild Development LLC"
+       },
+       {
+        "count": "4",
+        "item": "Matt Sullivan"
+       },
+       {
+        "count": "3",
+        "item": "Side by Side Ventures dba Rock Solid Construction"
+       },
+       {
+        "count": "2",
+        "item": "JTM"
+       },
+       {
+        "count": "2",
+        "item": "SKYWAY GENERAL CONTRACTOR"
+       },
+       {
+        "count": "2",
+        "item": "STS Remodeling Corp LLC"
+       },
+       {
+        "count": "2",
+        "item": "WG Clark Construction"
+       },
+       {
+        "count": "2",
+        "item": "HABERZETLE HOMES INC"
+       },
+       {
+        "count": "2",
+        "item": "OSCAR VILLA"
+       },
+       {
+        "count": "2",
+        "item": "Oscar Villa"
+       },
+       {
+        "count": "2",
+        "item": "Arsene Construction"
+       },
+       {
+        "count": "1",
+        "item": "Juhani Nurmia Construction"
+       },
+       {
+        "count": "1",
+        "item": "Cadre General Contrators"
+       },
+       {
+        "count": "1",
+        "item": "PROJECT TERRY LLC"
+       },
+       {
+        "count": "1",
+        "item": "Sierra Construction"
+       },
+       {
+        "count": "1",
+        "item": "ALEX R KENTON"
+       },
+       {
+        "count": "1",
+        "item": "Prospect Construction"
+       },
+       {
+        "count": "1",
+        "item": "ONNI CONTRACTING (WA) INC"
+       },
+       {
+        "count": "1",
+        "item": "CONSTRUCTION CONTRACTORS INC"
+       },
+       {
+        "count": "1",
+        "item": "D Hill Construction"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "The contractor(s) associated with this permit.",
+     "fieldName": "contractorcompanyname",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555982,
+     "name": "ContractorCompanyName",
+     "position": 18,
+     "renderTypeName": "text",
+     "tableColumnId": 49952411,
+     "width": 234
+    },
+    {
+     "dataTypeName": "url",
+     "description": "A link to view full details and current status information about this permit at SDCI's website.",
+     "fieldName": "link",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555983,
+     "name": "Link",
+     "position": 19,
+     "renderTypeName": "url",
+     "subColumnTypes": [
+      "url",
+      "description"
+     ],
+     "tableColumnId": 83049506,
+     "width": 148
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "47.73392317",
+      "non_null": "2115",
+      "null": "9",
+      "smallest": "47.49739809",
+      "top": [
+       {
+        "count": "3",
+        "item": "47.60501319"
+       },
+       {
+        "count": "3",
+        "item": "47.67644982"
+       },
+       {
+        "count": "3",
+        "item": "47.68931899"
+       },
+       {
+        "count": "3",
+        "item": "47.61768363"
+       },
+       {
+        "count": "2",
+        "item": "47.50863026"
+       },
+       {
+        "count": "2",
+        "item": "47.66429582"
+       },
+       {
+        "count": "2",
+        "item": "47.55773313"
+       },
+       {
+        "count": "2",
+        "item": "47.69881356"
+       },
+       {
+        "count": "2",
+        "item": "47.55717862"
+       },
+       {
+        "count": "2",
+        "item": "47.69662328"
+       },
+       {
+        "count": "2",
+        "item": "47.52764443"
+       },
+       {
+        "count": "2",
+        "item": "47.71167235"
+       },
+       {
+        "count": "2",
+        "item": "47.54267556"
+       },
+       {
+        "count": "2",
+        "item": "47.55591839"
+       },
+       {
+        "count": "2",
+        "item": "47.70020878"
+       },
+       {
+        "count": "2",
+        "item": "47.64045302"
+       },
+       {
+        "count": "2",
+        "item": "47.55646502"
+       },
+       {
+        "count": "2",
+        "item": "47.54493672"
+       },
+       {
+        "count": "2",
+        "item": "47.69951420"
+       },
+       {
+        "count": "2",
+        "item": "47.66205506"
+       }
+      ]
+     },
+     "dataTypeName": "number",
+     "description": "Latitude of the worksite where permit activity occurs. May be missing for a small number of permits considered \"unaddressable.\"",
+     "fieldName": "latitude",
+     "format": {
+      "align": "right",
+      "precisionStyle": "standard"
+     },
+     "id": 643555984,
+     "name": "Latitude",
+     "position": 20,
+     "renderTypeName": "number",
+     "tableColumnId": 50116669,
+     "width": 100
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "largest": "-122.24227788",
+      "non_null": "2115",
+      "null": "9",
+      "smallest": "-122.41379858",
+      "top": [
+       {
+        "count": "3",
+        "item": "-122.37443076"
+       },
+       {
+        "count": "3",
+        "item": "-122.28124346"
+       },
+       {
+        "count": "3",
+        "item": "-122.32989532"
+       },
+       {
+        "count": "3",
+        "item": "-122.34140407"
+       },
+       {
+        "count": "2",
+        "item": "-122.35181548"
+       },
+       {
+        "count": "2",
+        "item": "-122.31880777"
+       },
+       {
+        "count": "2",
+        "item": "-122.32048004"
+       },
+       {
+        "count": "2",
+        "item": "-122.32690786"
+       },
+       {
+        "count": "2",
+        "item": "-122.36082864"
+       },
+       {
+        "count": "2",
+        "item": "-122.36660247"
+       },
+       {
+        "count": "2",
+        "item": "-122.34357485"
+       },
+       {
+        "count": "2",
+        "item": "-122.36853968"
+       },
+       {
+        "count": "2",
+        "item": "-122.32806137"
+       },
+       {
+        "count": "2",
+        "item": "-122.31217147"
+       },
+       {
+        "count": "2",
+        "item": "-122.29893660"
+       },
+       {
+        "count": "2",
+        "item": "-122.28030533"
+       },
+       {
+        "count": "2",
+        "item": "-122.28149762"
+       },
+       {
+        "count": "2",
+        "item": "-122.26964981"
+       },
+       {
+        "count": "2",
+        "item": "-122.33997831"
+       },
+       {
+        "count": "2",
+        "item": "-122.36917486"
+       }
+      ]
+     },
+     "dataTypeName": "number",
+     "description": "Longitude of the worksite where permit activity occurs. May be missing for a small number of permits considered \"unaddressable.\"",
+     "fieldName": "longitude",
+     "format": {
+      "align": "right",
+      "precisionStyle": "standard"
+     },
+     "id": 643555985,
+     "name": "Longitude",
+     "position": 21,
+     "renderTypeName": "number",
+     "tableColumnId": 50116697,
+     "width": 100
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2124",
+      "count": "2124",
+      "non_null": "2115",
+      "null": "9",
+      "top": [
+       {
+        "count": "3",
+        "item": {
+         "coordinates": [
+          -122.34140407,
+          47.61768363
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "3",
+        "item": {
+         "coordinates": [
+          -122.32989532,
+          47.60501319
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "3",
+        "item": {
+         "coordinates": [
+          -122.37443076,
+          47.68931899
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "3",
+        "item": {
+         "coordinates": [
+          -122.28124346,
+          47.67644982
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.34956968,
+          47.6231939
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.28030533,
+          47.53299075
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.31217147,
+          47.7145212
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.36398049,
+          47.55646502
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.32049318,
+          47.66429582
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.34046811,
+          47.70704977
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.40284234,
+          47.6590229
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.28774768,
+          47.54267556
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.33073869,
+          47.67773947
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.36080447,
+          47.52764443
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.27674666,
+          47.64045302
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.36885668,
+          47.67217265
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.31880777,
+          47.69881356
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.32690786,
+          47.69662748
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.39317117,
+          47.57584451
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "2",
+        "item": {
+         "coordinates": [
+          -122.32283029,
+          47.60819513
+         ],
+         "type": "Point"
+        }
+       }
+      ]
+     },
+     "dataTypeName": "point",
+     "description": "The latitude and longitude location for mapping purposes.",
+     "fieldName": "location1",
+     "format": {
+      "align": "left"
+     },
+     "id": 643555986,
+     "name": "Location1",
+     "position": 22,
+     "renderTypeName": "point",
+     "tableColumnId": 66335167,
+     "width": 100
+    }
+   ],
+   "createdAt": 1577825357,
+   "description": "All building permits issued or in progress within the city of Seattle.",
+   "diciBackend": false,
+   "displayType": "table",
+   "domainCName": "data.seattle.gov",
+   "downloadCount": 16642,
+   "flags": [
+    "calculatedView",
+    "federated",
+    "internalToPublicFederatedView",
+    "ownerMayBeContacted",
+    "restorable",
+    "restorePossibleForType",
+    "soqlBasedView"
+   ],
+   "grants": [
+    {
+     "flags": [
+      "public"
+     ],
+     "inherited": false,
+     "type": "viewer"
+    }
+   ],
+   "hideFromCatalog": false,
+   "hideFromDataJson": false,
+   "id": "8tqq-u7ib",
+   "license": {
+    "name": "Public Domain"
+   },
+   "licenseId": "PUBLIC_DOMAIN",
+   "locked": false,
+   "metadata": {
+    "availableDisplayTypes": [
+     "table",
+     "fatrow",
+     "page"
+    ],
+    "custom_fields": {
+     "Department": {
+      "Department": "Seattle Department of Constructions and Inspections"
+     },
+     "Refresh Frequency": {
+      "Frequency": "Daily"
+     }
+    },
+    "rdfSubject": "0",
+    "renderTypeConfig": {
+     "visible": {
+      "table": true
+     }
+    },
+    "rowLabel": ""
+   },
+   "modifyingViewUid": "76t5-zqzr",
+   "name": "Issued Building Permits",
+   "newBackend": true,
+   "numberOfComments": 0,
+   "oid": 42485126,
+   "owner": {
+    "disabledAt": 1638810238,
+    "displayName": "Allen, Matthew",
+    "flags": [
+     "acceptedEula"
+    ],
+    "id": "cjua-dp33",
+    "screenName": "Allen, Matthew",
+    "type": "interactive"
+   },
+   "provenance": "official",
+   "publicationAppendEnabled": false,
+   "publicationDate": 1727979066,
+   "publicationGroup": 14312577,
+   "publicationStage": "published",
+   "query": {},
+   "queryString": "SELECT `originaladdress1`, `permitnum`, `permitclass`, `permitclassmapped`, `permittypedesc`, `description`, `housingunits`, `housingunitsremoved`, `housingunitsadded`, `applieddate`, `estprojectcost`, `issueddate`, `expiresdate`, `statuscurrent`, `originalcity`, `originalstate`, `originalzip`, `contractorcompanyname`, `link`, `latitude`, `longitude`, `location1` WHERE (upper(`statuscurrent`) = \"ISSUED\") and (upper(`permittypedesc`) = \"NEW\")",
+   "rights": [
+    "read"
+   ],
+   "rowsUpdatedAt": 1792112870,
+   "rowsUpdatedBy": "2866-np2t",
+   "tableAuthor": {
+    "displayName": "Dev.Nambi@seattle.gov",
+    "flags": [
+     "acceptedEula"
+    ],
+    "id": "itw4-gqi9",
+    "screenName": "Dev.Nambi@seattle.gov",
+    "type": "interactive"
+   },
+   "tableId": 20571439,
+   "tags": [
+    "building permits",
+    "construction permits",
+    "building applications",
+    "permit applications",
+    "sdci",
+    "seattle department of construction and inspections"
+   ],
+   "totalTimesRated": 0,
+   "viewCount": 25809,
+   "viewLastModified": 1740777145,
+   "viewType": "tabular"
+  },
+  "headers": {
+   "content-type": "application/json; charset=utf-8"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/8tqq-u7ib.json?[[\"$limit\", \"1\"], [\"$select\", \"originaladdress1,permitnum,permitclass,permitclassmapped,permittypedesc,description,housingunits,housingunitsremoved,housingunitsadded,applieddate,estprojectcost,issueddate,expiresdate,statuscurrent,originalcity,originalstate,originalzip,contractorcompanyname,link,latitude,longitude,location1\"]]": {
+  "body": [
+   {
+    "applieddate": "2007-06-22T00:00:00.000",
+    "contractorcompanyname": "LOU R LINCOLN",
+    "description": "Establish use and construct single family dwelling & ADU on the lower floor with attached garage per plans.",
+    "estprojectcost": "479409.0000",
+    "expiresdate": "2027-02-25T00:00:00.000",
+    "housingunits": "1.0",
+    "housingunitsadded": "1.0",
+    "housingunitsremoved": "0.0",
+    "issueddate": "2009-02-25T00:00:00.000",
+    "latitude": "47.71655661",
+    "link": {
+     "url": "https://services.seattle.gov/portal/customize/LinkToRecord.aspx?altId=6065061-CN"
+    },
+    "location1": "POINT (-122.34996421 47.71655661)",
+    "longitude": "-122.34996421",
+    "originaladdress1": "12020 FREMONT AVE N",
+    "originalcity": "SEATTLE",
+    "originalstate": "WA",
+    "originalzip": "98133",
+    "permitclass": "Single Family/Duplex",
+    "permitclassmapped": "Residential",
+    "permitnum": "6065061-CN",
+    "permittypedesc": "New",
+    "statuscurrent": "Issued"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json; charset=utf-8",
+   "x-soda2-fields": "[\"permitnum\",\"housingunits\",\"contractorcompanyname\",\"statuscurrent\",\"housingunitsadded\",\"originalzip\",\"latitude\",\"permitclassmapped\",\"permittypedesc\",\"link\",\"description\",\"originalcity\",\"originalstate\",\"expiresdate\",\"location1\",\"housingunitsremoved\",\"originaladdress1\",\"permitclass\",\"applieddate\",\"estprojectcost\",\"issueddate\",\"longitude\"]",
+   "x-soda2-types": "[\"string\",\"number\",\"string\",\"string\",\"number\",\"string\",\"number\",\"string\",\"string\",\"url\",\"string\",\"string\",\"string\",\"floating_timestamp\",\"point\",\"number\",\"string\",\"string\",\"floating_timestamp\",\"number\",\"floating_timestamp\",\"number\"]"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/8tqq-u7ib.json?[[\"$select\", \"count(*) AS n\"]]": {
+  "body": [
+   {
+    "n": "2124"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json; charset=utf-8",
+   "x-soda2-fields": "[\"n\"]",
+   "x-soda2-types": "[\"number\"]"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/8tqq-u7ib.json?[[\"$select\", \"min(applieddate) AS lo, max(applieddate) AS hi\"]]": {
+  "body": [
+   {
+    "lo": "2003-06-24T00:00:00.000"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json; charset=utf-8",
+   "x-soda2-fields": "[\"lo\"]",
+   "x-soda2-types": "[\"floating_timestamp\"]"
+  },
+  "status": 200
+ }
+}

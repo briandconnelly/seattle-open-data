@@ -1,0 +1,3120 @@
+{
+ "data.seattle.gov/api/views/kzjm-xkqj.json?[]": {
+  "body": {
+   "approvals": [
+    {
+     "reviewedAt": 1550701656,
+     "reviewedAutomatically": true,
+     "state": "approved",
+     "submissionDetails": {
+      "permissionType": "READ"
+     },
+     "submissionId": 519853,
+     "submissionObject": "public_audience_request",
+     "submissionOutcome": "change_audience",
+     "submissionOutcomeApplication": {
+      "failureCount": 0,
+      "status": "success"
+     },
+     "submittedAt": 1550701656,
+     "submitter": {
+      "displayName": "Seattle Fire Department",
+      "id": "5rii-9ghs"
+     },
+     "targetAudience": "public",
+     "workflowId": 3127
+    },
+    {
+     "message": "The `strict_permissions` flag must be on to enable internal approvals.",
+     "state": "unsubmittable",
+     "targetAudience": "internal",
+     "workflowId": 4739
+    }
+   ],
+   "assetType": "dataset",
+   "attribution": "City of Seattle",
+   "attributionLink": "http://web5.seattle.gov/MNM/incidentresponse.aspx",
+   "averageRating": 0,
+   "category": "Public Safety",
+   "clientContext": {
+    "clientContextVariables": [],
+    "inheritedVariables": {}
+   },
+   "columns": [
+    {
+     "cachedContents": {
+      "cardinality": "2215888",
+      "count": "2215888",
+      "largest": "Yukon Av S / Valdez Av S",
+      "non_null": "2215878",
+      "not_null": "1422030",
+      "null": "10",
+      "smallest": "",
+      "top": [
+       {
+        "count": "8012",
+        "item": "517 3rd Av"
+       },
+       {
+        "count": "7097",
+        "item": "318 2nd Av Et  S"
+       },
+       {
+        "count": "5483",
+        "item": "500 5th Av"
+       },
+       {
+        "count": "5202",
+        "item": "223 Yesler Way"
+       },
+       {
+        "count": "4693",
+        "item": "1811 Eastlake Av"
+       },
+       {
+        "count": "4530",
+        "item": "509 3rd Av"
+       },
+       {
+        "count": "4265",
+        "item": "747 N 135th St"
+       },
+       {
+        "count": "4123",
+        "item": "800 Jefferson St"
+       },
+       {
+        "count": "3867",
+        "item": "810 Virginia St"
+       },
+       {
+        "count": "3532",
+        "item": "2030 3rd Av"
+       },
+       {
+        "count": "3473",
+        "item": "105 5th Ave S"
+       },
+       {
+        "count": "3053",
+        "item": "1902 2nd Av"
+       },
+       {
+        "count": "2886",
+        "item": "1431 Minor Av"
+       },
+       {
+        "count": "2824",
+        "item": "10049 College Way N"
+       },
+       {
+        "count": "2803",
+        "item": "900 University St"
+       },
+       {
+        "count": "2775",
+        "item": "1911 22nd Ave S"
+       },
+       {
+        "count": "2721",
+        "item": "11 W Aloha St"
+       },
+       {
+        "count": "2695",
+        "item": "4831 35th Av Sw"
+       },
+       {
+        "count": "2683",
+        "item": "3204 Sw Morgan St"
+       },
+       {
+        "count": "2621",
+        "item": "1200 University St"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Location of Incident",
+     "fieldName": "address",
+     "format": {},
+     "id": 405818852,
+     "name": "Address",
+     "position": 1,
+     "renderTypeName": "text",
+     "tableColumnId": 1290345,
+     "width": 227
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2215888",
+      "count": "2215888",
+      "largest": "Wires Down",
+      "non_null": "2215888",
+      "not_null": "1422040",
+      "null": "0",
+      "smallest": "1RED 1 Unit",
+      "top": [
+       {
+        "count": "1077601",
+        "item": "Aid Response"
+       },
+       {
+        "count": "349566",
+        "item": "Medic Response"
+       },
+       {
+        "count": "126656",
+        "item": "Auto Fire Alarm"
+       },
+       {
+        "count": "83159",
+        "item": "Trans to AMR"
+       },
+       {
+        "count": "45990",
+        "item": "Aid Response Yellow"
+       },
+       {
+        "count": "32126",
+        "item": "Automatic Fire Alarm Resd"
+       },
+       {
+        "count": "31821",
+        "item": "Triaged Incident"
+       },
+       {
+        "count": "30167",
+        "item": "MVI - Motor Vehicle Incident"
+       },
+       {
+        "count": "28959",
+        "item": "Motor Vehicle Accident"
+       },
+       {
+        "count": "25022",
+        "item": "1RED 1 Unit"
+       },
+       {
+        "count": "24184",
+        "item": "Low Acuity Response"
+       },
+       {
+        "count": "23477",
+        "item": "Rescue Elevator"
+       },
+       {
+        "count": "22258",
+        "item": "Nurseline/AMR"
+       },
+       {
+        "count": "21023",
+        "item": "Illegal Burn"
+       },
+       {
+        "count": "19979",
+        "item": "Investigate Out Of Service"
+       },
+       {
+        "count": "19944",
+        "item": "Automatic Medical Alarm"
+       },
+       {
+        "count": "17313",
+        "item": "Medic Response, 7 per Rule"
+       },
+       {
+        "count": "13896",
+        "item": "Alarm Bell"
+       },
+       {
+        "count": "13325",
+        "item": "Rubbish Fire"
+       },
+       {
+        "count": "10864",
+        "item": "Automatic Fire Alarm False"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Response Type",
+     "fieldName": "type",
+     "format": {},
+     "id": 405818853,
+     "name": "Type",
+     "position": 2,
+     "renderTypeName": "text",
+     "tableColumnId": 1290346,
+     "width": 198
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2215888",
+      "count": "2215888",
+      "largest": "2026-10-15T19:06:00.000",
+      "non_null": "2215888",
+      "not_null": "1422040",
+      "null": "0",
+      "smallest": "2003-11-07T09:30:48.000",
+      "top": [
+       {
+        "count": "5",
+        "item": "2024-01-14T14:57:00.000"
+       },
+       {
+        "count": "5",
+        "item": "2024-06-12T17:32:00.000"
+       },
+       {
+        "count": "5",
+        "item": "2025-01-20T10:24:00.000"
+       },
+       {
+        "count": "5",
+        "item": "2020-11-04T06:49:00.000"
+       },
+       {
+        "count": "5",
+        "item": "2025-10-28T13:23:00.000"
+       },
+       {
+        "count": "4",
+        "item": "2019-10-15T11:49:00.000"
+       },
+       {
+        "count": "4",
+        "item": "2019-09-09T21:01:00.000"
+       },
+       {
+        "count": "4",
+        "item": "2019-10-23T18:06:00.000"
+       },
+       {
+        "count": "4",
+        "item": "2019-04-27T18:17:00.000"
+       },
+       {
+        "count": "4",
+        "item": "2019-07-04T18:26:00.000"
+       },
+       {
+        "count": "4",
+        "item": "2019-08-09T09:57:00.000"
+       },
+       {
+        "count": "4",
+        "item": "2019-08-10T12:01:00.000"
+       },
+       {
+        "count": "4",
+        "item": "2019-09-17T00:42:00.000"
+       },
+       {
+        "count": "4",
+        "item": "2019-10-01T23:00:00.000"
+       },
+       {
+        "count": "4",
+        "item": "2019-07-25T16:37:00.000"
+       },
+       {
+        "count": "4",
+        "item": "2019-06-19T11:51:00.000"
+       },
+       {
+        "count": "4",
+        "item": "2019-06-10T21:21:00.000"
+       },
+       {
+        "count": "4",
+        "item": "2019-06-19T13:49:00.000"
+       },
+       {
+        "count": "4",
+        "item": "2019-06-30T22:54:00.000"
+       },
+       {
+        "count": "4",
+        "item": "2019-05-26T17:28:00.000"
+       }
+      ]
+     },
+     "dataTypeName": "calendar_date",
+     "description": "The date and time of the call.",
+     "fieldName": "datetime",
+     "format": {
+      "align": "left"
+     },
+     "id": 405818993,
+     "name": "Datetime",
+     "position": 3,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 1411673,
+     "width": 282
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2215888",
+      "count": "2215888",
+      "largest": "47.77779",
+      "non_null": "2213645",
+      "not_null": "1421886",
+      "null": "2243",
+      "smallest": "47.251232",
+      "top": [
+       {
+        "count": "8294",
+        "item": "47.602172"
+       },
+       {
+        "count": "7920",
+        "item": "47.602985"
+       },
+       {
+        "count": "7155",
+        "item": "47.600194"
+       },
+       {
+        "count": "6968",
+        "item": "47.602114"
+       },
+       {
+        "count": "6373",
+        "item": "47.618002"
+       },
+       {
+        "count": "5308",
+        "item": "47.601718"
+       },
+       {
+        "count": "5218",
+        "item": "47.60975"
+       },
+       {
+        "count": "5014",
+        "item": "47.610743"
+       },
+       {
+        "count": "4805",
+        "item": "47.601643"
+       },
+       {
+        "count": "4394",
+        "item": "47.610972"
+       },
+       {
+        "count": "4161",
+        "item": "47.612626"
+       },
+       {
+        "count": "3979",
+        "item": "47.615789"
+       },
+       {
+        "count": "3859",
+        "item": "47.726864"
+       },
+       {
+        "count": "3785",
+        "item": "47.558988"
+       },
+       {
+        "count": "3759",
+        "item": "47.611207"
+       },
+       {
+        "count": "3724",
+        "item": "47.604377"
+       },
+       {
+        "count": "3642",
+        "item": "47.626322"
+       },
+       {
+        "count": "3633",
+        "item": "47.732314"
+       },
+       {
+        "count": "3526",
+        "item": "47.584234"
+       },
+       {
+        "count": "3519",
+        "item": "47.612578"
+       }
+      ]
+     },
+     "dataTypeName": "number",
+     "description": "This is the latitude value. Lines of latitude are parallel to the equator.",
+     "fieldName": "latitude",
+     "format": {
+      "precisionStyle": "standard"
+     },
+     "id": 405818855,
+     "name": "Latitude",
+     "position": 4,
+     "renderTypeName": "number",
+     "tableColumnId": 1290349,
+     "width": 220
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2215888",
+      "count": "2215888",
+      "largest": "-121.360857",
+      "non_null": "2213645",
+      "not_null": "1421886",
+      "null": "2243",
+      "smallest": "-122.524823",
+      "top": [
+       {
+        "count": "8297",
+        "item": "-122.330863"
+       },
+       {
+        "count": "7920",
+        "item": "-122.328535"
+       },
+       {
+        "count": "7150",
+        "item": "-122.330541"
+       },
+       {
+        "count": "6965",
+        "item": "-122.330809"
+       },
+       {
+        "count": "6858",
+        "item": "-122.355539"
+       },
+       {
+        "count": "5278",
+        "item": "-122.331581"
+       },
+       {
+        "count": "5218",
+        "item": "-122.337793"
+       },
+       {
+        "count": "5194",
+        "item": "-122.327656"
+       },
+       {
+        "count": "5014",
+        "item": "-122.338702"
+       },
+       {
+        "count": "4336",
+        "item": "-122.340465"
+       },
+       {
+        "count": "4232",
+        "item": "-122.334195"
+       },
+       {
+        "count": "4161",
+        "item": "-122.341277"
+       },
+       {
+        "count": "4095",
+        "item": "-122.348863"
+       },
+       {
+        "count": "4085",
+        "item": "-122.337592"
+       },
+       {
+        "count": "4006",
+        "item": "-122.336507"
+       },
+       {
+        "count": "3832",
+        "item": "-122.329182"
+       },
+       {
+        "count": "3790",
+        "item": "-122.376234"
+       },
+       {
+        "count": "3633",
+        "item": "-122.325207"
+       },
+       {
+        "count": "3538",
+        "item": "-122.299024"
+       },
+       {
+        "count": "3507",
+        "item": "-122.328965"
+       }
+      ]
+     },
+     "dataTypeName": "number",
+     "description": "This is the longitude value. Lines of longitude run perpendicular to lines of latitude, and all pass through both poles.",
+     "fieldName": "longitude",
+     "format": {
+      "precisionStyle": "standard"
+     },
+     "id": 405818856,
+     "name": "Longitude",
+     "position": 5,
+     "renderTypeName": "number",
+     "tableColumnId": 1290350,
+     "width": 223
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2215888",
+      "count": "2215888",
+      "non_null": "2213723",
+      "not_null": "1421894",
+      "null": "2165",
+      "top": [
+       {
+        "count": "8291",
+        "item": {
+         "coordinates": [
+          -122.330863,
+          47.602172
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "7922",
+        "item": {
+         "coordinates": [
+          -122.328535,
+          47.602985
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "7148",
+        "item": {
+         "coordinates": [
+          -122.330541,
+          47.600194
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "6965",
+        "item": {
+         "coordinates": [
+          -122.330809,
+          47.602114
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "5218",
+        "item": {
+         "coordinates": [
+          -122.337793,
+          47.60975
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "5042",
+        "item": {
+         "coordinates": [
+          -122.331581,
+          47.601718
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "5014",
+        "item": {
+         "coordinates": [
+          -122.338702,
+          47.610743
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "4804",
+        "item": {
+         "coordinates": [
+          -122.327656,
+          47.601643
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "4336",
+        "item": {
+         "coordinates": [
+          -122.340465,
+          47.610972
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "4161",
+        "item": {
+         "coordinates": [
+          -122.341277,
+          47.612626
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "3975",
+        "item": {
+         "coordinates": [
+          -122.336507,
+          47.615789
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "3829",
+        "item": {
+         "coordinates": [
+          -122.329182,
+          47.618002
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "3782",
+        "item": {
+         "coordinates": [
+          -122.376234,
+          47.558988
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "3642",
+        "item": {
+         "coordinates": [
+          -122.348863,
+          47.626322
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "3610",
+        "item": {
+         "coordinates": [
+          -122.337592,
+          47.611207
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "3603",
+        "item": {
+         "coordinates": [
+          -122.325207,
+          47.604377
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "3526",
+        "item": {
+         "coordinates": [
+          -122.299024,
+          47.584234
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "3502",
+        "item": {
+         "coordinates": [
+          -122.341197,
+          47.612578
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "3389",
+        "item": {
+         "coordinates": [
+          -122.348195,
+          47.723218
+         ],
+         "type": "Point"
+        }
+       },
+       {
+        "count": "3315",
+        "item": {
+         "coordinates": [
+          -122.327854,
+          47.618497
+         ],
+         "type": "Point"
+        }
+       }
+      ]
+     },
+     "dataTypeName": "point",
+     "description": "",
+     "fieldName": "report_location",
+     "format": {},
+     "id": 405818857,
+     "name": "Report Location",
+     "position": 6,
+     "renderTypeName": "point",
+     "tableColumnId": 1393474,
+     "width": 246
+    },
+    {
+     "cachedContents": {
+      "cardinality": "2215888",
+      "count": "2215888",
+      "largest": "X210139036",
+      "non_null": "2215888",
+      "not_null": "1422040",
+      "null": "0",
+      "smallest": "          ",
+      "top": [
+       {
+        "count": "1",
+        "item": "B030080878"
+       },
+       {
+        "count": "1",
+        "item": "B030082008"
+       },
+       {
+        "count": "1",
+        "item": "B030082009"
+       },
+       {
+        "count": "1",
+        "item": "B030082102"
+       },
+       {
+        "count": "1",
+        "item": "B030082115"
+       },
+       {
+        "count": "1",
+        "item": "B030084563"
+       },
+       {
+        "count": "1",
+        "item": "B030085513"
+       },
+       {
+        "count": "1",
+        "item": "B030085973"
+       },
+       {
+        "count": "1",
+        "item": "B030087292"
+       },
+       {
+        "count": "1",
+        "item": "B030087351"
+       },
+       {
+        "count": "1",
+        "item": "B030088980"
+       },
+       {
+        "count": "1",
+        "item": "B030092035"
+       },
+       {
+        "count": "1",
+        "item": "B030096240"
+       },
+       {
+        "count": "1",
+        "item": "B030097849"
+       },
+       {
+        "count": "1",
+        "item": "B030098071"
+       },
+       {
+        "count": "1",
+        "item": "B030098465"
+       },
+       {
+        "count": "1",
+        "item": "B030098653"
+       },
+       {
+        "count": "1",
+        "item": "B030099050"
+       },
+       {
+        "count": "1",
+        "item": "B040001830"
+       },
+       {
+        "count": "1",
+        "item": "          "
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "",
+     "fieldName": "incident_number",
+     "format": {
+      "align": "right",
+      "precisionStyle": "standard"
+     },
+     "id": 405818858,
+     "name": "Incident Number",
+     "position": 11,
+     "renderTypeName": "text",
+     "tableColumnId": 1419260,
+     "width": 245
+    },
+    {
+     "computationStrategy": {
+      "parameters": {
+       "primary_key": "_feature_id",
+       "region": "_ru88-fbhk"
+      },
+      "source_columns": [
+       "report_location"
+      ],
+      "type": "georegion_match_on_point"
+     },
+     "dataTypeName": "number",
+     "fieldName": ":@computed_region_ru88_fbhk",
+     "format": {},
+     "id": 405539929,
+     "name": "Seattle Police Department Micro Community Policing Plan Areas",
+     "position": 12,
+     "renderTypeName": "number",
+     "tableColumnId": 79887390
+    },
+    {
+     "computationStrategy": {
+      "parameters": {
+       "primary_key": "_feature_id",
+       "region": "_2day-rhn5"
+      },
+      "source_columns": [
+       "report_location"
+      ],
+      "type": "georegion_match_on_point"
+     },
+     "dataTypeName": "number",
+     "fieldName": ":@computed_region_2day_rhn5",
+     "format": {},
+     "id": 405539930,
+     "name": "2010 Census Tracts",
+     "position": 13,
+     "renderTypeName": "number",
+     "tableColumnId": 79887391
+    },
+    {
+     "computationStrategy": {
+      "parameters": {
+       "primary_key": "_feature_id",
+       "region": "_cyqu-gs94"
+      },
+      "source_columns": [
+       "report_location"
+      ],
+      "type": "georegion_match_on_point"
+     },
+     "dataTypeName": "number",
+     "fieldName": ":@computed_region_cyqu_gs94",
+     "format": {},
+     "id": 405539931,
+     "name": "City Council Districts",
+     "position": 14,
+     "renderTypeName": "number",
+     "tableColumnId": 79887392
+    },
+    {
+     "computationStrategy": {
+      "parameters": {
+       "primary_key": "_feature_id",
+       "region": "_kuhn-3gp2"
+      },
+      "source_columns": [
+       "report_location"
+      ],
+      "type": "georegion_match_on_point"
+     },
+     "dataTypeName": "number",
+     "fieldName": ":@computed_region_kuhn_3gp2",
+     "format": {},
+     "id": 405539932,
+     "name": "SPD Beats",
+     "position": 15,
+     "renderTypeName": "number",
+     "tableColumnId": 79887393
+    },
+    {
+     "computationStrategy": {
+      "parameters": {
+       "primary_key": "_feature_id",
+       "region": "_q256-3sug"
+      },
+      "source_columns": [
+       "report_location"
+      ],
+      "type": "georegion_match_on_point"
+     },
+     "dataTypeName": "number",
+     "fieldName": ":@computed_region_q256_3sug",
+     "format": {},
+     "id": 405539933,
+     "name": "Zip Codes",
+     "position": 16,
+     "renderTypeName": "number",
+     "tableColumnId": 79887394
+    }
+   ],
+   "createdAt": 1262987297,
+   "description": "Provides Seattle Fire Department 911 dispatches. Updated every 5 minutes.",
+   "diciBackend": false,
+   "displayType": "table",
+   "domainCName": "data.seattle.gov",
+   "downloadCount": 61951,
+   "flags": [
+    "default",
+    "federated",
+    "internalToPublicFederatedView",
+    "ownerMayBeContacted",
+    "restorable",
+    "restorePossibleForType"
+   ],
+   "grants": [
+    {
+     "flags": [
+      "public"
+     ],
+     "inherited": false,
+     "type": "viewer"
+    }
+   ],
+   "hideFromCatalog": false,
+   "hideFromDataJson": false,
+   "id": "kzjm-xkqj",
+   "indexUpdatedAt": 1556237084,
+   "license": {
+    "name": "Public Domain"
+   },
+   "licenseId": "PUBLIC_DOMAIN",
+   "locked": false,
+   "metadata": {
+    "availableDisplayTypes": [
+     "table",
+     "fatrow",
+     "page"
+    ],
+    "custom_fields": {
+     "Common Core": {
+      "Contact Email": "open.data@seattle.gov",
+      "Publisher": "data.seattle.gov"
+     },
+     "Department": {
+      "Department": "Seattle Fire Department"
+     },
+     "Refresh Frequency": {
+      "Frequency": "Near Realtime"
+     }
+    },
+    "jsonQuery": {
+     "order": [
+      {
+       "ascending": false,
+       "columnFieldName": "datetime"
+      }
+     ]
+    },
+    "rdfSubject": "0",
+    "renderTypeConfig": {
+     "visible": {
+      "table": true
+     }
+    },
+    "rowIdentifier": 405818858,
+    "rowLabel": "911 call",
+    "thumbnail": {
+     "page": {
+      "created": true
+     }
+    }
+   },
+   "name": "Seattle Real Time Fire 911 Calls",
+   "newBackend": true,
+   "numberOfComments": 2,
+   "oid": 31365686,
+   "owner": {
+    "disabledAt": 1638810231,
+    "displayName": "Ward, Evan L",
+    "flags": [
+     "acceptedEula"
+    ],
+    "id": "w8f2-69ad",
+    "screenName": "Ward, Evan L",
+    "type": "interactive"
+   },
+   "provenance": "official",
+   "publicationAppendEnabled": true,
+   "publicationDate": 1556236846,
+   "publicationGroup": 215442,
+   "publicationStage": "published",
+   "query": {
+    "orderBys": [
+     {
+      "ascending": false,
+      "expression": {
+       "columnId": 405818993,
+       "type": "column"
+      }
+     }
+    ]
+   },
+   "resourceName": "fire-911",
+   "rights": [
+    "read"
+   ],
+   "rowIdentifierColumnId": 405818858,
+   "rowsUpdatedAt": 1792120247,
+   "rowsUpdatedBy": "pfbu-yuv5",
+   "tableAuthor": {
+    "disabledAt": 1638810231,
+    "displayName": "Ward, Evan L",
+    "flags": [
+     "acceptedEula"
+    ],
+    "id": "w8f2-69ad",
+    "screenName": "Ward, Evan L",
+    "type": "interactive"
+   },
+   "tableId": 16152267,
+   "tags": [
+    "seattle",
+    "911",
+    "fire",
+    "dispatch e911",
+    "sfd mobile"
+   ],
+   "totalTimesRated": 0,
+   "viewCount": 325011,
+   "viewLastModified": 1738169789,
+   "viewType": "tabular"
+  },
+  "headers": {
+   "content-type": "application/json; charset=utf-8"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/2day-rhn5.json?[[\"$limit\", \"37\"], [\"$select\", \"_feature_id AS id, name10 AS label\"], [\"$where\", \"_feature_id IN (97,98,99,100,102,103,104,105,106,107,108,109,110,111,112,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,133,134,135,136)\"]]": {
+  "body": [
+   {
+    "id": "97",
+    "label": "93"
+   },
+   {
+    "id": "98",
+    "label": "94"
+   },
+   {
+    "id": "99",
+    "label": "95"
+   },
+   {
+    "id": "100",
+    "label": "96"
+   },
+   {
+    "id": "102",
+    "label": "97.02"
+   },
+   {
+    "id": "103",
+    "label": "98"
+   },
+   {
+    "id": "104",
+    "label": "99"
+   },
+   {
+    "id": "105",
+    "label": "100.01"
+   },
+   {
+    "id": "106",
+    "label": "100.02"
+   },
+   {
+    "id": "107",
+    "label": "101"
+   },
+   {
+    "id": "108",
+    "label": "102"
+   },
+   {
+    "id": "109",
+    "label": "103"
+   },
+   {
+    "id": "110",
+    "label": "104.01"
+   },
+   {
+    "id": "111",
+    "label": "104.02"
+   },
+   {
+    "id": "112",
+    "label": "105"
+   },
+   {
+    "id": "114",
+    "label": "107.01"
+   },
+   {
+    "id": "115",
+    "label": "107.02"
+   },
+   {
+    "id": "116",
+    "label": "108"
+   },
+   {
+    "id": "117",
+    "label": "109"
+   },
+   {
+    "id": "118",
+    "label": "110.01"
+   },
+   {
+    "id": "119",
+    "label": "110.02"
+   },
+   {
+    "id": "120",
+    "label": "111.01"
+   },
+   {
+    "id": "121",
+    "label": "111.02"
+   },
+   {
+    "id": "122",
+    "label": "112"
+   },
+   {
+    "id": "123",
+    "label": "113"
+   },
+   {
+    "id": "124",
+    "label": "114.01"
+   },
+   {
+    "id": "125",
+    "label": "114.02"
+   },
+   {
+    "id": "126",
+    "label": "115"
+   },
+   {
+    "id": "127",
+    "label": "117"
+   },
+   {
+    "id": "128",
+    "label": "118"
+   },
+   {
+    "id": "129",
+    "label": "119"
+   },
+   {
+    "id": "130",
+    "label": "120"
+   },
+   {
+    "id": "131",
+    "label": "121"
+   },
+   {
+    "id": "133",
+    "label": "264"
+   },
+   {
+    "id": "134",
+    "label": "265"
+   },
+   {
+    "id": "135",
+    "label": "9901"
+   },
+   {
+    "id": "136",
+    "label": "116"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"id\",\"label\"]",
+   "x-soda2-types": "[\"number\",\"text\"]"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/cyqu-gs94.json?[[\"$limit\", \"3\"], [\"$select\", \"_feature_id AS id, c_district AS label\"], [\"$where\", \"_feature_id IN (1,2,3)\"]]": {
+  "body": [
+   {
+    "id": "1",
+    "label": "1"
+   },
+   {
+    "id": "2",
+    "label": "2"
+   },
+   {
+    "id": "3",
+    "label": "3"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"id\",\"label\"]",
+   "x-soda2-types": "[\"number\",\"number\"]"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/kuhn-3gp2.json?[[\"$limit\", \"51\"], [\"$select\", \"_feature_id AS id, name AS label\"], [\"$where\", \"_feature_id IN (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51)\"]]": {
+  "body": [
+   {
+    "id": "1",
+    "label": "B1"
+   },
+   {
+    "id": "2",
+    "label": "B2"
+   },
+   {
+    "id": "3",
+    "label": "B3"
+   },
+   {
+    "id": "4",
+    "label": "C1"
+   },
+   {
+    "id": "5",
+    "label": "E1"
+   },
+   {
+    "id": "6",
+    "label": "C2"
+   },
+   {
+    "id": "7",
+    "label": "D2"
+   },
+   {
+    "id": "8",
+    "label": "C3"
+   },
+   {
+    "id": "9",
+    "label": "D1"
+   },
+   {
+    "id": "10",
+    "label": "D3"
+   },
+   {
+    "id": "11",
+    "label": "E2"
+   },
+   {
+    "id": "12",
+    "label": "E3"
+   },
+   {
+    "id": "13",
+    "label": "F1"
+   },
+   {
+    "id": "14",
+    "label": "F2"
+   },
+   {
+    "id": "15",
+    "label": "F3"
+   },
+   {
+    "id": "16",
+    "label": "G1"
+   },
+   {
+    "id": "17",
+    "label": "G2"
+   },
+   {
+    "id": "18",
+    "label": "G3"
+   },
+   {
+    "id": "19",
+    "label": "K1"
+   },
+   {
+    "id": "20",
+    "label": "K2"
+   },
+   {
+    "id": "21",
+    "label": "J1"
+   },
+   {
+    "id": "22",
+    "label": "K3"
+   },
+   {
+    "id": "23",
+    "label": "J2"
+   },
+   {
+    "id": "24",
+    "label": "M3"
+   },
+   {
+    "id": "25",
+    "label": "J3"
+   },
+   {
+    "id": "26",
+    "label": "L1"
+   },
+   {
+    "id": "27",
+    "label": "Q1"
+   },
+   {
+    "id": "28",
+    "label": "L2"
+   },
+   {
+    "id": "29",
+    "label": "L3"
+   },
+   {
+    "id": "30",
+    "label": "M1"
+   },
+   {
+    "id": "31",
+    "label": "M2"
+   },
+   {
+    "id": "32",
+    "label": "N1"
+   },
+   {
+    "id": "33",
+    "label": "N2"
+   },
+   {
+    "id": "34",
+    "label": "N3"
+   },
+   {
+    "id": "35",
+    "label": "O1"
+   },
+   {
+    "id": "36",
+    "label": "O2"
+   },
+   {
+    "id": "37",
+    "label": "O3"
+   },
+   {
+    "id": "38",
+    "label": "U2"
+   },
+   {
+    "id": "39",
+    "label": "Q2"
+   },
+   {
+    "id": "40",
+    "label": "Q3"
+   },
+   {
+    "id": "41",
+    "label": "R1"
+   },
+   {
+    "id": "42",
+    "label": "R2"
+   },
+   {
+    "id": "43",
+    "label": "R3"
+   },
+   {
+    "id": "44",
+    "label": "S1"
+   },
+   {
+    "id": "45",
+    "label": "S2"
+   },
+   {
+    "id": "46",
+    "label": "S3"
+   },
+   {
+    "id": "47",
+    "label": "U1"
+   },
+   {
+    "id": "48",
+    "label": "U3"
+   },
+   {
+    "id": "49",
+    "label": "W1"
+   },
+   {
+    "id": "50",
+    "label": "W2"
+   },
+   {
+    "id": "51",
+    "label": "W3"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"id\",\"label\"]",
+   "x-soda2-types": "[\"number\",\"text\"]"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/kzjm-xkqj.json?[[\"$group\", \":@computed_region_2day_rhn5\"], [\"$limit\", \"101\"], [\"$order\", \"n DESC\"], [\"$select\", \":@computed_region_2day_rhn5 AS v, count(*) AS n\"]]": {
+  "body": [
+   {
+    "n": "2034850"
+   },
+   {
+    "n": "32073",
+    "v": "123"
+   },
+   {
+    "n": "22087",
+    "v": "127"
+   },
+   {
+    "n": "20597",
+    "v": "116"
+   },
+   {
+    "n": "18600",
+    "v": "117"
+   },
+   {
+    "n": "17050",
+    "v": "124"
+   },
+   {
+    "n": "15176",
+    "v": "122"
+   },
+   {
+    "n": "14621",
+    "v": "119"
+   },
+   {
+    "n": "11323",
+    "v": "131"
+   },
+   {
+    "n": "11320",
+    "v": "135"
+   },
+   {
+    "n": "6302",
+    "v": "134"
+   },
+   {
+    "n": "4557",
+    "v": "125"
+   },
+   {
+    "n": "2469",
+    "v": "130"
+   },
+   {
+    "n": "2085",
+    "v": "118"
+   },
+   {
+    "n": "1008",
+    "v": "126"
+   },
+   {
+    "n": "776",
+    "v": "114"
+   },
+   {
+    "n": "401",
+    "v": "129"
+   },
+   {
+    "n": "181",
+    "v": "133"
+   },
+   {
+    "n": "132",
+    "v": "97"
+   },
+   {
+    "n": "90",
+    "v": "104"
+   },
+   {
+    "n": "47",
+    "v": "120"
+   },
+   {
+    "n": "40",
+    "v": "111"
+   },
+   {
+    "n": "32",
+    "v": "115"
+   },
+   {
+    "n": "25",
+    "v": "105"
+   },
+   {
+    "n": "14",
+    "v": "110"
+   },
+   {
+    "n": "9",
+    "v": "136"
+   },
+   {
+    "n": "8",
+    "v": "98"
+   },
+   {
+    "n": "8",
+    "v": "103"
+   },
+   {
+    "n": "6",
+    "v": "99"
+   },
+   {
+    "n": "5",
+    "v": "100"
+   },
+   {
+    "n": "3",
+    "v": "107"
+   },
+   {
+    "n": "3",
+    "v": "128"
+   },
+   {
+    "n": "3",
+    "v": "106"
+   },
+   {
+    "n": "2",
+    "v": "109"
+   },
+   {
+    "n": "1",
+    "v": "121"
+   },
+   {
+    "n": "1",
+    "v": "112"
+   },
+   {
+    "n": "1",
+    "v": "108"
+   },
+   {
+    "n": "1",
+    "v": "102"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"v\",\"n\"]",
+   "x-soda2-types": "[\"number\",\"number\"]"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/kzjm-xkqj.json?[[\"$group\", \":@computed_region_cyqu_gs94\"], [\"$limit\", \"101\"], [\"$order\", \"n DESC\"], [\"$select\", \":@computed_region_cyqu_gs94 AS v, count(*) AS n\"]]": {
+  "body": [
+   {
+    "n": "2050390"
+   },
+   {
+    "n": "107993",
+    "v": "1"
+   },
+   {
+    "n": "57523",
+    "v": "2"
+   },
+   {
+    "n": "1",
+    "v": "3"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"v\",\"n\"]",
+   "x-soda2-types": "[\"number\",\"number\"]"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/kzjm-xkqj.json?[[\"$group\", \":@computed_region_kuhn_3gp2\"], [\"$limit\", \"101\"], [\"$order\", \"n DESC\"], [\"$select\", \":@computed_region_kuhn_3gp2 AS v, count(*) AS n\"]]": {
+  "body": [
+   {
+    "n": "79198",
+    "v": "22"
+   },
+   {
+    "n": "69890",
+    "v": "12"
+   },
+   {
+    "n": "66290",
+    "v": "9"
+   },
+   {
+    "n": "62523",
+    "v": "19"
+   },
+   {
+    "n": "57226",
+    "v": "20"
+   },
+   {
+    "n": "56853",
+    "v": "42"
+   },
+   {
+    "n": "56018",
+    "v": "10"
+   },
+   {
+    "n": "55405",
+    "v": "40"
+   },
+   {
+    "n": "55046",
+    "v": "48"
+   },
+   {
+    "n": "54531",
+    "v": "38"
+   },
+   {
+    "n": "53726",
+    "v": "30"
+   },
+   {
+    "n": "51754",
+    "v": "32"
+   },
+   {
+    "n": "49157",
+    "v": "16"
+   },
+   {
+    "n": "48423",
+    "v": "28"
+   },
+   {
+    "n": "48168",
+    "v": "50"
+   },
+   {
+    "n": "47738",
+    "v": "1"
+   },
+   {
+    "n": "46761",
+    "v": "47"
+   },
+   {
+    "n": "46531",
+    "v": "34"
+   },
+   {
+    "n": "46504",
+    "v": "41"
+   },
+   {
+    "n": "44921",
+    "v": "24"
+   },
+   {
+    "n": "44764",
+    "v": "49"
+   },
+   {
+    "n": "44639",
+    "v": "5"
+   },
+   {
+    "n": "44633",
+    "v": "26"
+   },
+   {
+    "n": "43094",
+    "v": "44"
+   },
+   {
+    "n": "41339",
+    "v": "43"
+   },
+   {
+    "n": "41334",
+    "v": "31"
+   },
+   {
+    "n": "41217",
+    "v": "39"
+   },
+   {
+    "n": "40732",
+    "v": "29"
+   },
+   {
+    "n": "40512",
+    "v": "7"
+   },
+   {
+    "n": "39384",
+    "v": "11"
+   },
+   {
+    "n": "39286",
+    "v": "27"
+   },
+   {
+    "n": "38844",
+    "v": "51"
+   },
+   {
+    "n": "38323",
+    "v": "33"
+   },
+   {
+    "n": "38289",
+    "v": "13"
+   },
+   {
+    "n": "37941",
+    "v": "2"
+   },
+   {
+    "n": "37336",
+    "v": "46"
+   },
+   {
+    "n": "37146",
+    "v": "17"
+   },
+   {
+    "n": "35698",
+    "v": "3"
+   },
+   {
+    "n": "34854",
+    "v": "45"
+   },
+   {
+    "n": "33311",
+    "v": "8"
+   },
+   {
+    "n": "33252",
+    "v": "4"
+   },
+   {
+    "n": "33073",
+    "v": "18"
+   },
+   {
+    "n": "32183",
+    "v": "23"
+   },
+   {
+    "n": "31846",
+    "v": "15"
+   },
+   {
+    "n": "30249",
+    "v": "6"
+   },
+   {
+    "n": "30196",
+    "v": "21"
+   },
+   {
+    "n": "29627",
+    "v": "25"
+   },
+   {
+    "n": "29568",
+    "v": "14"
+   },
+   {
+    "n": "23803",
+    "v": "35"
+   },
+   {
+    "n": "21871",
+    "v": "36"
+   },
+   {
+    "n": "21104",
+    "v": "37"
+   },
+   {
+    "n": "9796"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"v\",\"n\"]",
+   "x-soda2-types": "[\"number\",\"number\"]"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/kzjm-xkqj.json?[[\"$group\", \":@computed_region_q256_3sug\"], [\"$limit\", \"101\"], [\"$order\", \"n DESC\"], [\"$select\", \":@computed_region_q256_3sug AS v, count(*) AS n\"]]": {
+  "body": [
+   {
+    "n": "234538",
+    "v": "18379"
+   },
+   {
+    "n": "181691",
+    "v": "18081"
+   },
+   {
+    "n": "146791",
+    "v": "19578"
+   },
+   {
+    "n": "138827",
+    "v": "18800"
+   },
+   {
+    "n": "118752",
+    "v": "17919"
+   },
+   {
+    "n": "117660",
+    "v": "19579"
+   },
+   {
+    "n": "108882",
+    "v": "18383"
+   },
+   {
+    "n": "107922",
+    "v": "18390"
+   },
+   {
+    "n": "102431",
+    "v": "18377"
+   },
+   {
+    "n": "102276",
+    "v": "19582"
+   },
+   {
+    "n": "96182",
+    "v": "19576"
+   },
+   {
+    "n": "84002",
+    "v": "18792"
+   },
+   {
+    "n": "73283",
+    "v": "18388"
+   },
+   {
+    "n": "66159",
+    "v": "18385"
+   },
+   {
+    "n": "63944",
+    "v": "19581"
+   },
+   {
+    "n": "63664",
+    "v": "18386"
+   },
+   {
+    "n": "58058",
+    "v": "19584"
+   },
+   {
+    "n": "51428",
+    "v": "18795"
+   },
+   {
+    "n": "50289",
+    "v": "18376"
+   },
+   {
+    "n": "49579",
+    "v": "19575"
+   },
+   {
+    "n": "49047",
+    "v": "18798"
+   },
+   {
+    "n": "47728",
+    "v": "18789"
+   },
+   {
+    "n": "29924",
+    "v": "18235"
+   },
+   {
+    "n": "28410",
+    "v": "17916"
+   },
+   {
+    "n": "14508",
+    "v": "18230"
+   },
+   {
+    "n": "14044",
+    "v": "18229"
+   },
+   {
+    "n": "6787",
+    "v": "17920"
+   },
+   {
+    "n": "3715",
+    "v": "17926"
+   },
+   {
+    "n": "2185"
+   },
+   {
+    "n": "926",
+    "v": "18232"
+   },
+   {
+    "n": "633",
+    "v": "18228"
+   },
+   {
+    "n": "608",
+    "v": "17924"
+   },
+   {
+    "n": "462",
+    "v": "17793"
+   },
+   {
+    "n": "192",
+    "v": "18227"
+   },
+   {
+    "n": "38",
+    "v": "17373"
+   },
+   {
+    "n": "27",
+    "v": "31848"
+   },
+   {
+    "n": "27",
+    "v": "31855"
+   },
+   {
+    "n": "27",
+    "v": "18231"
+   },
+   {
+    "n": "18",
+    "v": "17370"
+   },
+   {
+    "n": "17",
+    "v": "17809"
+   },
+   {
+    "n": "17",
+    "v": "17356"
+   },
+   {
+    "n": "16",
+    "v": "17791"
+   },
+   {
+    "n": "16",
+    "v": "18226"
+   },
+   {
+    "n": "16",
+    "v": "17811"
+   },
+   {
+    "n": "14",
+    "v": "31850"
+   },
+   {
+    "n": "14",
+    "v": "31847"
+   },
+   {
+    "n": "12",
+    "v": "18067"
+   },
+   {
+    "n": "11",
+    "v": "18234"
+   },
+   {
+    "n": "9",
+    "v": "31844"
+   },
+   {
+    "n": "9",
+    "v": "17376"
+   },
+   {
+    "n": "9",
+    "v": "17354"
+   },
+   {
+    "n": "7",
+    "v": "17806"
+   },
+   {
+    "n": "7",
+    "v": "17808"
+   },
+   {
+    "n": "7",
+    "v": "18080"
+   },
+   {
+    "n": "6",
+    "v": "4839"
+   },
+   {
+    "n": "6",
+    "v": "31853"
+   },
+   {
+    "n": "4",
+    "v": "18068"
+   },
+   {
+    "n": "4",
+    "v": "17922"
+   },
+   {
+    "n": "3",
+    "v": "18071"
+   },
+   {
+    "n": "3",
+    "v": "17798"
+   },
+   {
+    "n": "3",
+    "v": "17362"
+   },
+   {
+    "n": "3",
+    "v": "17005"
+   },
+   {
+    "n": "3",
+    "v": "31845"
+   },
+   {
+    "n": "2",
+    "v": "17351"
+   },
+   {
+    "n": "2",
+    "v": "17799"
+   },
+   {
+    "n": "2",
+    "v": "17365"
+   },
+   {
+    "n": "2",
+    "v": "31852"
+   },
+   {
+    "n": "2",
+    "v": "18063"
+   },
+   {
+    "n": "2",
+    "v": "17359"
+   },
+   {
+    "n": "2",
+    "v": "31854"
+   },
+   {
+    "n": "2",
+    "v": "11479"
+   },
+   {
+    "n": "2",
+    "v": "32443"
+   },
+   {
+    "n": "2",
+    "v": "17814"
+   },
+   {
+    "n": "1",
+    "v": "17790"
+   },
+   {
+    "n": "1",
+    "v": "17349"
+   },
+   {
+    "n": "1",
+    "v": "17348"
+   },
+   {
+    "n": "1",
+    "v": "17011"
+   },
+   {
+    "n": "1",
+    "v": "20720"
+   },
+   {
+    "n": "1",
+    "v": "17923"
+   },
+   {
+    "n": "1",
+    "v": "18078"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"v\",\"n\"]",
+   "x-soda2-types": "[\"number\",\"number\"]"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/kzjm-xkqj.json?[[\"$group\", \":@computed_region_ru88_fbhk\"], [\"$limit\", \"101\"], [\"$order\", \"n DESC\"], [\"$select\", \":@computed_region_ru88_fbhk AS v, count(*) AS n\"]]": {
+  "body": [
+   {
+    "n": "186743",
+    "v": "14"
+   },
+   {
+    "n": "125680",
+    "v": "56"
+   },
+   {
+    "n": "109956",
+    "v": "46"
+   },
+   {
+    "n": "104073",
+    "v": "8"
+   },
+   {
+    "n": "100384",
+    "v": "50"
+   },
+   {
+    "n": "93824",
+    "v": "19"
+   },
+   {
+    "n": "81052",
+    "v": "60"
+   },
+   {
+    "n": "67909",
+    "v": "5"
+   },
+   {
+    "n": "65749",
+    "v": "29"
+   },
+   {
+    "n": "65416",
+    "v": "6"
+   },
+   {
+    "n": "59573",
+    "v": "4"
+   },
+   {
+    "n": "59349",
+    "v": "49"
+   },
+   {
+    "n": "56014",
+    "v": "9"
+   },
+   {
+    "n": "54616",
+    "v": "53"
+   },
+   {
+    "n": "53809",
+    "v": "55"
+   },
+   {
+    "n": "50938",
+    "v": "27"
+   },
+   {
+    "n": "41958",
+    "v": "42"
+   },
+   {
+    "n": "41009",
+    "v": "3"
+   },
+   {
+    "n": "40261",
+    "v": "23"
+   },
+   {
+    "n": "38654",
+    "v": "57"
+   },
+   {
+    "n": "38348",
+    "v": "33"
+   },
+   {
+    "n": "32824",
+    "v": "1"
+   },
+   {
+    "n": "32631",
+    "v": "38"
+   },
+   {
+    "n": "31948",
+    "v": "54"
+   },
+   {
+    "n": "30677",
+    "v": "7"
+   },
+   {
+    "n": "28296",
+    "v": "61"
+   },
+   {
+    "n": "28155",
+    "v": "25"
+   },
+   {
+    "n": "27232",
+    "v": "32"
+   },
+   {
+    "n": "26694",
+    "v": "20"
+   },
+   {
+    "n": "26122",
+    "v": "41"
+   },
+   {
+    "n": "25480",
+    "v": "22"
+   },
+   {
+    "n": "23998",
+    "v": "34"
+   },
+   {
+    "n": "23672",
+    "v": "24"
+   },
+   {
+    "n": "23053",
+    "v": "37"
+   },
+   {
+    "n": "22715",
+    "v": "28"
+   },
+   {
+    "n": "21986",
+    "v": "51"
+   },
+   {
+    "n": "20436",
+    "v": "45"
+   },
+   {
+    "n": "19527",
+    "v": "52"
+   },
+   {
+    "n": "19478",
+    "v": "40"
+   },
+   {
+    "n": "17735",
+    "v": "10"
+   },
+   {
+    "n": "15541",
+    "v": "35"
+   },
+   {
+    "n": "15034",
+    "v": "59"
+   },
+   {
+    "n": "13686",
+    "v": "47"
+   },
+   {
+    "n": "13606",
+    "v": "26"
+   },
+   {
+    "n": "13545",
+    "v": "2"
+   },
+   {
+    "n": "13500",
+    "v": "11"
+   },
+   {
+    "n": "13295",
+    "v": "58"
+   },
+   {
+    "n": "11990",
+    "v": "30"
+   },
+   {
+    "n": "11817",
+    "v": "36"
+   },
+   {
+    "n": "10650",
+    "v": "31"
+   },
+   {
+    "n": "10059",
+    "v": "15"
+   },
+   {
+    "n": "9864",
+    "v": "18"
+   },
+   {
+    "n": "9796"
+   },
+   {
+    "n": "8305",
+    "v": "17"
+   },
+   {
+    "n": "6882",
+    "v": "44"
+   },
+   {
+    "n": "5790",
+    "v": "21"
+   },
+   {
+    "n": "4614",
+    "v": "43"
+   },
+   {
+    "n": "2685",
+    "v": "12"
+   },
+   {
+    "n": "2302",
+    "v": "48"
+   },
+   {
+    "n": "2046",
+    "v": "16"
+   },
+   {
+    "n": "1839",
+    "v": "13"
+   },
+   {
+    "n": "1087",
+    "v": "39"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"v\",\"n\"]",
+   "x-soda2-types": "[\"number\",\"number\"]"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/kzjm-xkqj.json?[[\"$select\", \"count(*) AS n\"]]": {
+  "body": [
+   {
+    "n": "2215907"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"n\"]",
+   "x-soda2-types": "[\"number\"]"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/kzjm-xkqj.json?[[\"$select\", \"min(datetime) AS lo, max(datetime) AS hi\"]]": {
+  "body": [
+   {
+    "hi": "2026-10-15T20:06:00.000",
+    "lo": "2003-11-07T09:30:48.000"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"lo\",\"hi\"]",
+   "x-soda2-types": "[\"floating_timestamp\",\"floating_timestamp\"]"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/q256-3sug.json?[[\"$limit\", \"79\"], [\"$select\", \"_feature_id AS id, zcta5ce10 AS label\"], [\"$where\", \"_feature_id IN (4839,11479,17005,17011,17348,17349,17351,17354,17356,17359,17362,17365,17370,17373,17376,17790,17791,17793,17798,17799,17806,17808,17809,17811,17814,17916,17919,17920,17922,17923,17924,17926,18063,18067,18068,18071,18078,18080,18081,18226,18227,18228,18229,18230,18231,18232,18234,18235,18376,18377,18379,18383,18385,18386,18388,18390,18789,18792,18795,18798,18800,19575,19576,19578,19579,19581,19582,19584,20720,31844,31845,31847,31848,31850,31852,31853,31854,31855,32443)\"]]": {
+  "body": [
+   {
+    "id": "4839",
+    "label": "98422"
+   },
+   {
+    "id": "11479",
+    "label": "98354"
+   },
+   {
+    "id": "17005",
+    "label": "98014"
+   },
+   {
+    "id": "17011",
+    "label": "98021"
+   },
+   {
+    "id": "17348",
+    "label": "98022"
+   },
+   {
+    "id": "17349",
+    "label": "98023"
+   },
+   {
+    "id": "17351",
+    "label": "98026"
+   },
+   {
+    "id": "17354",
+    "label": "98027"
+   },
+   {
+    "id": "17356",
+    "label": "98028"
+   },
+   {
+    "id": "17359",
+    "label": "98029"
+   },
+   {
+    "id": "17362",
+    "label": "98030"
+   },
+   {
+    "id": "17365",
+    "label": "98031"
+   },
+   {
+    "id": "17370",
+    "label": "98032"
+   },
+   {
+    "id": "17373",
+    "label": "98033"
+   },
+   {
+    "id": "17376",
+    "label": "98034"
+   },
+   {
+    "id": "17790",
+    "label": "98038"
+   },
+   {
+    "id": "17791",
+    "label": "98039"
+   },
+   {
+    "id": "17793",
+    "label": "98040"
+   },
+   {
+    "id": "17798",
+    "label": "98045"
+   },
+   {
+    "id": "17799",
+    "label": "98047"
+   },
+   {
+    "id": "17806",
+    "label": "98052"
+   },
+   {
+    "id": "17808",
+    "label": "98055"
+   },
+   {
+    "id": "17809",
+    "label": "98056"
+   },
+   {
+    "id": "17811",
+    "label": "98057"
+   },
+   {
+    "id": "17814",
+    "label": "98058"
+   },
+   {
+    "id": "17916",
+    "label": "98136"
+   },
+   {
+    "id": "17919",
+    "label": "98144"
+   },
+   {
+    "id": "17920",
+    "label": "98146"
+   },
+   {
+    "id": "17922",
+    "label": "98148"
+   },
+   {
+    "id": "17923",
+    "label": "98154"
+   },
+   {
+    "id": "17924",
+    "label": "98155"
+   },
+   {
+    "id": "17926",
+    "label": "98164"
+   },
+   {
+    "id": "18063",
+    "label": "98059"
+   },
+   {
+    "id": "18067",
+    "label": "98068"
+   },
+   {
+    "id": "18068",
+    "label": "98070"
+   },
+   {
+    "id": "18071",
+    "label": "98072"
+   },
+   {
+    "id": "18078",
+    "label": "98077"
+   },
+   {
+    "id": "18080",
+    "label": "98092"
+   },
+   {
+    "id": "18081",
+    "label": "98101"
+   },
+   {
+    "id": "18226",
+    "label": "98166"
+   },
+   {
+    "id": "18227",
+    "label": "98168"
+   },
+   {
+    "id": "18228",
+    "label": "98174"
+   },
+   {
+    "id": "18229",
+    "label": "98177"
+   },
+   {
+    "id": "18230",
+    "label": "98178"
+   },
+   {
+    "id": "18231",
+    "label": "98188"
+   },
+   {
+    "id": "18232",
+    "label": "98195"
+   },
+   {
+    "id": "18234",
+    "label": "98198"
+   },
+   {
+    "id": "18235",
+    "label": "98199"
+   },
+   {
+    "id": "18376",
+    "label": "98102"
+   },
+   {
+    "id": "18377",
+    "label": "98103"
+   },
+   {
+    "id": "18379",
+    "label": "98104"
+   },
+   {
+    "id": "18383",
+    "label": "98105"
+   },
+   {
+    "id": "18385",
+    "label": "98106"
+   },
+   {
+    "id": "18386",
+    "label": "98107"
+   },
+   {
+    "id": "18388",
+    "label": "98108"
+   },
+   {
+    "id": "18390",
+    "label": "98109"
+   },
+   {
+    "id": "18789",
+    "label": "98112"
+   },
+   {
+    "id": "18792",
+    "label": "98115"
+   },
+   {
+    "id": "18795",
+    "label": "98116"
+   },
+   {
+    "id": "18798",
+    "label": "98117"
+   },
+   {
+    "id": "18800",
+    "label": "98118"
+   },
+   {
+    "id": "19575",
+    "label": "98119"
+   },
+   {
+    "id": "19576",
+    "label": "98121"
+   },
+   {
+    "id": "19578",
+    "label": "98122"
+   },
+   {
+    "id": "19579",
+    "label": "98125"
+   },
+   {
+    "id": "19581",
+    "label": "98126"
+   },
+   {
+    "id": "19582",
+    "label": "98133"
+   },
+   {
+    "id": "19584",
+    "label": "98134"
+   },
+   {
+    "id": "20720",
+    "label": "98288"
+   },
+   {
+    "id": "31844",
+    "label": "98001"
+   },
+   {
+    "id": "31845",
+    "label": "98002"
+   },
+   {
+    "id": "31847",
+    "label": "98003"
+   },
+   {
+    "id": "31848",
+    "label": "98004"
+   },
+   {
+    "id": "31850",
+    "label": "98005"
+   },
+   {
+    "id": "31852",
+    "label": "98006"
+   },
+   {
+    "id": "31853",
+    "label": "98007"
+   },
+   {
+    "id": "31854",
+    "label": "98008"
+   },
+   {
+    "id": "31855",
+    "label": "98010"
+   },
+   {
+    "id": "32443",
+    "label": "98011"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"id\",\"label\"]",
+   "x-soda2-types": "[\"number\",\"text\"]"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/ru88-fbhk.json?[[\"$limit\", \"61\"], [\"$select\", \"_feature_id AS id, name AS label\"], [\"$where\", \"_feature_id IN (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61)\"]]": {
+  "body": [
+   {
+    "id": "1",
+    "label": "ALASKA JUNCTION"
+   },
+   {
+    "id": "2",
+    "label": "ALKI"
+   },
+   {
+    "id": "3",
+    "label": "BALLARD NORTH"
+   },
+   {
+    "id": "4",
+    "label": "BALLARD SOUTH"
+   },
+   {
+    "id": "5",
+    "label": "BELLTOWN"
+   },
+   {
+    "id": "6",
+    "label": "BITTERLAKE"
+   },
+   {
+    "id": "7",
+    "label": "BRIGHTON/DUNLAP"
+   },
+   {
+    "id": "8",
+    "label": "CAPITOL HILL"
+   },
+   {
+    "id": "9",
+    "label": "CENTRAL AREA/SQUIRE PARK"
+   },
+   {
+    "id": "10",
+    "label": "CLAREMONT/RAINIER VISTA"
+   },
+   {
+    "id": "11",
+    "label": "COLUMBIA CITY"
+   },
+   {
+    "id": "12",
+    "label": "COMMERCIAL DUWAMISH"
+   },
+   {
+    "id": "13",
+    "label": "COMMERCIAL HARBOR ISLAND"
+   },
+   {
+    "id": "14",
+    "label": "DOWNTOWN COMMERICAL"
+   },
+   {
+    "id": "15",
+    "label": "HILLMAN CITY"
+   },
+   {
+    "id": "16",
+    "label": "EASTLAKE - EAST"
+   },
+   {
+    "id": "17",
+    "label": "EASTLAKE - WEST"
+   },
+   {
+    "id": "18",
+    "label": "FAUNTLEROY SW"
+   },
+   {
+    "id": "19",
+    "label": "FIRST HILL"
+   },
+   {
+    "id": "20",
+    "label": "FREMONT"
+   },
+   {
+    "id": "21",
+    "label": "GENESEE"
+   },
+   {
+    "id": "22",
+    "label": "GEORGETOWN"
+   },
+   {
+    "id": "23",
+    "label": "GREENWOOD"
+   },
+   {
+    "id": "24",
+    "label": "HIGH POINT"
+   },
+   {
+    "id": "25",
+    "label": "HIGHLAND PARK"
+   },
+   {
+    "id": "26",
+    "label": "INTERNATIONAL DISTRICT - EAST"
+   },
+   {
+    "id": "27",
+    "label": "INTERNATIONAL DISTRICT - WEST"
+   },
+   {
+    "id": "28",
+    "label": "JUDKINS PARK"
+   },
+   {
+    "id": "29",
+    "label": "LAKECITY"
+   },
+   {
+    "id": "30",
+    "label": "LAKEWOOD/SEWARD PARK"
+   },
+   {
+    "id": "31",
+    "label": "MADISON PARK"
+   },
+   {
+    "id": "32",
+    "label": "MADRONA/LESCHI"
+   },
+   {
+    "id": "33",
+    "label": "MAGNOLIA"
+   },
+   {
+    "id": "34",
+    "label": "MID BEACON HILL"
+   },
+   {
+    "id": "35",
+    "label": "MILLER PARK"
+   },
+   {
+    "id": "36",
+    "label": "MONTLAKE/PORTAGE BAY"
+   },
+   {
+    "id": "37",
+    "label": "MORGAN"
+   },
+   {
+    "id": "38",
+    "label": "MOUNT BAKER"
+   },
+   {
+    "id": "39",
+    "label": "MT BAKER/NORTH RAINIER"
+   },
+   {
+    "id": "40",
+    "label": "NEW HOLLY"
+   },
+   {
+    "id": "41",
+    "label": "NORTH ADMIRAL"
+   },
+   {
+    "id": "42",
+    "label": "NORTH BEACON HILL"
+   },
+   {
+    "id": "43",
+    "label": "NORTH BEACON/JEFFERSON PARK"
+   },
+   {
+    "id": "44",
+    "label": "NORTH CAPITOL HILL"
+   },
+   {
+    "id": "45",
+    "label": "NORTH DELRIDGE"
+   },
+   {
+    "id": "46",
+    "label": "NORTHGATE"
+   },
+   {
+    "id": "47",
+    "label": "PHINNEY RIDGE"
+   },
+   {
+    "id": "48",
+    "label": "PIGEON POINT"
+   },
+   {
+    "id": "49",
+    "label": "PIONEER SQUARE"
+   },
+   {
+    "id": "50",
+    "label": "QUEEN ANNE"
+   },
+   {
+    "id": "51",
+    "label": "RAINIER BEACH"
+   },
+   {
+    "id": "52",
+    "label": "RAINIER VIEW"
+   },
+   {
+    "id": "53",
+    "label": "ROOSEVELT/RAVENNA"
+   },
+   {
+    "id": "54",
+    "label": "ROXHILL/WESTWOOD/ARBOR HEIGHTS"
+   },
+   {
+    "id": "55",
+    "label": "SANDPOINT"
+   },
+   {
+    "id": "56",
+    "label": "SLU/CASCADE"
+   },
+   {
+    "id": "57",
+    "label": "SODO"
+   },
+   {
+    "id": "58",
+    "label": "SOUTH BEACON HILL"
+   },
+   {
+    "id": "59",
+    "label": "SOUTH PARK"
+   },
+   {
+    "id": "60",
+    "label": "UNIVERSITY"
+   },
+   {
+    "id": "61",
+    "label": "WALLINGFORD"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"id\",\"label\"]",
+   "x-soda2-types": "[\"number\",\"text\"]"
+  },
+  "status": 200
+ }
+}

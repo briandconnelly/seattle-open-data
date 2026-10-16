@@ -1,0 +1,253 @@
+{
+ "api.us.socrata.com/api/catalog/v1?[[\"domains\", \"cos-data.seattle.gov\"], [\"limit\", \"3\"], [\"offset\", \"0\"], [\"only\", \"dataset,filter,map,chart\"], [\"q\", \"fire 911\"], [\"search_context\", \"data.seattle.gov\"]]": {
+  "body": {
+   "resultSetSize": 2,
+   "results": [
+    {
+     "classification": {
+      "categories": [],
+      "domain_category": "Public Safety",
+      "domain_metadata": [
+       {
+        "key": "Department_Department",
+        "value": "Seattle Fire Department"
+       },
+       {
+        "key": "Common-Core_Publisher",
+        "value": "data.seattle.gov"
+       },
+       {
+        "key": "Common-Core_Contact-Email",
+        "value": "open.data@seattle.gov"
+       },
+       {
+        "key": "Refresh-Frequency_Frequency",
+        "value": "Near Realtime"
+       }
+      ],
+      "domain_tags": [
+       "dispatch e911",
+       "911",
+       "fire",
+       "seattle",
+       "sfd mobile"
+      ],
+      "tags": []
+     },
+     "creator": {
+      "display_name": "Ward, Evan L",
+      "id": "w8f2-69ad",
+      "user_type": "interactive"
+     },
+     "link": "https://data.seattle.gov/Public-Safety/Seattle-Real-Time-Fire-911-Calls/kzjm-xkqj",
+     "metadata": {
+      "domain": "data.seattle.gov",
+      "license": "Public Domain"
+     },
+     "owner": {
+      "display_name": "Ward, Evan L",
+      "id": "w8f2-69ad",
+      "user_type": "interactive"
+     },
+     "permalink": "https://data.seattle.gov/d/kzjm-xkqj",
+     "resource": {
+      "attribution": "City of Seattle",
+      "attribution_link": "http://web5.seattle.gov/MNM/incidentresponse.aspx",
+      "backend": "nbe",
+      "blob_mime_type": null,
+      "columns_datatype": [
+       "Number",
+       "Text",
+       "Number",
+       "Number",
+       "Text",
+       "Text",
+       "Calendar date",
+       "Point",
+       "Number",
+       "Number",
+       "Number",
+       "Number"
+      ],
+      "columns_description": [
+       "",
+       "Response Type",
+       "This is the longitude value. Lines of longitude run perpendicular to lines of latitude, and all pass through both poles.",
+       "This is the latitude value. Lines of latitude are parallel to the equator.",
+       "",
+       "Location of Incident",
+       "The date and time of the call.",
+       "",
+       "",
+       "",
+       "",
+       ""
+      ],
+      "columns_field_name": [
+       ":@computed_region_kuhn_3gp2",
+       "type",
+       "longitude",
+       "latitude",
+       "incident_number",
+       "address",
+       "datetime",
+       "report_location",
+       ":@computed_region_ru88_fbhk",
+       ":@computed_region_2day_rhn5",
+       ":@computed_region_cyqu_gs94",
+       ":@computed_region_q256_3sug"
+      ],
+      "columns_format": [
+       {},
+       {},
+       {
+        "precisionStyle": "standard"
+       },
+       {
+        "precisionStyle": "standard"
+       },
+       {
+        "align": "right",
+        "precisionStyle": "standard"
+       },
+       {},
+       {
+        "align": "left"
+       },
+       {},
+       {},
+       {},
+       {},
+       {}
+      ],
+      "columns_name": [
+       "SPD Beats",
+       "Type",
+       "Longitude",
+       "Latitude",
+       "Incident Number",
+       "Address",
+       "Datetime",
+       "Report Location",
+       "Seattle Police Department Micro Community Policing Plan Areas",
+       "2010 Census Tracts",
+       "City Council Districts",
+       "Zip Codes"
+      ],
+      "contact_email": "open.data@seattle.gov",
+      "createdAt": "2010-01-08T21:48:17.000Z",
+      "data_updated_at": "2026-10-16T03:10:47.000Z",
+      "description": "Provides Seattle Fire Department 911 dispatches. Updated every 5 minutes.",
+      "download_count": 61951,
+      "hide_from_data_json": false,
+      "id": "kzjm-xkqj",
+      "lens_display_type": "table",
+      "lens_view_type": "tabular",
+      "locked": false,
+      "metadata_updated_at": "2025-01-29T16:56:29.000Z",
+      "name": "Seattle Real Time Fire 911 Calls",
+      "page_views": {
+       "page_views_last_month": 40096,
+       "page_views_last_month_log": 15.291206679894753,
+       "page_views_last_week": 32158,
+       "page_views_last_week_log": 14.972934925448401,
+       "page_views_total": 325011,
+       "page_views_total_log": 18.310133460334477
+      },
+      "parent_fxf": [],
+      "provenance": "official",
+      "publication_date": "2019-04-26T00:00:46.000Z",
+      "resource_name": "fire-911",
+      "type": "dataset",
+      "updatedAt": "2026-10-16T03:10:47.000Z"
+     }
+    },
+    {
+     "classification": {
+      "categories": [],
+      "domain_category": "Public Safety",
+      "domain_metadata": [
+       {
+        "key": "Department_Department",
+        "value": "Seattle Fire Department"
+       },
+       {
+        "key": "Refresh-Frequency_Frequency",
+        "value": "5 minutes"
+       }
+      ],
+      "domain_tags": [],
+      "tags": []
+     },
+     "creator": {
+      "display_name": "Palay, Claire",
+      "id": "wt5u-xzdz",
+      "user_type": "interactive"
+     },
+     "link": "https://data.seattle.gov/Public-Safety/Illegal-Burns-Reported-to-911-Summer-2024/wbee-yvtp",
+     "metadata": {
+      "domain": "data.seattle.gov",
+      "license": "Public Domain"
+     },
+     "owner": {
+      "display_name": "Palay, Claire",
+      "id": "wt5u-xzdz",
+      "user_type": "interactive"
+     },
+     "permalink": "https://data.seattle.gov/d/wbee-yvtp",
+     "resource": {
+      "attribution": "City of Seattle",
+      "attribution_link": "http://web5.seattle.gov/MNM/incidentresponse.aspx",
+      "backend": "nbe",
+      "blob_mime_type": null,
+      "columns_datatype": [],
+      "columns_description": [],
+      "columns_field_name": [],
+      "columns_format": [],
+      "columns_name": [],
+      "contact_email": null,
+      "createdAt": "2024-10-02T23:15:23.000Z",
+      "data_updated_at": "2026-10-16T02:21:11.000Z",
+      "description": "Provides Seattle Fire Department 911 dispatches. Updated every 5 minutes.",
+      "download_count": 46,
+      "hide_from_data_json": false,
+      "id": "wbee-yvtp",
+      "lens_display_type": "visualization_canvas_map",
+      "lens_view_type": "tabular",
+      "locked": false,
+      "metadata_updated_at": "2024-10-03T17:47:44.000Z",
+      "name": "Illegal Burns Reported to 911 Summer 2024",
+      "page_views": {
+       "page_views_last_month": 916,
+       "page_views_last_month_log": 9.840777923595054,
+       "page_views_last_week": 742,
+       "page_views_last_week_log": 9.537218400538597,
+       "page_views_total": 1220,
+       "page_views_total_log": 10.253847484987404
+      },
+      "parent_fxf": [
+       "kzjm-xkqj"
+      ],
+      "provenance": "official",
+      "publication_date": "2024-10-03T17:47:44.000Z",
+      "resource_name": null,
+      "type": "map",
+      "updatedAt": "2026-10-16T02:21:11.000Z"
+     }
+    }
+   ],
+   "timings": {
+    "searchMillis": [
+     17,
+     7
+    ],
+    "serviceMillis": 32
+   },
+   "warnings": []
+  },
+  "headers": {
+   "content-type": "application/json;charset=utf-8"
+  },
+  "status": 200
+ }
+}

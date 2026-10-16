@@ -1,0 +1,394 @@
+{
+ "data.seattle.gov/api/views/5rc4-5s78.json?[]": {
+  "body": {
+   "approvals": [
+    {
+     "reviewedAt": 1636738245,
+     "reviewedAutomatically": true,
+     "state": "approved",
+     "submissionDetails": {
+      "permissionType": "READ"
+     },
+     "submissionId": 7675616,
+     "submissionObject": "public_audience_request",
+     "submissionOutcome": "change_audience",
+     "submissionOutcomeApplication": {
+      "endedAt": 1636738245,
+      "failureCount": 0,
+      "startedAt": 1636738245,
+      "status": "success"
+     },
+     "submittedAt": 1636738245,
+     "submitter": {
+      "displayName": "Palay, Claire",
+      "id": "wt5u-xzdz"
+     },
+     "targetAudience": "public",
+     "workflowId": 3127
+    },
+    {
+     "message": "The `strict_permissions` flag must be on to enable internal approvals.",
+     "state": "unsubmittable",
+     "targetAudience": "internal",
+     "workflowId": 4739
+    }
+   ],
+   "assetType": "map",
+   "attribution": "City of Seattle",
+   "attributionLink": "http://www.seattle.gov/sdci",
+   "averageRating": 0,
+   "category": "Land Base",
+   "clientContext": {
+    "clientContextVariables": [],
+    "inheritedVariables": {}
+   },
+   "columns": [],
+   "createdAt": 1636737973,
+   "description": "All building permits issued or in progress within the city of Seattle.",
+   "diciBackend": false,
+   "displayFormat": {
+    "visualizationCanvasMetadata": {
+     "version": 1,
+     "vifs": [
+      {
+       "configuration": {
+        "basemapOptions": {
+         "basemapStyle": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+         "geoCoderControl": true,
+         "geoLocateControl": true,
+         "navigationControl": true,
+         "searchBoundaryLowerRightLatitude": 47.49580904,
+         "searchBoundaryLowerRightLongitude": -122.23650928,
+         "searchBoundaryUpperLeftLatitude": 47.73397235,
+         "searchBoundaryUpperLeftLongitude": -122.43036847
+        },
+        "datasetMetadata": false,
+        "locateUser": false,
+        "mapCenterAndZoom": {
+         "center": {
+          "lat": 47.59979174698873,
+          "lng": -122.33672906489107
+         },
+         "zoom": 12.44883053149905
+        },
+        "mapPitchAndBearing": {
+         "bearing": 0,
+         "pitch": 0
+        },
+        "panAndZoom": true,
+        "showMultiplePointsSymbolInLegend": true,
+        "viewSourceDataLink": true
+       },
+       "currentMapLayerIndex": 0,
+       "description": "All building permits issued or in progress within the city of Seattle.",
+       "format": {
+        "type": "visualization_interchange_format",
+        "version": 4
+       },
+       "id": "e7ea0e1f-fbfc-4c4d-aef6-82367ef915b1",
+       "series": [
+        {
+         "color": {
+          "primary": "#eb6900"
+         },
+         "dataSource": {
+          "datasetUid": "76t5-zqzr",
+          "dimension": {
+           "columnName": "location1"
+          },
+          "measure": {
+           "aggregationFunction": "sum",
+           "columnName": "longitude"
+          },
+          "name": "Building Permits",
+          "type": "socrata.soql"
+         },
+         "mapOptions": {
+          "additionalFlyoutColumns": [
+           "permitclass",
+           "permittypedesc",
+           "description",
+           "originaladdress1"
+          ],
+          "colorByQuantificationMethod": "linear",
+          "mapFlyoutTitleColumnName": "permitnum",
+          "mapType": "pointMap",
+          "pointAggregation": "none"
+         },
+         "primary": true,
+         "showLegend": true,
+         "type": "map",
+         "visible": true
+        }
+       ],
+       "title": "Building Permit Map"
+      }
+     ]
+    }
+   },
+   "displayType": "visualization_canvas_map",
+   "domainCName": "data.seattle.gov",
+   "downloadCount": 30,
+   "flags": [
+    "federated",
+    "internalToPublicFederatedView",
+    "ownerMayBeContacted",
+    "restorable",
+    "restorePossibleForType"
+   ],
+   "grants": [
+    {
+     "flags": [
+      "public"
+     ],
+     "inherited": true,
+     "type": "viewer"
+    }
+   ],
+   "hideFromCatalog": false,
+   "hideFromDataJson": false,
+   "id": "5rc4-5s78",
+   "license": {
+    "name": "Public Domain"
+   },
+   "licenseId": "PUBLIC_DOMAIN",
+   "locked": false,
+   "metadata": {
+    "availableDisplayTypes": [
+     "visualization"
+    ],
+    "custom_fields": {
+     "Department": {
+      "Department": "Seattle Department of Construction & Inspections"
+     },
+     "Refresh Frequency": {
+      "Frequency": "Daily"
+     }
+    },
+    "rowLabel": "Permit"
+   },
+   "modifyingViewUid": "76t5-zqzr",
+   "name": "Building Permit Map",
+   "newBackend": true,
+   "numberOfComments": 0,
+   "oid": 42485111,
+   "owner": {
+    "disabledAt": 1638810233,
+    "displayName": "Callison, Moon",
+    "flags": [
+     "acceptedEula",
+     "mayBeStoriesCoOwner"
+    ],
+    "id": "w96u-i3ib",
+    "screenName": "Callison, Moon",
+    "type": "interactive"
+   },
+   "provenance": "official",
+   "publicationAppendEnabled": false,
+   "publicationDate": 1760028255,
+   "publicationGroup": 14312577,
+   "publicationStage": "published",
+   "query": {},
+   "rights": [
+    "read"
+   ],
+   "rowsUpdatedAt": 1792112870,
+   "rowsUpdatedBy": "2866-np2t",
+   "tableAuthor": {
+    "displayName": "Dev.Nambi@seattle.gov",
+    "flags": [
+     "acceptedEula"
+    ],
+    "id": "itw4-gqi9",
+    "screenName": "Dev.Nambi@seattle.gov",
+    "type": "interactive"
+   },
+   "tableId": 20571439,
+   "totalTimesRated": 0,
+   "viewCount": 55213,
+   "viewLastModified": 1760028255,
+   "viewType": "tabular"
+  },
+  "headers": {
+   "content-type": "application/json; charset=utf-8"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/api/views/w3qt-9btr.json?[]": {
+  "body": {
+   "approvals": [
+    {
+     "reviewedAt": 1740685541,
+     "reviewedAutomatically": false,
+     "reviewer": {
+      "displayName": "Palay, Claire",
+      "id": "wt5u-xzdz"
+     },
+     "state": "approved",
+     "submissionDetails": {
+      "permissionType": "READ"
+     },
+     "submissionId": 6729244,
+     "submissionObject": "public_audience_request",
+     "submissionOutcome": "change_audience",
+     "submissionOutcomeApplication": {
+      "endedAt": 1740685541,
+      "failureCount": 0,
+      "startedAt": 1740685541,
+      "status": "success"
+     },
+     "submittedAt": 1738607890,
+     "submitter": {
+      "displayName": "Allen Grissom",
+      "id": "kxwt-ugr6"
+     },
+     "targetAudience": "public",
+     "workflowId": 3127
+    },
+    {
+     "message": "The `strict_permissions` flag must be on to enable internal approvals.",
+     "state": "unsubmittable",
+     "targetAudience": "internal",
+     "workflowId": 4739
+    }
+   ],
+   "assetType": "federated_href",
+   "averageRating": 0,
+   "clientContext": {
+    "clientContextVariables": [],
+    "inheritedVariables": {}
+   },
+   "columns": [],
+   "createdAt": 1738607890,
+   "description": "Neighborhood Map Atlas neighborhoods are derived from the\u00a0<a href='https://clerk.seattle.gov/~public/nmaps/aboutnm.htm' target='_blank' rel='nofollow ugc noopener noreferrer'>Seattle City Clerk's Office Geographic Indexing Atlas</a>.\u00a0 These are the smallest neighborhood areas and have been supplemented with alternate names from other sources in 2020.\u00a0 They roll up to the district areas.\u00a0 The sub-neighborhood field contains the most common name and the alternate name field is a comma delimited list of all the alternate names.<div><br /></div><div>The original atlas is designed for subject indexing of legislation, photographs, and other documents and is an unofficial delineation of neighborhood boundaries used by the City Clerks Office. Sources for this atlas and the neighborhood names used in it include a 1980 neighborhood map produced by the Department of Community Development, Seattle Public Library indexes, a 1984-1986 Neighborhood Profiles feature series in the Seattle Post-Intelligencer, numerous parks, land use and transportation planning studies, and records in the Seattle Municipal Archives. Many of the neighborhood names are traditional names whose meaning has changed over the years, and others derive from subdivision names or elementary school attendance areas.</div><div><br /></div><div><p><span style='font-size:10.0pt;'>Disclaimer:\nThe Seattle City Clerk's Office Geographic Indexing Atlas is designed for\nsubject indexing of legislation, photographs, and other records in the City\nClerk's Office and Seattle Municipal Archives according to geographic area.\nNeighborhoods are named and delineated in this collection of maps in order to\nprovide consistency in the way geographic names are used in describing records\nof the Archives and City Clerk, thus allowing precise retrieval of records. The\nneighborhood names and boundaries are not intended to represent any\n&quot;official&quot; City of Seattle neighborhood map.\u00a0</span></p>\n\n<p><span style='font-size:10pt;'>The Office of the City Clerk makes no claims\nas to the completeness, accuracy, or content of any data contained in the\nGeographic Indexing Atlas; nor does it make any representation of any kind,\nincluding, but not limited to, warranty of the accuracy or fitness for a\nparticular use; nor are any such warranties to be implied or inferred with\nrespect to the representations furnished herein. The maps are subject to change\nfor administrative purposes of the Office of the City Clerk. Information\ncontained in the site, if used for any purpose other than as an indexing and\nsearch aid for the databases of the Office of the City Clerk, is being used at\none's own risk.</span><br /></p></div>",
+   "diciBackend": false,
+   "displayType": "federated",
+   "domainCName": "data.seattle.gov",
+   "downloadCount": 0,
+   "flags": [
+    "default",
+    "federated",
+    "internalToPublicFederatedView",
+    "ownerMayBeContacted"
+   ],
+   "grants": [
+    {
+     "flags": [
+      "public"
+     ],
+     "inherited": false,
+     "type": "viewer"
+    }
+   ],
+   "hideFromCatalog": false,
+   "hideFromDataJson": false,
+   "id": "w3qt-9btr",
+   "locked": false,
+   "metadata": {
+    "accessPoints": {
+     "text/html": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::neighborhood-map-atlas-neighborhoods"
+    },
+    "additionalAccessPoints": [
+     {
+      "title": "ArcGIS Hub Dataset",
+      "urls": {
+       "text/html": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::neighborhood-map-atlas-neighborhoods"
+      }
+     },
+     {
+      "title": "ArcGIS GeoService",
+      "urls": {
+       "application/json": "https://services.arcgis.com/ZOyb2t4B0UYuYNYH/arcgis/rest/services/nma_nhoods_sub/FeatureServer/0"
+      }
+     },
+     {
+      "title": "CSV",
+      "urls": {
+       "text/csv": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/b4a142f592e94d39a3bf787f3c112c1d/csv?layers=0"
+      }
+     },
+     {
+      "title": "Shapefile",
+      "urls": {
+       "application/zip": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/b4a142f592e94d39a3bf787f3c112c1d/shapefile?layers=0"
+      }
+     },
+     {
+      "title": "GeoJSON",
+      "urls": {
+       "application/vnd.geo+json": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/b4a142f592e94d39a3bf787f3c112c1d/geojson?layers=0"
+      }
+     },
+     {
+      "title": "KML",
+      "urls": {
+       "application/vnd.google-earth.kml+xml": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/b4a142f592e94d39a3bf787f3c112c1d/kml?layers=0"
+      }
+     }
+    ],
+    "custom_fields": {
+     "Common Core": {
+      "Contact Email": "mailto:mapgis.mapgis@seattle.gov",
+      "Contact Name": "Planning_SeattleCityGIS",
+      "Geographic Coverage": "-122.4308,47.4933,-122.2422,47.7359",
+      "Homepage": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::neighborhood-map-atlas-neighborhoods",
+      "Issued": "2020-12-02T01:01:53.000Z",
+      "Last Update": "2026-04-20T16:31:48.834Z",
+      "License": "https://opendatacommons.org/licenses/pddl/summary",
+      "Public Access Level": "public",
+      "Publisher": "City of Seattle",
+      "Theme": "geospatial",
+      "Unique Identifier": "https://www.arcgis.com/home/item.html?id=b4a142f592e94d39a3bf787f3c112c1d&sublayer=0"
+     }
+    }
+   },
+   "name": "Neighborhood Map Atlas Neighborhoods",
+   "newBackend": false,
+   "numberOfComments": 0,
+   "oid": 41112148,
+   "owner": {
+    "displayName": "Allen Grissom",
+    "flags": [
+     "acceptedEula"
+    ],
+    "id": "kxwt-ugr6",
+    "screenName": "Allen Grissom",
+    "type": "interactive"
+   },
+   "provenance": "official",
+   "publicationAppendEnabled": false,
+   "publicationDate": 1738607890,
+   "publicationGroup": 19773391,
+   "publicationStage": "published",
+   "query": {},
+   "rights": [
+    "read"
+   ],
+   "rowsUpdatedAt": 1738607890,
+   "tableAuthor": {
+    "displayName": "Allen Grissom",
+    "flags": [
+     "acceptedEula"
+    ],
+    "id": "kxwt-ugr6",
+    "screenName": "Allen Grissom",
+    "type": "interactive"
+   },
+   "tableId": 19773391,
+   "tags": [
+    "gis",
+    "neighborhood",
+    "planning",
+    "seattle gis open data"
+   ],
+   "totalTimesRated": 0,
+   "viewCount": 11853,
+   "viewLastModified": 1776971990,
+   "viewType": "href"
+  },
+  "headers": {
+   "content-type": "application/json; charset=utf-8"
+  },
+  "status": 200
+ }
+}

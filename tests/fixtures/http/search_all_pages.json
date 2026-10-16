@@ -1,0 +1,1661 @@
+{
+ "api.us.socrata.com/api/catalog/v1?[[\"domains\", \"cos-data.seattle.gov\"], [\"limit\", \"4\"], [\"offset\", \"0\"], [\"q\", \"neighborhood\"], [\"search_context\", \"data.seattle.gov\"]]": {
+  "body": {
+   "resultSetSize": 71,
+   "results": [
+    {
+     "classification": {
+      "categories": [],
+      "domain_metadata": [
+       {
+        "key": "Common-Core_Contact-Email",
+        "value": "mailto:mapgis.mapgis@seattle.gov"
+       },
+       {
+        "key": "Common-Core_Last-Update",
+        "value": "2026-04-20T16:31:48.834Z"
+       },
+       {
+        "key": "Common-Core_License",
+        "value": "https://opendatacommons.org/licenses/pddl/summary"
+       },
+       {
+        "key": "Common-Core_Public-Access-Level",
+        "value": "public"
+       },
+       {
+        "key": "Common-Core_Geographic-Coverage",
+        "value": "-122.4308,47.4933,-122.2422,47.7359"
+       },
+       {
+        "key": "Common-Core_Unique-Identifier",
+        "value": "https://www.arcgis.com/home/item.html?id=b4a142f592e94d39a3bf787f3c112c1d&sublayer=0"
+       },
+       {
+        "key": "Common-Core_Publisher",
+        "value": "City of Seattle"
+       },
+       {
+        "key": "Common-Core_Homepage",
+        "value": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::neighborhood-map-atlas-neighborhoods"
+       },
+       {
+        "key": "Common-Core_Theme",
+        "value": "geospatial"
+       },
+       {
+        "key": "Common-Core_Issued",
+        "value": "2020-12-02T01:01:53.000Z"
+       },
+       {
+        "key": "Common-Core_Contact-Name",
+        "value": "Planning_SeattleCityGIS"
+       }
+      ],
+      "domain_tags": [
+       "neighborhood",
+       "seattle gis open data",
+       "planning",
+       "gis"
+      ],
+      "tags": []
+     },
+     "creator": {
+      "display_name": "Allen Grissom",
+      "id": "kxwt-ugr6",
+      "user_type": "interactive"
+     },
+     "link": "https://data.seattle.gov/dataset/Neighborhood-Map-Atlas-Neighborhoods/w3qt-9btr",
+     "metadata": {
+      "access_points": {
+       "text/html": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::neighborhood-map-atlas-neighborhoods"
+      },
+      "additional_access_points": [
+       {
+        "title": "ArcGIS Hub Dataset",
+        "urls": {
+         "text/html": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::neighborhood-map-atlas-neighborhoods"
+        }
+       },
+       {
+        "title": "ArcGIS GeoService",
+        "urls": {
+         "application/json": "https://services.arcgis.com/ZOyb2t4B0UYuYNYH/arcgis/rest/services/nma_nhoods_sub/FeatureServer/0"
+        }
+       },
+       {
+        "title": "CSV",
+        "urls": {
+         "text/csv": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/b4a142f592e94d39a3bf787f3c112c1d/csv?layers=0"
+        }
+       },
+       {
+        "title": "Shapefile",
+        "urls": {
+         "application/zip": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/b4a142f592e94d39a3bf787f3c112c1d/shapefile?layers=0"
+        }
+       },
+       {
+        "title": "GeoJSON",
+        "urls": {
+         "application/vnd.geo+json": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/b4a142f592e94d39a3bf787f3c112c1d/geojson?layers=0"
+        }
+       },
+       {
+        "title": "KML",
+        "urls": {
+         "application/vnd.google-earth.kml+xml": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/b4a142f592e94d39a3bf787f3c112c1d/kml?layers=0"
+        }
+       }
+      ],
+      "domain": "data.seattle.gov"
+     },
+     "owner": {
+      "display_name": "Allen Grissom",
+      "id": "kxwt-ugr6",
+      "user_type": "interactive"
+     },
+     "permalink": "https://data.seattle.gov/d/w3qt-9btr",
+     "resource": {
+      "attribution": null,
+      "attribution_link": null,
+      "backend": "not_a_dataset",
+      "blob_mime_type": null,
+      "columns_datatype": [],
+      "columns_description": [],
+      "columns_field_name": [],
+      "columns_format": [],
+      "columns_name": [],
+      "contact_email": "mailto:mapgis.mapgis@seattle.gov",
+      "createdAt": "2025-02-03T18:38:10.000Z",
+      "data_updated_at": "2025-02-03T18:38:10.000Z",
+      "description": "Neighborhood Map Atlas neighborhoods are derived from the\u00a0<a href='https://clerk.seattle.gov/~public/nmaps/aboutnm.htm' target='_blank' rel='nofollow ugc noopener noreferrer'>Seattle City Clerk's Office Geographic Indexing Atlas</a>.\u00a0 These are the smallest neighborhood areas and have been supplemented with alternate names from other sources in 2020.\u00a0 They roll up to the district areas.\u00a0 The sub-neighborhood field contains the most common name and the alternate name field is a comma delimited list of all the alternate names.<div><br /></div><div>The original atlas is designed for subject indexing of legislation, photographs, and other documents and is an unofficial delineation of neighborhood boundaries used by the City Clerks Office. Sources for this atlas and the neighborhood names used in it include a 1980 neighborhood map produced by the Department of Community Development, Seattle Public Library indexes, a 1984-1986 Neighborhood Profiles feature series in the Seattle Post-Intelligencer, numerous parks, land use and transportation planning studies, and records in the Seattle Municipal Archives. Many of the neighborhood names are traditional names whose meaning has changed over the years, and others derive from subdivision names or elementary school attendance areas.</div><div><br /></div><div><p><span style='font-size:10.0pt;'>Disclaimer:\nThe Seattle City Clerk's Office Geographic Indexing Atlas is designed for\nsubject indexing of legislation, photographs, and other records in the City\nClerk's Office and Seattle Municipal Archives according to geographic area.\nNeighborhoods are named and delineated in this collection of maps in order to\nprovide consistency in the way geographic names are used in describing records\nof the Archives and City Clerk, thus allowing precise retrieval of records. The\nneighborhood names and boundaries are not intended to represent any\n&quot;official&quot; City of Seattle neighborhood map.\u00a0</span></p>\n\n<p><span style='font-size:10pt;'>The Office of the City Clerk makes no claims\nas to the completeness, accuracy, or content of any data contained in the\nGeographic Indexing Atlas; nor does it make any representation of any kind,\nincluding, but not limited to, warranty of the accuracy or fitness for a\nparticular use; nor are any such warranties to be implied or inferred with\nrespect to the representations furnished herein. The maps are subject to change\nfor administrative purposes of the Office of the City Clerk. Information\ncontained in the site, if used for any purpose other than as an indexing and\nsearch aid for the databases of the Office of the City Clerk, is being used at\none's own risk.</span><br /></p></div>",
+      "download_count": 0,
+      "hide_from_data_json": false,
+      "id": "w3qt-9btr",
+      "lens_display_type": "federated",
+      "lens_view_type": "href",
+      "locked": false,
+      "metadata_updated_at": "2026-04-23T19:19:50.000Z",
+      "name": "Neighborhood Map Atlas Neighborhoods",
+      "page_views": {
+       "page_views_last_month": 1680,
+       "page_views_last_month_log": 10.715104009236168,
+       "page_views_last_week": 961,
+       "page_views_last_week_log": 9.909893083770042,
+       "page_views_total": 11853,
+       "page_views_total_log": 13.533086342167612
+      },
+      "parent_fxf": [],
+      "provenance": "official",
+      "publication_date": "2025-02-03T18:38:10.000Z",
+      "resource_name": null,
+      "type": "federated_href",
+      "updatedAt": "2026-04-23T19:19:50.000Z"
+     }
+    },
+    {
+     "classification": {
+      "categories": [],
+      "domain_category": "Community and Culture",
+      "domain_metadata": [
+       {
+        "key": "Department_Department",
+        "value": "Department of Neighborhoods"
+       },
+       {
+        "key": "Common-Core_Publisher",
+        "value": "data.seattle.gov"
+       },
+       {
+        "key": "Common-Core_Contact-Email",
+        "value": "open.data@seattle.gov"
+       },
+       {
+        "key": "Refresh-Frequency_Frequency",
+        "value": "Quarterly"
+       }
+      ],
+      "domain_tags": [
+       "grants",
+       "don",
+       "nmf",
+       "neighborhoods",
+       "neighborhood",
+       "matching funds"
+      ],
+      "tags": []
+     },
+     "creator": {
+      "display_name": "Jenn.Brandon@seattle.gov",
+      "id": "7vpz-tzi4",
+      "user_type": "interactive"
+     },
+     "link": "https://data.seattle.gov/Community-and-Culture/City-of-Seattle-Neighborhood-Matching-Funds/pr2n-4pn6",
+     "metadata": {
+      "domain": "data.seattle.gov",
+      "license": "Public Domain"
+     },
+     "owner": {
+      "display_name": "Jenn.Brandon@seattle.gov",
+      "id": "7vpz-tzi4",
+      "user_type": "interactive"
+     },
+     "permalink": "https://data.seattle.gov/d/pr2n-4pn6",
+     "resource": {
+      "attribution": "Seattle Department of Neighborhoods",
+      "attribution_link": "http://www.seattle.gov/neighborhoods/",
+      "backend": "nbe",
+      "blob_mime_type": null,
+      "columns_datatype": [
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Number",
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Number",
+       "Number"
+      ],
+      "columns_description": [
+       "Fund Name",
+       "Project Name",
+       "Project Number",
+       "Organization Name",
+       "Pledged Match Amount",
+       "Project Description",
+       "Project Number",
+       "Seattle City Council District",
+       "Neighborhood District",
+       "Year Awarded",
+       "Awarded Amount"
+      ],
+      "columns_field_name": [
+       "program_area",
+       "project_title",
+       "contract_number",
+       "organization_name",
+       "pledged_match_amount",
+       "project_description",
+       "id",
+       "seattle_electoral_district",
+       "neighborhood_district",
+       "award_year",
+       "awarded_amount"
+      ],
+      "columns_format": [
+       {},
+       {},
+       {},
+       {},
+       {},
+       {},
+       {
+        "align": "right",
+        "noCommas": "false",
+        "precisionStyle": "standard"
+       },
+       {},
+       {},
+       {
+        "align": "right",
+        "noCommas": "true",
+        "precisionStyle": "standard"
+       },
+       {}
+      ],
+      "columns_name": [
+       "Program Area",
+       "Project Title",
+       "Contract Number",
+       "Organization Name",
+       "Pledged Match Amount",
+       "Project Description",
+       "ID",
+       "Seattle Electoral District",
+       "Neighborhood District",
+       "Award Year",
+       "Awarded Amount"
+      ],
+      "contact_email": "open.data@seattle.gov",
+      "createdAt": "2015-02-18T20:32:20.000Z",
+      "data_updated_at": "2026-04-14T20:48:21.000Z",
+      "description": "Seattle Department of Neighborhoods (DON) - All awarded Neighborhood Matching Funds (NMF) from 1989 to present.",
+      "download_count": 20431,
+      "hide_from_data_json": false,
+      "id": "pr2n-4pn6",
+      "lens_display_type": "table",
+      "lens_view_type": "tabular",
+      "locked": false,
+      "metadata_updated_at": "2026-04-14T20:48:16.000Z",
+      "name": "City of Seattle Neighborhood Matching Funds",
+      "page_views": {
+       "page_views_last_month": 1601,
+       "page_views_last_month_log": 10.64565843240871,
+       "page_views_last_week": 850,
+       "page_views_last_week_log": 9.733015321685963,
+       "page_views_total": 19733,
+       "page_views_total_log": 14.268395793556557
+      },
+      "parent_fxf": [],
+      "provenance": "official",
+      "publication_date": "2017-01-04T22:45:26.000Z",
+      "resource_name": null,
+      "type": "dataset",
+      "updatedAt": "2026-04-14T20:48:21.000Z"
+     }
+    },
+    {
+     "classification": {
+      "categories": [],
+      "domain_metadata": [
+       {
+        "key": "Common-Core_Contact-Email",
+        "value": "mailto:mapgis.mapgis@seattle.gov"
+       },
+       {
+        "key": "Common-Core_Last-Update",
+        "value": "2026-04-20T16:31:49.107Z"
+       },
+       {
+        "key": "Common-Core_License",
+        "value": "https://opendatacommons.org/licenses/pddl/summary"
+       },
+       {
+        "key": "Common-Core_Public-Access-Level",
+        "value": "public"
+       },
+       {
+        "key": "Common-Core_Geographic-Coverage",
+        "value": "-122.4308,47.4933,-122.2422,47.7359"
+       },
+       {
+        "key": "Common-Core_Unique-Identifier",
+        "value": "https://www.arcgis.com/home/item.html?id=531976f80bd74c0992ba9079e4d86e2a&sublayer=0"
+       },
+       {
+        "key": "Common-Core_Publisher",
+        "value": "City of Seattle"
+       },
+       {
+        "key": "Common-Core_Homepage",
+        "value": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::neighborhood-map-atlas-districts"
+       },
+       {
+        "key": "Common-Core_Theme",
+        "value": "geospatial"
+       },
+       {
+        "key": "Common-Core_Issued",
+        "value": "2020-12-02T00:59:07.000Z"
+       },
+       {
+        "key": "Common-Core_Contact-Name",
+        "value": "Planning_SeattleCityGIS"
+       }
+      ],
+      "domain_tags": [
+       "gis",
+       "seattle gis open data",
+       "neighborhood",
+       "planning"
+      ],
+      "tags": []
+     },
+     "creator": {
+      "display_name": "Allen Grissom",
+      "id": "kxwt-ugr6",
+      "user_type": "interactive"
+     },
+     "link": "https://data.seattle.gov/dataset/Neighborhood-Map-Atlas-Districts/9uf3-nnq3",
+     "metadata": {
+      "access_points": {
+       "text/html": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::neighborhood-map-atlas-districts"
+      },
+      "additional_access_points": [
+       {
+        "title": "ArcGIS Hub Dataset",
+        "urls": {
+         "text/html": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::neighborhood-map-atlas-districts"
+        }
+       },
+       {
+        "title": "ArcGIS GeoService",
+        "urls": {
+         "application/json": "https://services.arcgis.com/ZOyb2t4B0UYuYNYH/arcgis/rest/services/nma_nhoods_main/FeatureServer/0"
+        }
+       },
+       {
+        "title": "CSV",
+        "urls": {
+         "text/csv": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/531976f80bd74c0992ba9079e4d86e2a/csv?layers=0"
+        }
+       },
+       {
+        "title": "Shapefile",
+        "urls": {
+         "application/zip": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/531976f80bd74c0992ba9079e4d86e2a/shapefile?layers=0"
+        }
+       },
+       {
+        "title": "GeoJSON",
+        "urls": {
+         "application/vnd.geo+json": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/531976f80bd74c0992ba9079e4d86e2a/geojson?layers=0"
+        }
+       },
+       {
+        "title": "KML",
+        "urls": {
+         "application/vnd.google-earth.kml+xml": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/531976f80bd74c0992ba9079e4d86e2a/kml?layers=0"
+        }
+       }
+      ],
+      "domain": "data.seattle.gov"
+     },
+     "owner": {
+      "display_name": "Allen Grissom",
+      "id": "kxwt-ugr6",
+      "user_type": "interactive"
+     },
+     "permalink": "https://data.seattle.gov/d/9uf3-nnq3",
+     "resource": {
+      "attribution": null,
+      "attribution_link": null,
+      "backend": "not_a_dataset",
+      "blob_mime_type": null,
+      "columns_datatype": [],
+      "columns_description": [],
+      "columns_field_name": [],
+      "columns_format": [],
+      "columns_name": [],
+      "contact_email": "mailto:mapgis.mapgis@seattle.gov",
+      "createdAt": "2025-02-03T18:37:29.000Z",
+      "data_updated_at": "2025-02-03T18:37:29.000Z",
+      "description": "Neighborhood map atlas district areas are derived from the\u00a0<a href='https://clerk.seattle.gov/~public/nmaps/aboutnm.htm' target='_blank' rel='nofollow ugc noopener noreferrer'>Seattle City Clerk's Office Geographic Indexing Atlas</a>.\u00a0 These are the largest neighborhood areas and have been supplemented with alternate names from other sources in 2020.\u00a0 They are subdivided further into the neighborhood map atlas sub-areas called neighborhoods.\u00a0 The sub-neighborhoods field contains a comma delimited list of all the sub-areas and their alternate names.<div><br /></div><div>The original atlas is designed for subject indexing of legislation, photographs, and other documents and is an unofficial delineation of neighborhood boundaries used by the City Clerks Office. Sources for this atlas and the neighborhood names used in it include a 1980 neighborhood map produced by the Department of Community Development, Seattle Public Library indexes, a 1984-1986 Neighborhood Profiles feature series in the Seattle Post-Intelligencer, numerous parks, land use and transportation planning studies, and records in the Seattle Municipal Archives.\u00a0</div><div><br /></div><div>Many of the neighborhood names are traditional names whose meaning has changed over the years, and others derive from subdivision names or elementary school attendance areas.</div><div><br /></div><div><p style='margin-top:0px; margin-bottom:1.5rem; font-family:&quot;Avenir Next W01&quot;, &quot;Avenir Next W00&quot;, &quot;Avenir Next&quot;, Avenir, &quot;Helvetica Neue&quot;, sans-serif; font-size:16px;'><span style='font-family:inherit; font-size:10pt;'>Disclaimer: The Seattle City Clerk's Office Geographic Indexing Atlas is designed for subject indexing of legislation, photographs, and other records in the City Clerk's Office and Seattle Municipal Archives according to geographic area. Neighborhoods are named and delineated in this collection of maps in order to provide consistency in the way geographic names are used in describing records of the Archives and City Clerk, thus allowing precise retrieval of records. The neighborhood names and boundaries are not intended to represent any &quot;official&quot; City of Seattle neighborhood map.\u00a0</span></p><p style='margin-top:0px; margin-bottom:1.5rem; font-family:&quot;Avenir Next W01&quot;, &quot;Avenir Next W00&quot;, &quot;Avenir Next&quot;, Avenir, &quot;Helvetica Neue&quot;, sans-serif; font-size:16px;'><span style='font-family:inherit; font-size:10pt;'>The Office of the City Clerk makes no claims as to the completeness, accuracy, or content of any data contained in the Geographic Indexing Atlas; nor does it make any representation of any kind, including, but not limited to, warranty of the accuracy or fitness for a particular use; nor are any such warranties to be implied or inferred with respect to the representations furnished herein. The maps are subject to change for administrative purposes of the Office of the City Clerk. Information contained in the site, if used for any purpose other than as an indexing and search aid for the databases of the Office of the City Clerk, is being used at one's own risk.</span></p></div>",
+      "download_count": 0,
+      "hide_from_data_json": false,
+      "id": "9uf3-nnq3",
+      "lens_display_type": "federated",
+      "lens_view_type": "href",
+      "locked": false,
+      "metadata_updated_at": "2026-04-23T19:19:45.000Z",
+      "name": "Neighborhood Map Atlas Districts",
+      "page_views": {
+       "page_views_last_month": 237,
+       "page_views_last_month_log": 7.894817763307945,
+       "page_views_last_week": 48,
+       "page_views_last_week_log": 5.614709844115208,
+       "page_views_total": 1040,
+       "page_views_total_log": 10.023754353299418
+      },
+      "parent_fxf": [],
+      "provenance": "official",
+      "publication_date": "2025-02-03T18:37:29.000Z",
+      "resource_name": null,
+      "type": "federated_href",
+      "updatedAt": "2026-04-23T19:19:45.000Z"
+     }
+    },
+    {
+     "classification": {
+      "categories": [],
+      "domain_category": "Public Safety",
+      "domain_metadata": [
+       {
+        "key": "Department_Department",
+        "value": "Seattle Police Department"
+       },
+       {
+        "key": "Common-Core_Publisher",
+        "value": "data.seattle.gov"
+       },
+       {
+        "key": "Common-Core_Contact-Email",
+        "value": "open.data@seattle.gov"
+       },
+       {
+        "key": "Refresh-Frequency_Frequency",
+        "value": "Daily"
+       }
+      ],
+      "domain_tags": [
+       "crime",
+       "offenses",
+       "data-driven",
+       "beat",
+       "seastat",
+       "nibrs",
+       "mcpp"
+      ],
+      "tags": []
+     },
+     "creator": {
+      "display_name": "SPD_AskSPDAnalytics@seattle.gov",
+      "id": "hp7p-wh9r",
+      "user_type": "team"
+     },
+     "link": "https://data.seattle.gov/Public-Safety/SPD-Crime-Data-2008-Present/tazs-3rd5",
+     "metadata": {
+      "domain": "data.seattle.gov",
+      "license": "Public Domain"
+     },
+     "owner": {
+      "display_name": "SPD_AskSPDAnalytics@seattle.gov",
+      "id": "hp7p-wh9r",
+      "user_type": "team"
+     },
+     "permalink": "https://data.seattle.gov/d/tazs-3rd5",
+     "resource": {
+      "attribution": "SPD",
+      "attribution_link": null,
+      "backend": "nbe",
+      "blob_mime_type": null,
+      "columns_datatype": [
+       "Text",
+       "Text",
+       "Calendar date",
+       "Text",
+       "Text",
+       "Text",
+       "Calendar date",
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Text"
+      ],
+      "columns_description": [
+       "Grouping of Offense Sub Categories for reporting. These include Violent, Property. Data Driven refers to these as Offense Category.",
+       "Primary key/UID for the overall report. One report can contain multiple offenses, as denoted by the Offense ID.  ",
+       "Date of Offense is the Offense start date and if null then Event Start Date.",
+       "Offense(s) address location blurred to the one hundred block. ",
+       "Designated Micro-Community Policing Plans (MCPP) boundary where offense(s) occurred.",
+       "Geographic reporting area of the Report Location from Mark43.",
+       "Date and time the offense(s) was reported. (Can differ from date of occurrence)  ",
+       "Offense(s) spatial coordinate blurred to the one hundred block. ",
+       "Offense(s) spatial coordinate blurred to the one hundred block.  ",
+       "Reported NIBRS offense code",
+       "Corresponding offense group.  ",
+       "Categorization of Offense Codes (NIBRS Codes) into Sub Categories for reporting. Data Driven refers to these as Offense.",
+       "NIBRS Offense code description",
+       "Distinct identifier to denote when there are multiple offenses associated with a single report.",
+       "Designated police sector boundary where offense(s) occurred.",
+       "The census tract represents small-area neighborhood units, while the census block is the smallest geographic unit used by the United States Census Bureau for tabulating data. Census tracts and blocks allow for the analysis of demographic and housing information. The field contains the Census Tract ID and Census Block ID as one string with both IDs separated by a period. This string is derived from the 2020 Census.",
+       "Designated police precinct boundary where offense(s) occurred.  ",
+       "Shots  Fired Event statistic only, other event statistics not included. Used to identify shots fired records.",
+       "Designated police sector boundary where offense(s) occurred.  ",
+       "Corresponding offense crime against category. "
+      ],
+      "columns_field_name": [
+       "offense_category",
+       "report_number",
+       "offense_date",
+       "block_address",
+       "neighborhood",
+       "reporting_area",
+       "report_date_time",
+       "latitude",
+       "longitude",
+       "nibrs_offense_code",
+       "nibrs_group_a_b",
+       "offense_sub_category",
+       "nibrs_offense_code_description",
+       "offense_id",
+       "sector",
+       "census_block_2020",
+       "precinct",
+       "shooting_type_group",
+       "beat",
+       "nibrs_crime_against_category"
+      ],
+      "columns_format": [
+       {},
+       {},
+       {},
+       {},
+       {},
+       {},
+       {},
+       {},
+       {},
+       {},
+       {},
+       {},
+       {},
+       {
+        "noCommas": "true"
+       },
+       {},
+       {},
+       {},
+       {},
+       {},
+       {}
+      ],
+      "columns_name": [
+       "Offense Category",
+       "Report Number",
+       "Offense Date",
+       "Block Address",
+       "Neighborhood",
+       "Reporting Area",
+       "Report DateTime",
+       "Latitude",
+       "Longitude",
+       "NIBRS_offense_code",
+       "NIBRS Group AB",
+       "Offense Sub Category",
+       "NIBRS Offense Code Description",
+       "Offense ID",
+       "Sector",
+       "Census Block 2020",
+       "Precinct",
+       "Shooting Type Group",
+       "Beat",
+       "NIBRS Crime Against Category"
+      ],
+      "contact_email": "open.data@seattle.gov",
+      "createdAt": "2020-02-14T17:57:12.000Z",
+      "data_updated_at": "2026-10-15T15:35:37.000Z",
+      "description": "The Seattle Police Department (SPD) replaced its Records Management System (RMS) in May 2019. To preserve data quality and continuity between systems (2008-Present), SPD relied on the National Incident-Based Reporting System (NIBRS). The standardization of crime classifications allows for comparison over time. For more information on definitions and classifications, please visit https://www.fbi.gov/services/cjis/ucr/nibrs. \n\nAdditional groupings are used to analyze crime in SPD\u2019s <a href=\"http://www.seattle.gov/police/information-and-data/crime-dashboard\">Crime Dashboard</a>. Violent and property crime categories align with best practices. For additional inquiries, we encourage the use of the underline data to align with the corresponding query. \n\nDisclaimer: Only finalized (UCR approved) reports are released. Those in draft, awaiting approval, or completed after the update, will not appear until the subsequent day(s). Data is updated once every twenty-four hours. Records and classification changes will occur as a report makes its way through the approval and investigative process.",
+      "download_count": 53433,
+      "hide_from_data_json": false,
+      "id": "tazs-3rd5",
+      "lens_display_type": "table",
+      "lens_view_type": "tabular",
+      "locked": false,
+      "metadata_updated_at": "2026-10-15T15:29:36.000Z",
+      "name": "SPD Crime Data: 2008-Present",
+      "page_views": {
+       "page_views_last_month": 6546,
+       "page_views_last_month_log": 12.67661826358852,
+       "page_views_last_week": 1663,
+       "page_views_last_week_log": 10.700439718141093,
+       "page_views_total": 127690,
+       "page_views_total_log": 16.96229731809186
+      },
+      "parent_fxf": [],
+      "provenance": "official",
+      "publication_date": "2026-04-23T13:58:55.000Z",
+      "resource_name": null,
+      "type": "dataset",
+      "updatedAt": "2026-10-15T15:35:37.000Z"
+     }
+    }
+   ],
+   "timings": {
+    "searchMillis": [
+     14,
+     6
+    ],
+    "serviceMillis": 26
+   },
+   "warnings": []
+  },
+  "headers": {
+   "content-type": "application/json;charset=utf-8"
+  },
+  "status": 200
+ },
+ "api.us.socrata.com/api/catalog/v1?[[\"domains\", \"cos-data.seattle.gov\"], [\"limit\", \"4\"], [\"offset\", \"4\"], [\"q\", \"neighborhood\"], [\"search_context\", \"data.seattle.gov\"]]": {
+  "body": {
+   "resultSetSize": 71,
+   "results": [
+    {
+     "classification": {
+      "categories": [],
+      "domain_metadata": [
+       {
+        "key": "Common-Core_Contact-Email",
+        "value": "mailto:mapgis.mapgis@seattle.gov"
+       },
+       {
+        "key": "Common-Core_Last-Update",
+        "value": "2023-10-23T22:56:36.215Z"
+       },
+       {
+        "key": "Common-Core_License",
+        "value": "The City of Seattle makes no representation or warranty as to its accuracy, and in particular, its accuracy as to labeling, dimensions, contours, property boundaries, or placement or location or any map feature thereof."
+       },
+       {
+        "key": "Common-Core_Public-Access-Level",
+        "value": "public"
+       },
+       {
+        "key": "Common-Core_Geographic-Coverage",
+        "value": "-122.3935,47.5056,-122.2643,47.7352"
+       },
+       {
+        "key": "Common-Core_Unique-Identifier",
+        "value": "https://www.arcgis.com/home/item.html?id=e984a09be4114398a32997b51fb1ea76&sublayer=0"
+       },
+       {
+        "key": "Common-Core_Publisher",
+        "value": "City of Seattle ArcGIS Online"
+       },
+       {
+        "key": "Common-Core_Homepage",
+        "value": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::neighborhood-design-guidelines"
+       },
+       {
+        "key": "Common-Core_Theme",
+        "value": "geospatial"
+       },
+       {
+        "key": "Common-Core_Issued",
+        "value": "2023-10-23T22:56:33.000Z"
+       },
+       {
+        "key": "Common-Core_Contact-Name",
+        "value": "SDCI_SeattleCityGIS"
+       }
+      ],
+      "domain_tags": [
+       "neighborhood specific guidelines",
+       "sdci",
+       "seattle gis open data",
+       "design review",
+       "dr"
+      ],
+      "tags": []
+     },
+     "creator": {
+      "display_name": "Allen Grissom",
+      "id": "kxwt-ugr6",
+      "user_type": "interactive"
+     },
+     "link": "https://data.seattle.gov/dataset/Neighborhood-Design-Guidelines/mu4n-mz8g",
+     "metadata": {
+      "access_points": {
+       "text/html": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::neighborhood-design-guidelines"
+      },
+      "additional_access_points": [
+       {
+        "title": "ArcGIS Hub Dataset",
+        "urls": {
+         "text/html": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::neighborhood-design-guidelines"
+        }
+       },
+       {
+        "title": "ArcGIS GeoService",
+        "urls": {
+         "application/json": "https://services.arcgis.com/ZOyb2t4B0UYuYNYH/arcgis/rest/services/Neighborhood_Design_Guidelines/FeatureServer/0"
+        }
+       },
+       {
+        "title": "CSV",
+        "urls": {
+         "text/csv": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/e984a09be4114398a32997b51fb1ea76/csv?layers=0"
+        }
+       },
+       {
+        "title": "Shapefile",
+        "urls": {
+         "application/zip": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/e984a09be4114398a32997b51fb1ea76/shapefile?layers=0"
+        }
+       },
+       {
+        "title": "GeoJSON",
+        "urls": {
+         "application/vnd.geo+json": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/e984a09be4114398a32997b51fb1ea76/geojson?layers=0"
+        }
+       },
+       {
+        "title": "KML",
+        "urls": {
+         "application/vnd.google-earth.kml+xml": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/e984a09be4114398a32997b51fb1ea76/kml?layers=0"
+        }
+       }
+      ],
+      "domain": "data.seattle.gov"
+     },
+     "owner": {
+      "display_name": "Allen Grissom",
+      "id": "kxwt-ugr6",
+      "user_type": "interactive"
+     },
+     "permalink": "https://data.seattle.gov/d/mu4n-mz8g",
+     "resource": {
+      "attribution": null,
+      "attribution_link": null,
+      "backend": "not_a_dataset",
+      "blob_mime_type": null,
+      "columns_datatype": [],
+      "columns_description": [],
+      "columns_field_name": [],
+      "columns_format": [],
+      "columns_name": [],
+      "contact_email": "mailto:mapgis.mapgis@seattle.gov",
+      "createdAt": "2025-02-03T18:38:19.000Z",
+      "data_updated_at": "2025-02-03T18:38:19.000Z",
+      "description": "<div>Neighborhood design guidelines direct designers and project reviewers to look closely at the neighborhood and its character to design new buildings that enhance their surroundings. Each record links to neighborhood specific design guidelines.<br /></div><div><br /></div><div>Published from DPD.DR_Guideline_Areas with a definition query of NSDRGA = 1\u00a0to omit incomplete records. Symbolized on the\u00a0NSDRGA_NAM attribute field.<br /></div><div><br /></div><div><div>For more information, visit the\u00a0<a href='https://www.seattle.gov/sdci/about-us/who-we-are/design-review/design-guidelines' target='_blank' rel='nofollow ugc noopener noreferrer'>SDCI Design Review Program webpage</a>.</div></div><div><br /></div><div>Updated as needed, last updated October 2023.</div>",
+      "download_count": 0,
+      "hide_from_data_json": false,
+      "id": "mu4n-mz8g",
+      "lens_display_type": "federated",
+      "lens_view_type": "href",
+      "locked": false,
+      "metadata_updated_at": "2025-04-06T19:13:30.000Z",
+      "name": "Neighborhood Design Guidelines",
+      "page_views": {
+       "page_views_last_month": 10,
+       "page_views_last_month_log": 3.4594316186372978,
+       "page_views_last_week": 5,
+       "page_views_last_week_log": 2.584962500721156,
+       "page_views_total": 216,
+       "page_views_total_log": 7.7615512324444795
+      },
+      "parent_fxf": [],
+      "provenance": "official",
+      "publication_date": "2025-02-03T18:38:19.000Z",
+      "resource_name": null,
+      "type": "federated_href",
+      "updatedAt": "2025-04-06T19:13:30.000Z"
+     }
+    },
+    {
+     "classification": {
+      "categories": [],
+      "domain_metadata": [
+       {
+        "key": "Common-Core_Contact-Email",
+        "value": "mailto:mapgis.mapgis@seattle.gov"
+       },
+       {
+        "key": "Common-Core_Last-Update",
+        "value": "2026-08-12T19:05:48.244Z"
+       },
+       {
+        "key": "Common-Core_License",
+        "value": "<span style='font-family:&quot;Avenir Next W01&quot;, &quot;Avenir Next W00&quot;, &quot;Avenir Next&quot;, Avenir, &quot;Helvetica Neue&quot;, sans-serif; font-size:16px;'>The City of Seattle makes no representation or warranty as to its accuracy, and in particular, its accuracy as to labeling, dimensions, contours, property boundaries, or placement or location of any map feature thereof.</span>"
+       },
+       {
+        "key": "Common-Core_Public-Access-Level",
+        "value": "public"
+       },
+       {
+        "key": "Common-Core_Geographic-Coverage",
+        "value": "-122.4308,47.4933,-122.2421,47.7359"
+       },
+       {
+        "key": "Common-Core_Unique-Identifier",
+        "value": "https://www.arcgis.com/home/item.html?id=67cfe2dd8f0b475891b8feba89037303&sublayer=0"
+       },
+       {
+        "key": "Common-Core_Publisher",
+        "value": "City of Seattle ArcGIS Online"
+       },
+       {
+        "key": "Common-Core_Homepage",
+        "value": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::seattle-neighborhoods-top-50-american-community-survey-data"
+       },
+       {
+        "key": "Common-Core_Theme",
+        "value": "geospatial"
+       },
+       {
+        "key": "Common-Core_Issued",
+        "value": "2024-02-08T00:56:16.000Z"
+       },
+       {
+        "key": "Common-Core_Contact-Name",
+        "value": "Planning_SeattleCityGIS"
+       }
+      ],
+      "domain_tags": [
+       "demographics",
+       "poverty",
+       "planning",
+       "languages spoken",
+       "income",
+       "housing units",
+       "housing cost",
+       "households",
+       "gis",
+       "gender",
+       "employment",
+       "educational attainment",
+       "disability",
+       "council districts",
+       "acs",
+       "acs-bg",
+       "age",
+       "american community survey",
+       "census",
+       "census block groups",
+       "comp plan",
+       "urban villages",
+       "transportation",
+       "tenure",
+       "seattle gis open data",
+       "race and ethnicity"
+      ],
+      "tags": []
+     },
+     "creator": {
+      "display_name": "Allen Grissom",
+      "id": "kxwt-ugr6",
+      "user_type": "interactive"
+     },
+     "link": "https://data.seattle.gov/dataset/Seattle-Neighborhoods-Top-50-American-Community-Su/3nzs-xvkv",
+     "metadata": {
+      "access_points": {
+       "text/html": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::seattle-neighborhoods-top-50-american-community-survey-data"
+      },
+      "additional_access_points": [
+       {
+        "title": "ArcGIS Hub Dataset",
+        "urls": {
+         "text/html": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::seattle-neighborhoods-top-50-american-community-survey-data"
+        }
+       },
+       {
+        "title": "ArcGIS GeoService",
+        "urls": {
+         "application/json": "https://services.arcgis.com/ZOyb2t4B0UYuYNYH/arcgis/rest/services/neighborhood_map_layers/FeatureServer/0"
+        }
+       },
+       {
+        "title": "CSV",
+        "urls": {
+         "text/csv": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/67cfe2dd8f0b475891b8feba89037303/csv?layers=0"
+        }
+       },
+       {
+        "title": "Shapefile",
+        "urls": {
+         "application/zip": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/67cfe2dd8f0b475891b8feba89037303/shapefile?layers=0"
+        }
+       },
+       {
+        "title": "GeoJSON",
+        "urls": {
+         "application/vnd.geo+json": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/67cfe2dd8f0b475891b8feba89037303/geojson?layers=0"
+        }
+       },
+       {
+        "title": "KML",
+        "urls": {
+         "application/vnd.google-earth.kml+xml": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/67cfe2dd8f0b475891b8feba89037303/kml?layers=0"
+        }
+       },
+       {
+        "title": "File Geodatabase",
+        "urls": {
+         "application/zip": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/67cfe2dd8f0b475891b8feba89037303/filegdb?layers=0"
+        }
+       },
+       {
+        "title": "Feature Collection",
+        "urls": {
+         "text/plain": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/67cfe2dd8f0b475891b8feba89037303/featureCollection?layers=0"
+        }
+       },
+       {
+        "title": "Excel",
+        "urls": {
+         "application/vnd.ms-excel": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/67cfe2dd8f0b475891b8feba89037303/excel?layers=0"
+        }
+       },
+       {
+        "title": "GeoPackage",
+        "urls": {
+         "application/geopackage+sqlite3": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/67cfe2dd8f0b475891b8feba89037303/geoPackage?layers=0"
+        }
+       },
+       {
+        "title": "SQLite Geodatabase",
+        "urls": {
+         "application/geopackage+sqlite3": "https://data-seattlecitygis.opendata.arcgis.com/api/download/v1/items/67cfe2dd8f0b475891b8feba89037303/sqlite?layers=0"
+        }
+       }
+      ],
+      "domain": "data.seattle.gov"
+     },
+     "owner": {
+      "display_name": "Allen Grissom",
+      "id": "kxwt-ugr6",
+      "user_type": "interactive"
+     },
+     "permalink": "https://data.seattle.gov/d/3nzs-xvkv",
+     "resource": {
+      "attribution": null,
+      "attribution_link": null,
+      "backend": "not_a_dataset",
+      "blob_mime_type": null,
+      "columns_datatype": [],
+      "columns_description": [],
+      "columns_field_name": [],
+      "columns_format": [],
+      "columns_name": [],
+      "contact_email": "mailto:mapgis.mapgis@seattle.gov",
+      "createdAt": "2025-02-03T18:38:36.000Z",
+      "data_updated_at": "2025-02-03T18:38:36.000Z",
+      "description": "<div style='text-align:Left;'><div style='font-size:12pt;'><p style='margin:0;'><span style='font-family:&quot;Avenir Next W01&quot;, &quot;Avenir Next W00&quot;, &quot;Avenir Next&quot;, Avenir, &quot;Helvetica Neue&quot;, sans-serif; font-size:12pt;'>City of Seattle neighborhood boundaries with American Community Survey (ACS) 5-year series data of frequently requested topics. Data is pulled from block group tables for the most recent ACS vintage and summarized to the neighborhoods based on block group assignment. Seattle neighborhood geography of Council Districts, Community Reporting Areas and Comprehensive Plan Growth Areas are included.</span></p><div style='font-family:&quot;Avenir Next W01&quot;, &quot;Avenir Next W00&quot;, &quot;Avenir Next&quot;, Avenir, &quot;Helvetica Neue&quot;, sans-serif;'><br /><span style='background-color:rgb(255,255,255); color:rgb(74,74,74); font-family:&quot;Avenir Next&quot;, Avenir, &quot;Helvetica Neue&quot;, sans-serif; font-size:16px;'><span style='display:inline !important; float:none; font-style:normal; font-variant-caps:normal; font-variant-ligatures:normal; font-weight:400; letter-spacing:normal; text-align:start; text-decoration-color:initial; text-decoration-style:initial; text-indent:0px; text-transform:none; word-spacing:0px;'>The census block groups have been assigned to a neighborhood based on the distribution of the total population from the 2020 decennial census for the component census blocks. If the majority of the population in the block group were inside the boundaries of the neighborhood, the block group was assigned wholly to that neighborhood.&nbsp;</span></span></div><div style='font-family:&quot;Avenir Next W01&quot;, &quot;Avenir Next W00&quot;, &quot;Avenir Next&quot;, Avenir, &quot;Helvetica Neue&quot;, sans-serif;'>&nbsp;</div><div style='font-family:&quot;Avenir Next W01&quot;, &quot;Avenir Next W00&quot;, &quot;Avenir Next&quot;, Avenir, &quot;Helvetica Neue&quot;, sans-serif;'>The attribute data associated with this map is updated annually to contain the most currently released American Community Survey (ACS) 5-year data and contains estimates and margins of error. To see the full list of attributes available in this service, go to the \"Data\" tab, and choose \"Fields\" at the top right.&nbsp;<br />&nbsp;</div><div style='font-family:&quot;Avenir Next W01&quot;, &quot;Avenir Next W00&quot;, &quot;Avenir Next&quot;, Avenir, &quot;Helvetica Neue&quot;, sans-serif;'><div><span style='font-family:inherit;'>For more information regarding the ACS vintage, table sources and data processing notes, please see the&nbsp;</span><a style='color:rgb(0, 97, 155); font-family:inherit; text-decoration-line:none;' target='_blank' href='https://seattlecitygis.maps.arcgis.com/home/item.html?id=ff59dc88bfab4eb3bc4cd11eaf67ec2a' rel='nofollow ugc noopener noreferrer'>item page for the source map service</a><span style='font-family:inherit;'>.</span></div></div></div></div>",
+      "download_count": 0,
+      "hide_from_data_json": false,
+      "id": "3nzs-xvkv",
+      "lens_display_type": "federated",
+      "lens_view_type": "href",
+      "locked": false,
+      "metadata_updated_at": "2026-08-21T20:13:04.000Z",
+      "name": "Seattle Neighborhoods - Top 50 American Community Survey Data",
+      "page_views": {
+       "page_views_last_month": 1112,
+       "page_views_last_month_log": 10.12023787734196,
+       "page_views_last_week": 918,
+       "page_views_last_week_log": 9.843921051289035,
+       "page_views_total": 2536,
+       "page_views_total_log": 11.308907804063939
+      },
+      "parent_fxf": [],
+      "provenance": "official",
+      "publication_date": "2025-02-03T18:38:36.000Z",
+      "resource_name": null,
+      "type": "federated_href",
+      "updatedAt": "2026-08-21T20:13:04.000Z"
+     }
+    },
+    {
+     "classification": {
+      "categories": [],
+      "domain_category": "Built Environment",
+      "domain_metadata": [
+       {
+        "key": "Department_Department",
+        "value": "Seattle Department of Construction & Inspections"
+       },
+       {
+        "key": "Common-Core_Publisher",
+        "value": "data.seattle.gov"
+       },
+       {
+        "key": "Common-Core_Contact-Email",
+        "value": "open.data@seattle.gov"
+       },
+       {
+        "key": "Refresh-Frequency_Frequency",
+        "value": "Other"
+       }
+      ],
+      "domain_tags": [
+       "earthquake",
+       "building",
+       "urm",
+       "sdci",
+       "seattle department of construction and inspections",
+       "unreinforced masonry buildings"
+      ],
+      "tags": []
+     },
+     "creator": {
+      "display_name": "Seattle SDCI",
+      "id": "5wys-t5s3",
+      "user_type": "interactive"
+     },
+     "link": "https://data.seattle.gov/Built-Environment/Unreinforced-Masonry-Buildings/54qs-2h7f",
+     "metadata": {
+      "domain": "data.seattle.gov",
+      "license": "Public Domain"
+     },
+     "owner": {
+      "display_name": "Seattle SDCI",
+      "id": "5wys-t5s3",
+      "user_type": "interactive"
+     },
+     "permalink": "https://data.seattle.gov/d/54qs-2h7f",
+     "resource": {
+      "attribution": "City of Seattle",
+      "attribution_link": "http://www.seattle.gov/sdci/",
+      "backend": "nbe",
+      "blob_mime_type": null,
+      "columns_datatype": [
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Point",
+       "Text",
+       "Text",
+       "Text",
+       "Number",
+       "Text",
+       "Text"
+      ],
+      "columns_description": [
+       "How much earthquake mitigation has been done",
+       "How is the building used.",
+       "The City where the unreinforced masonry building is located.",
+       "Seattle neighborhood where the building is located",
+       "How we know it\u2019s an Unreinforced Masonry Building.",
+       "The state where the unreinforced masonry building is located",
+       "Longitude and Latitude for each building",
+       "The risk category is based on how the building is used.",
+       "Building address",
+       "Year building was built.",
+       "Number of stories",
+       "The Zip code for the area of the city.",
+       "Estimated number of occupants of the building."
+      ],
+      "columns_field_name": [
+       "retrofit_level",
+       "building_use",
+       "city",
+       "neighborhood",
+       "confirmation_source",
+       "state",
+       "geocoded_column",
+       "preliminary_risk_category",
+       "address",
+       "year_built",
+       "no_stories",
+       "zip_code",
+       "estimated_number_of_occupants"
+      ],
+      "columns_format": [
+       {
+        "align": "left",
+        "displayStyle": "plain"
+       },
+       {
+        "align": "left",
+        "displayStyle": "plain"
+       },
+       {},
+       {
+        "align": "left",
+        "displayStyle": "plain"
+       },
+       {
+        "align": "left",
+        "displayStyle": "plain"
+       },
+       {},
+       {},
+       {
+        "align": "left",
+        "displayStyle": "plain"
+       },
+       {
+        "align": "left",
+        "displayStyle": "plain"
+       },
+       {
+        "align": "right",
+        "displayStyle": "plain"
+       },
+       {
+        "align": "right",
+        "noCommas": "false",
+        "precisionStyle": "standard"
+       },
+       {},
+       {
+        "align": "left",
+        "displayStyle": "plain"
+       }
+      ],
+      "columns_name": [
+       "Retrofit Level",
+       "Building Use",
+       "City",
+       "Neighborhood",
+       "Confirmation Source",
+       "State",
+       "Long/Lat",
+       "Preliminary Risk Category",
+       "Address",
+       "Year Built",
+       "No. Stories",
+       "Zip Code",
+       "Estimated Number of Occupants"
+      ],
+      "contact_email": "open.data@seattle.gov",
+      "createdAt": "2016-05-06T16:37:44.000Z",
+      "data_updated_at": "2025-01-08T17:52:06.000Z",
+      "description": "***As of 1/16/2025 this dataset is no longer being maintained. The updated version of this data can be accessed here: https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::unreinforced-masonry-buildings-urm/about ****\n\nA list of known unreinforced masonry buildings in the Seattle city limits.",
+      "download_count": 3372,
+      "hide_from_data_json": false,
+      "id": "54qs-2h7f",
+      "lens_display_type": "table",
+      "lens_view_type": "tabular",
+      "locked": false,
+      "metadata_updated_at": "2025-01-29T04:58:54.000Z",
+      "name": "Unreinforced Masonry Buildings",
+      "page_views": {
+       "page_views_last_month": 1656,
+       "page_views_last_month_log": 10.694357887221452,
+       "page_views_last_week": 862,
+       "page_views_last_week_log": 9.753216749178955,
+       "page_views_total": 63867,
+       "page_views_total_log": 15.962805653369744
+      },
+      "parent_fxf": [],
+      "provenance": "official",
+      "publication_date": "2023-08-17T17:32:57.000Z",
+      "resource_name": null,
+      "type": "dataset",
+      "updatedAt": "2025-01-29T04:58:54.000Z"
+     }
+    },
+    {
+     "classification": {
+      "categories": [],
+      "domain_category": "Built Environment",
+      "domain_metadata": [
+       {
+        "key": "Department_Department",
+        "value": "Office of Sustainability and Environment"
+       },
+       {
+        "key": "Common-Core_Publisher",
+        "value": "data.seattle.gov"
+       },
+       {
+        "key": "Common-Core_Contact-Email",
+        "value": "open.data@seattle.gov"
+       },
+       {
+        "key": "Refresh-Frequency_Frequency",
+        "value": "Quarterly"
+       }
+      ],
+      "domain_tags": [
+       "gas",
+       "greenhouse gas",
+       "multifamily",
+       "multifamily buildings",
+       "office of sustainability and environment",
+       "fossil gas",
+       "fossil fuel",
+       "steam",
+       "benchmarking",
+       "building energy",
+       "buildings",
+       "climate change",
+       "eui",
+       "energy star",
+       "energy",
+       "electricity",
+       "commercial buildings",
+       "ose"
+      ],
+      "tags": []
+     },
+     "creator": {
+      "display_name": "Mike.Roos@seattle.gov",
+      "id": "4kkq-z72t",
+      "user_type": "interactive"
+     },
+     "link": "https://data.seattle.gov/Built-Environment/Building-Energy-Benchmarking-Data-2015-Present/teqw-tu6e",
+     "metadata": {
+      "domain": "data.seattle.gov",
+      "license": "Public Domain"
+     },
+     "owner": {
+      "display_name": "Mike.Roos@seattle.gov",
+      "id": "4kkq-z72t",
+      "user_type": "interactive"
+     },
+     "permalink": "https://data.seattle.gov/d/teqw-tu6e",
+     "resource": {
+      "attribution": "The Office of Sustainability and Environment",
+      "attribution_link": "http://www.seattle.gov/energybenchmarking",
+      "backend": "nbe",
+      "blob_mime_type": null,
+      "columns_datatype": [
+       "Text",
+       "Text",
+       "Text",
+       "Text",
+       "Number",
+       "Number",
+       "Number",
+       "Number",
+       "Number",
+       "Number",
+       "Number",
+       "Number",
+       "Number",
+       "Number",
+       "Number",
+       "Number",
+       "Number",
+       "Number",
+       "Number",
+       "Text",
+       "Text",
+       "Number",
+       "Number",
+       "Text",
+       "Number",
+       "Text",
+       "Number",
+       "Number",
+       "Number",
+       "Number",
+       "Text",
+       "Number",
+       "Number",
+       "Number",
+       "Text",
+       "Text",
+       "Number",
+       "Text",
+       "Text",
+       "Text",
+       "Number",
+       "Checkbox",
+       "Number",
+       "Text",
+       "Text",
+       "Text"
+      ],
+      "columns_description": [
+       "Year in which a property was constructed.",
+       "Property street address",
+       "The largest property use type based on building gross floor area (i.e. square footage).",
+       "The primary use of a property (e.g. office, retail store). Primary use is defined as a function that accounts for more than 50% of a property. This is the Property Type - EPA Calculated field from Portfolio Manager.",
+       "Source Energy Use Intensity (EUI) is a property's Source Energy Use divided by its gross floor area. Source Energy Use is the annual energy used to operate the property, including losses from generation, transmission, & distribution. Source EUI is measured in thousands of British thermal units (kBtu) per square foot.",
+       "Weather Normalized (WN) Source Energy Use Intensity (EUI) is a property's WN Source Energy divided by its gross floor area. WN Source Energy is the Source Energy Use the property would have consumed during 30-year average weather conditions. WN Source EUI is measured in measured in thousands of British thermal units (kBtu) per square foot.",
+       "The annual amount of energy consumed by the property from all sources of energy, adjusted to what the property would have consumed during 30-year average weather conditions.",
+       "The annual amount of energy consumed by the property from all sources of energy.",
+       "Site Energy Use Intensity (EUI) is a property's Site Energy Use divided by its gross floor area. Site Energy Use is the annual amount of all the energy consumed by the property on-site, as reported on utility bills. Site EUI is measured in thousands of British thermal units (kBtu) per square foot.",
+       "Weather Normalized (WN) Site Energy Use Intensity (EUI) is a property's WN Site Energy divided by its gross floor area (in square feet). WN Site Energy is the Site Energy Use the property would have consumed during 30-year average weather conditions. WN Site EUI is measured in measured in thousands of British thermal units (kBtu) per square foot.",
+       "An EPA calculated 1-100 rating that assesses a property\u2019s overall energy performance, based on national data to control for differences among climate, building uses, and operations. A score of 50 represents the national median.",
+       "Total space in square feet of all types of parking (Fully Enclosed, Partially Enclosed, and Open).Figure based on self-reported user data in ENERGY STAR Portfolio Manager.",
+       "Total floor space in square feet between the outside surfaces of a building\u2019s enclosing walls. This includes all areas inside the building(s), such as tenant space, common areas, stairwells, basements, storage, etc... but does not include parking. Figure based on self-reported user data in ENERGY STAR Portfolio Manager.",
+       "Total building and parking gross floor area. Figure based on self-reported user data in ENERGY STAR Portfolio Manager.",
+       "Total space in square feet of all types of parking (Fully Enclosed, Partially Enclosed, and Open). Figure reflects Seattle OSE's confirmed property gross floor area as reported in public records like King County Assessor Data, or otherwise verified.",
+       "Total floor space in square feet between the outside surfaces of a building\u2019s enclosing walls. This includes all areas inside the building(s), such as tenant space, common areas, stairwells, basements, storage, etc... but does not include parking. Figure reflects Seattle OSE's confirmed property gross floor area as reported in public records like King County Assessor Data, or otherwise verified.",
+       "Total building and parking gross floor area. Figure reflects Seattle OSE's confirmed property gross floor area as reported in public records like King County Assessor Data, or otherwise verified.",
+       "Number of buildings as part of each property.",
+       "Number of occupiable floors at or above grade level. n",
+       "Property city",
+       "Property King County Parcel Identification Number (PIN).",
+       "Property longitude",
+       "The gross floor area in square feet, of the largest property use type.",
+       "The second largest property use type based on building gross floor area (i.e. square footage), if applicable.",
+       "The gross floor area in square feet, of the second largest property use type, if applicable.",
+       "The third largest property use type based on building gross floor area (i.e. square footage), if applicable.",
+       "The gross floor area in square feet, of the third largest property use type, if applicable.",
+       "The annual amount of electricity consumed by the property on-site, including electricity purchased from the grid and generated by onsite renewable systems, measured in kWh.",
+       "The annual amount of district steam consumed by the property on-site, measured in thousands of British thermal units (kBtu).",
+       "The annual amount of utility-supplied natural gas consumed by the property, measured in therms.",
+       "If known, what compliance issues were present for the specified reporting year at the end of that reporting year's enforcement grace period.",
+       "The annual amount of electricity consumed by the property on-site, including electricity purchased from the grid and generated by onsite renewable systems, measured in thousands of British thermal units (kBtu).",
+       "Total Greenhouse Gas Emissions divided by property's gross floor area, measured in kilograms of carbon dioxide equivalent per square foot.",
+       "Property latitude",
+       "Property zip code",
+       "Property state",
+       "The total amount of greenhouse gas emissions, including carbon dioxide, methane, and nitrous oxide gases released into the atmosphere as a result of energy consumption at the property, measured in metric tons of carbon dioxide equivalent. This calculation employs the utility-specific emissions factors defined in the 2023 Building Emissions Performance Standard law.",
+       "Whether a property met energy benchmarking requirements for the specified reporting year, as of the end of that reporting year's enforcement grace period.",
+       "Property neighborhood area defined by the City of Seattle Department of Neighborhoods.",
+       "City of Seattle high level building type classification.",
+       "The current City of Seattle council district in which the property is located. Boundaries are current as of the November 2023 municipal election, reflecting the 2022 decennial redistricting process.",
+       "Whether a property has been demolished as of the 2023 reporting cycle.",
+       "The annual amount of utility-supplied natural gas consumed by the property, measured in thousands of British thermal units (kBtu).",
+       "A unique identifier assigned to each property covered by the Seattle Benchmarking Ordinance for tracking and identification purposes.",
+       "Calendar year (January-December) represented by each data record.",
+       "Official or common property name on record with the City of Seattle."
+      ],
+      "columns_field_name": [
+       "yearbuilt",
+       "address",
+       "largestpropertyusetype",
+       "epapropertytype",
+       "sourceeui_kbtu_sf",
+       "sourceeuiwn_kbtu_sf",
+       "siteenergyusewn_kbtu",
+       "siteenergyuse_kbtu",
+       "siteeui_kbtu_sf",
+       "siteeuiwn_kbtu_sf",
+       "energystarscore",
+       "selfreportparking",
+       "selfreportgfabuildings",
+       "selfreportgfatotal",
+       "propertygfaparking",
+       "propertygfabuildings",
+       "propertygfatotal",
+       "numberofbuildings",
+       "numberoffloors",
+       "city",
+       "taxparcelidentificationnumber",
+       "longitude",
+       "largestpropertyusetypegfa",
+       "secondlargestpropertyusetype",
+       "secondlargestpropertyuse",
+       "thirdlargestpropertyusetype",
+       "thirdlargestpropertyusetypegfa",
+       "electricity_kwh",
+       "steamuse_kbtu",
+       "naturalgas_therms",
+       "complianceissue",
+       "electricity_kbtu",
+       "ghgemissionsintensity",
+       "latitude",
+       "zipcode",
+       "state",
+       "totalghgemissions",
+       "compliancestatus",
+       "neighborhood",
+       "buildingtype",
+       "councildistrictcode",
+       "demolished",
+       "naturalgas_kbtu",
+       "osebuildingid",
+       "datayear",
+       "buildingname"
+      ],
+      "columns_format": [
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {},
+       {},
+       {},
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {},
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {},
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {},
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {},
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {},
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {},
+       {},
+       {},
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {},
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {
+        "decimalSeparator": ".",
+        "groupSeparator": ","
+       },
+       {}
+      ],
+      "columns_name": [
+       "YearBuilt",
+       "Address",
+       "LargestPropertyUseType",
+       "EPAPropertyType",
+       "SourceEUI(kBtu/sf)",
+       "SourceEUIWN(kBtu/sf)",
+       "SiteEnergyUseWN(kBtu)",
+       "SiteEnergyUse(kBtu)",
+       "SiteEUI(kBtu/sf)",
+       "SiteEUIWN(kBtu/sf)",
+       "ENERGYSTARScore",
+       "SelfReportParking",
+       "SelfReportGFABuildings",
+       "SelfReportGFATotal",
+       "PropertyGFAParking",
+       "PropertyGFABuildings",
+       "PropertyGFATotal",
+       "NumberofBuildings",
+       "NumberofFloors",
+       "City",
+       "TaxParcelIdentificationNumber",
+       "Longitude",
+       "LargestPropertyUseTypeGFA",
+       "SecondLargestPropertyUseType",
+       "SecondLargestPropertyUseTypeGFA",
+       "ThirdLargestPropertyUseType",
+       "ThirdLargestPropertyUseTypeGFA",
+       "Electricity(kWh)",
+       "SteamUse(kBtu)",
+       "NaturalGas(therms)",
+       "ComplianceIssue",
+       "Electricity(kBtu)",
+       "GHGEmissionsIntensity",
+       "Latitude",
+       "ZipCode",
+       "State",
+       "TotalGHGEmissions",
+       "ComplianceStatus",
+       "Neighborhood",
+       "BuildingType",
+       "CouncilDistrictCode",
+       "Demolished",
+       "NaturalGas(kBtu)",
+       "OSEBuildingID",
+       "DataYear",
+       "BuildingName"
+      ],
+      "contact_email": "open.data@seattle.gov",
+      "createdAt": "2024-12-13T23:08:55.000Z",
+      "data_updated_at": "2026-08-28T22:58:17.000Z",
+      "description": "Seattle\u2019s Building Energy Benchmarking Program (SMC 22.920) requires owners of non-residential and multifamily buildings (Greater than 20,000 square feet) to track energy performance and annually report to the City of Seattle. Annual benchmarking, reporting, and disclosing of building performance are foundational elements of creating more market value for energy efficiency.\n\nPer Ordinance (125000), starting with 2015 energy use performance reporting, the City of Seattle is making the data for all buildings greater than 20,000 SF available annually. This dataset contains benchmarking records for all buildings required to report for years 2015-2024.\n\nIf you have questions or comments on the data, email us at energybenchmarking@seattle.gov and include Open Data in the subject line.",
+      "download_count": 1866,
+      "hide_from_data_json": false,
+      "id": "teqw-tu6e",
+      "lens_display_type": "table",
+      "lens_view_type": "tabular",
+      "locked": false,
+      "metadata_updated_at": "2026-08-28T22:57:57.000Z",
+      "name": "Building Energy Benchmarking Data, 2015-Present",
+      "page_views": {
+       "page_views_last_month": 2841,
+       "page_views_last_month_log": 11.47269083924278,
+       "page_views_last_week": 1014,
+       "page_views_last_week_log": 9.987264012072538,
+       "page_views_total": 26400,
+       "page_views_total_log": 14.68830495563764
+      },
+      "parent_fxf": [],
+      "provenance": "official",
+      "publication_date": "2024-12-13T23:32:05.000Z",
+      "resource_name": null,
+      "type": "dataset",
+      "updatedAt": "2026-08-28T22:58:17.000Z"
+     }
+    }
+   ],
+   "timings": {
+    "searchMillis": [
+     13,
+     8
+    ],
+    "serviceMillis": 28
+   },
+   "warnings": []
+  },
+  "headers": {
+   "content-type": "application/json;charset=utf-8"
+  },
+  "status": 200
+ }
+}
