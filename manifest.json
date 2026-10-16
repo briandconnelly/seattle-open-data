@@ -8,6 +8,17 @@
     "name": "Brian Connelly",
     "email": "bdc@bconnelly.net"
   },
+  "icon": "icon.png",
+  "icons": [
+    {
+      "src": "icon.png",
+      "size": "512x512"
+    },
+    {
+      "src": "icon-128.png",
+      "size": "128x128"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/briandconnelly/seattle-open-data"
