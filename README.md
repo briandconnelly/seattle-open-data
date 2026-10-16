@@ -6,7 +6,7 @@
 
 An agent-friendly [MCP](https://modelcontextprotocol.io/) server for [Seattle Open Data](https://data.seattle.gov/) (Socrata SODA2).
 
-**Stability: preview (0.1.0).** All four tools work against the live portal, with curated guides for seven flagship datasets. See [evals/results](evals/results) for the agent evaluation.
+**Status: alpha (0.1.0).** All four tools work against the live portal, with curated guides for seven flagship datasets. See [evals/results](evals/results) for the agent evaluation.
 
 ## Tools
 
