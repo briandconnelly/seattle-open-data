@@ -64,15 +64,15 @@
   "tools": [
     {
       "name": "seattle_data_search_datasets",
-      "description": "Find Seattle datasets by topic. Use first when the dataset id is unknown."
+      "description": "Find Seattle datasets by topic. Call first when you lack a dataset id."
     },
     {
       "name": "seattle_data_describe_dataset",
-      "description": "Decide whether and how to query a dataset: columns, live row count, time coverage, place fields for \"in <area>\" questions (with reliability), and geo columns for `near`."
+      "description": "Decide whether and how to query a dataset: columns, live row count, data_coverage (actual time range), place fields for \"in <area>\" questions (with reliability), and geo columns for `near`."
     },
     {
       "name": "seattle_data_query_dataset",
-      "description": "Run a bounded read or aggregate on one dataset."
+      "description": "Run a bounded read or aggregate on one dataset; paging stops at 10,000 rows."
     },
     {
       "name": "seattle_data_get_reference",

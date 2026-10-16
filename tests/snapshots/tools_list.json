@@ -10,7 +10,7 @@
         "openWorldHint": true,
         "readOnlyHint": true
       },
-      "description": "Find Seattle datasets by topic. Use first when the dataset id is unknown.\n\nResults carry queryability: only `supported` datasets can be described or queried.\nMap and chart views are folded into their parent dataset.\nExample: {\"query\": \"fire 911\"}. Typically 1-3 s.",
+      "description": "Find Seattle datasets by topic. Call first when you lack a dataset id.\n\nOnly results with queryability \"supported\" can be described or queried.\nExample: {\"query\": \"fire 911\"}. Typically 1-3 s.",
       "inputSchema": {
         "additionalProperties": false,
         "properties": {
@@ -23,7 +23,7 @@
             "type": "string"
           },
           "category": {
-            "description": "Portal category; omit for all.",
+            "description": "Exact category name, e.g. Public Safety; omit for all.",
             "maxLength": 100,
             "minLength": 1,
             "type": "string"
@@ -34,7 +34,7 @@
             "type": "string"
           },
           "detail": {
-            "description": "summary (default) or full; changes field density, never row count.",
+            "description": "summary (default) or full: adds descriptions.",
             "enum": [
               "summary",
               "full"
@@ -48,7 +48,7 @@
             "type": "integer"
           },
           "query": {
-            "description": "Words to match; omit to browse.",
+            "description": "Words to match; omit to list the most-viewed.",
             "maxLength": 200,
             "minLength": 1,
             "type": "string"
@@ -160,7 +160,7 @@
         "openWorldHint": true,
         "readOnlyHint": true
       },
-      "description": "Decide whether and how to query a dataset: columns, live row count, time coverage,\nplace fields for \"in <area>\" questions (with reliability), and geo columns for `near`.\n\nUse before querying an unfamiliar dataset, and with detail=\"full\" to get place-field values.\nExample: {\"dataset_id\": \"kzjm-xkqj\", \"detail\": \"full\"}.\nTypically 1-3 s; fails with query_timeout after 30 s.",
+      "description": "Decide whether and how to query a dataset: columns, live row count, data_coverage\n(actual time range), place fields for \"in <area>\" questions (with reliability),\nand geo columns for `near`.\n\nCall before querying a dataset whose columns you do not know. For area questions use\ndetail=\"full\" and filter on `value`, not label; an area may span several values.\nExample: {\"dataset_id\": \"kzjm-xkqj\", \"detail\": \"full\"}.\nTypically 1-3 s; fails with query_timeout after 30 s.",
       "inputSchema": {
         "additionalProperties": false,
         "properties": {
@@ -176,7 +176,7 @@
             "type": "string"
           },
           "detail": {
-            "description": "summary (default) or full; changes field density, never row count.",
+            "description": "summary (default) or full: adds place-field values and column stats.",
             "enum": [
               "summary",
               "full"
@@ -580,7 +580,7 @@
         "openWorldHint": true,
         "readOnlyHint": true
       },
-      "description": "Run a bounded read or aggregate on one dataset.\n\nPrefer aggregates (count, group_by) on large datasets. Area filters are ordinary\n`where` predicates on place fields from seattle_data_describe_dataset.\nWithout order_by, rows come in a stable but arbitrary order.\nWith cursor, send only dataset_id, cursor, and optionally page_size or detail.\nExample: {\"dataset_id\": \"kzjm-xkqj\", \"select\": [\"type\", \"count(*) AS n\"],\n\"group_by\": [\"type\"], \"order_by\": [\"n DESC\"]}.\nTypically 1-5 s; fails with query_timeout after 30 s.",
+      "description": "Run a bounded read or aggregate on one dataset; paging stops at 10,000 rows.\n\nFor counts and breakdowns, use count(*) with group_by, not row paging.\nWith cursor, send only dataset_id, cursor, and optionally page_size or detail.\nFor all rows, give the user download_url (detail=\"full\") instead of paging.\nExample: {\"dataset_id\": \"kzjm-xkqj\", \"select\": [\"type\", \"count(*) AS n\"],\n\"group_by\": [\"type\"], \"order_by\": [\"n DESC\"]}.\nTypically 1-5 s; fails with query_timeout after 30 s.",
       "inputSchema": {
         "additionalProperties": false,
         "properties": {
@@ -595,7 +595,7 @@
             "type": "string"
           },
           "detail": {
-            "description": "summary (default) or full; changes field density, never row count.",
+            "description": "summary (default) or full: adds query_url and download_url (CSV of all matching rows).",
             "enum": [
               "summary",
               "full"
@@ -617,7 +617,7 @@
             "type": "string"
           },
           "mode": {
-            "description": "clauses (default): paged query built from the clause arguments. soql: run `soql` verbatim, one page.",
+            "description": "clauses (default): built from the clause arguments, paged by cursor. soql: run `soql` verbatim, one page.",
             "enum": [
               "clauses",
               "soql"
@@ -659,7 +659,7 @@
             "type": "object"
           },
           "order_by": {
-            "description": "e.g. [\"n DESC\"].",
+            "description": "e.g. [\"n DESC\"]; omit for arbitrary order. DESC lists nulls first.",
             "items": {
               "maxLength": 4096,
               "minLength": 1,
@@ -669,7 +669,7 @@
             "type": "array"
           },
           "page_size": {
-            "description": "Rows per page. Default 100; a continuation keeps the first page's size.",
+            "description": "Most rows to return (default 100; wide rows may return fewer). Omit on a continuation to keep the first page's size.",
             "maximum": 500,
             "minimum": 1,
             "type": "integer"
@@ -691,13 +691,13 @@
             "type": "array"
           },
           "soql": {
-            "description": "Full SoQL statement; requires mode='soql'.",
+            "description": "Full SoQL statement; set mode='soql' and no clause arguments. Not paged: use LIMIT <= page_size and advance OFFSET.",
             "maxLength": 4096,
             "minLength": 1,
             "type": "string"
           },
           "where": {
-            "description": "SoQL predicate.",
+            "description": "SoQL predicate, e.g. \"datetime >= '2026-09-01T00:00:00'\" (no Z, no now()).",
             "maxLength": 4096,
             "minLength": 1,
             "type": "string"
@@ -859,13 +859,13 @@
         "additionalProperties": false,
         "properties": {
           "chunk_id": {
-            "description": "Requires item_id.",
+            "description": "Omit; no item is chunked.",
             "maxLength": 64,
             "minLength": 1,
             "type": "string"
           },
           "detail": {
-            "description": "Accepted for symmetry with the other tools; reference bodies have one density.",
+            "description": "Ignored.",
             "enum": [
               "summary",
               "full"

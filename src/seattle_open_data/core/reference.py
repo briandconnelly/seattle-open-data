@@ -46,14 +46,14 @@ def topic_uri(topic: str, item_id: str | None = None) -> str:
 # --------------------------------------------------------------------------
 
 INSTRUCTIONS = f"""\
-Read-only access to Seattle's open data portal (data.seattle.gov) through Socrata SODA2.
-This text ends with the line {INSTRUCTIONS_SENTINEL}. If your copy does not, call seattle_data_get_reference(topic="capabilities") for the full rules.
-Does NOT: write data, read private datasets, query other portals (performance.seattle.gov, King County, data.wa.gov), query ArcGIS federated layers, geocode addresses, forecast, or export in bulk.
+Read-only SoQL access to Seattle's open data portal (data.seattle.gov).
+Full contract: seattle_data_get_reference(topic="capabilities"). This text ends with the line {INSTRUCTIONS_SENTINEL}; if yours does not, read the full contract first.
+Does NOT: write data, read private datasets, query other portals (performance.seattle.gov, King County, data.wa.gov) or ArcGIS layers, geocode addresses, or forecast.
 Rules:
-- For "in <area>" questions, read place_fields from seattle_data_describe_dataset and heed coverage_warnings from seattle_data_query_dataset; never report a near-zero count from an unreliable field as fact.
-- Check data_coverage before claiming "latest" or "this month"; use source.now_local for relative dates.
-- On isError results, branch on structuredContent.code; temporary=false means do not retry unchanged; follow repair when present.
-Full contract: seattle_data_get_reference (no arguments) or the {URI_SCHEME}://capabilities resource.
+- For "in <area>", filter only on place values listed by seattle_data_describe_dataset(detail="full"); never guess one.
+- Never report a near-zero count from a field named in coverage_warnings as the answer.
+- Take dates ("today", "last week") from source.now_local, not your clock; judge freshness by data_coverage, not updated_at.
+- On isError, branch on structuredContent.code; temporary=false: do not retry unchanged; follow repair if present.
 {INSTRUCTIONS_SENTINEL}"""
 
 CAPABILITIES = f"""\
@@ -68,11 +68,12 @@ CAPABILITIES = f"""\
 - Write data or read private datasets.
 - Query other portals, including performance.seattle.gov (a KPI-dashboard portal).
 - Query ArcGIS federated layers: they are discoverable only, with their external link.
-- Geocode addresses, forecast, or export in bulk. For every row, split a query by `where`, page raw SoQL with LIMIT/OFFSET, or hand the user `download_url`.
+- Geocode addresses or forecast.
+- Stream every row through the agent. For all rows, hand the user `download_url` (query with `detail: "full"`), or split a query by `where`.
 
 ## Rules
 - Tools: seattle_data_search_datasets → seattle_data_describe_dataset → seattle_data_query_dataset. A known dataset id and fields need no preliminary call.
-- Area questions: use describe's `place_fields`. Fields marked `partial` or `unreliable` undercount; the query result repeats this in `coverage_warnings`.
+- Area questions: filter on values from describe's `place_fields` (`detail: "full"`); for computed-region fields use `value`, not `label`. When `values` is absent (more than 100, or `stats_status` not ok), list them first with a `select [field, "count(*) AS n"]`, `group_by [field]` query. Fields marked `partial` or `unreliable` undercount; the query result repeats this in `coverage_warnings`.
 - Time: `floating_timestamp` and `calendar_date` values have no timezone. `source.now_local` is the current Seattle wall-clock time. `data_coverage` can lag `updated_at` by weeks.
 - Paging: clauses-mode queries page with `next_cursor` (cursors last 1 hour and do not survive a server restart; on `cursor_expired`, rerun from page one). At most {QUERY_LOGICAL_CAP:,} rows per query; beyond that `truncated` is true — aggregate or narrow. Raw SoQL is not paged: set LIMIT ≤ page_size (max {QUERY_PAGE_SIZE_MAX}) and advance OFFSET.
 - `consistency: "best_effort"` means pages of an ordered or grouped query can shift if the dataset changes mid-walk.
@@ -439,7 +440,9 @@ Errors: an unknown column returns `no_such_column`; any other `query.soql.*` rej
         """\
 - `floating_timestamp` and `calendar_date` values have no timezone; never append `Z`.
 - Ranges: `datetime between '2026-09-01T00:00:00' and '2026-09-30T23:59:59'`.
-- Buckets: `date_trunc_ym(col)` (month), `date_trunc_y(col)`, `date_extract_dow(col)` (0 = Sunday).
+- Buckets: `date_trunc_ym(col)` (month), `date_trunc_y(col)`, `date_extract_dow(col)` (0 = Sunday), `date_extract_hh(col)` (hour).
+- No `now()` and no `Z` suffix: both fail. Write literal local times, e.g. `'2026-09-01T00:00:00'`.
+- `order_by` with `DESC` lists nulls first; add `col IS NOT NULL` to `where` for "most recent".
 - Use `source.now_local` from any result for "last month" and similar.
 - `data_coverage` from seattle_data_describe_dataset gives the actual min and max; it can lag the dataset's update time.""",
     ),

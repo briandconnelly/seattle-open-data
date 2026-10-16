@@ -63,3 +63,10 @@ def test_capabilities_names_only_real_tools():
         "seattle_data_query_dataset",
         "seattle_data_get_reference",
     }
+
+
+def test_query_description_states_the_real_cap():
+    from seattle_open_data.constants import QUERY_LOGICAL_CAP
+    from seattle_open_data.mcp.tools import seattle_data_query_dataset
+
+    assert f"{QUERY_LOGICAL_CAP:,} rows" in (seattle_data_query_dataset.__doc__ or "")

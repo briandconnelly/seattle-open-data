@@ -43,9 +43,19 @@ DatasetId = Annotated[
         description="Socrata dataset id, e.g. kzjm-xkqj (from seattle_data_search_datasets).",
     ),
 ]
-DetailArg = Annotated[
+SearchDetail = Annotated[
+    Detail | None, Field(description="summary (default) or full: adds descriptions.")
+]
+DescribeDetail = Annotated[
     Detail | None,
-    Field(description="summary (default) or full; changes field density, never row count."),
+    Field(description="summary (default) or full: adds place-field values and column stats."),
+]
+QueryDetail = Annotated[
+    Detail | None,
+    Field(
+        description="summary (default) or full: adds query_url and download_url "
+        "(CSV of all matching rows)."
+    ),
 ]
 Cursor = Annotated[
     str | None,
@@ -68,7 +78,11 @@ class Near(BaseModel):
 async def seattle_data_search_datasets(
     query: Annotated[
         str | None,
-        Field(min_length=1, max_length=200, description="Words to match; omit to browse."),
+        Field(
+            min_length=1,
+            max_length=200,
+            description="Words to match; omit to list the most-viewed.",
+        ),
     ] = None,
     asset_scope: Annotated[
         Literal["tabular", "all"] | None,
@@ -79,18 +93,21 @@ async def seattle_data_search_datasets(
     ] = None,
     category: Annotated[
         str | None,
-        Field(min_length=1, max_length=100, description="Portal category; omit for all."),
+        Field(
+            min_length=1,
+            max_length=100,
+            description="Exact category name, e.g. Public Safety; omit for all.",
+        ),
     ] = None,
     page_size: Annotated[
         int | None, Field(ge=1, le=SEARCH_PAGE_SIZE_MAX, description="Default 10.")
     ] = None,
     cursor: Cursor = None,
-    detail: DetailArg = None,
+    detail: SearchDetail = None,
 ) -> ToolResult:
-    """Find Seattle datasets by topic. Use first when the dataset id is unknown.
+    """Find Seattle datasets by topic. Call first when you lack a dataset id.
 
-    Results carry queryability: only `supported` datasets can be described or queried.
-    Map and chart views are folded into their parent dataset.
+    Only results with queryability "supported" can be described or queried.
     Example: {"query": "fire 911"}. Typically 1-3 s.
     """
     arguments.check_search(
@@ -129,12 +146,14 @@ async def seattle_data_describe_dataset(
         int | None,
         Field(ge=0, le=SAMPLE_ROWS_MAX, description="Example rows to include. Default 0."),
     ] = None,
-    detail: DetailArg = None,
+    detail: DescribeDetail = None,
 ) -> ToolResult:
-    """Decide whether and how to query a dataset: columns, live row count, time coverage,
-    place fields for "in <area>" questions (with reliability), and geo columns for `near`.
+    """Decide whether and how to query a dataset: columns, live row count, data_coverage
+    (actual time range), place fields for "in <area>" questions (with reliability),
+    and geo columns for `near`.
 
-    Use before querying an unfamiliar dataset, and with detail="full" to get place-field values.
+    Call before querying a dataset whose columns you do not know. For area questions use
+    detail="full" and filter on `value`, not label; an area may span several values.
     Example: {"dataset_id": "kzjm-xkqj", "detail": "full"}.
     Typically 1-3 s; fails with query_timeout after 30 s.
     """
@@ -153,7 +172,7 @@ async def seattle_data_query_dataset(
     mode: Annotated[
         Literal["clauses", "soql"] | None,
         Field(
-            description="clauses (default): paged query built from the clause arguments. "
+            description="clauses (default): built from the clause arguments, paged by cursor. "
             "soql: run `soql` verbatim, one page."
         ),
     ] = None,
@@ -167,12 +186,21 @@ async def seattle_data_query_dataset(
     ] = None,
     where: Annotated[
         str | None,
-        Field(min_length=1, max_length=QUERY_TEXT_MAX_BYTES, description="SoQL predicate."),
+        Field(
+            min_length=1,
+            max_length=QUERY_TEXT_MAX_BYTES,
+            description="SoQL predicate, e.g. \"datetime >= '2026-09-01T00:00:00'\" "
+            "(no Z, no now()).",
+        ),
     ] = None,
     group_by: Annotated[list[Text] | None, Field(min_length=1)] = None,
     having: Annotated[str | None, Field(min_length=1, max_length=QUERY_TEXT_MAX_BYTES)] = None,
     order_by: Annotated[
-        list[Text] | None, Field(min_length=1, description='e.g. ["n DESC"].')
+        list[Text] | None,
+        Field(
+            min_length=1,
+            description='e.g. ["n DESC"]; omit for arbitrary order. DESC lists nulls first.',
+        ),
     ] = None,
     search_text: Annotated[
         str | None,
@@ -186,7 +214,8 @@ async def seattle_data_query_dataset(
         Field(
             min_length=1,
             max_length=QUERY_TEXT_MAX_BYTES,
-            description="Full SoQL statement; requires mode='soql'.",
+            description="Full SoQL statement; set mode='soql' and no clause arguments. "
+            "Not paged: use LIMIT <= page_size and advance OFFSET.",
         ),
     ] = None,
     page_size: Annotated[
@@ -194,18 +223,18 @@ async def seattle_data_query_dataset(
         Field(
             ge=1,
             le=QUERY_PAGE_SIZE_MAX,
-            description="Rows per page. Default 100; a continuation keeps the first page's size.",
+            description="Most rows to return (default 100; wide rows may return fewer). "
+            "Omit on a continuation to keep the first page's size.",
         ),
     ] = None,
     cursor: Cursor = None,
-    detail: DetailArg = None,
+    detail: QueryDetail = None,
 ) -> ToolResult:
-    """Run a bounded read or aggregate on one dataset.
+    """Run a bounded read or aggregate on one dataset; paging stops at 10,000 rows.
 
-    Prefer aggregates (count, group_by) on large datasets. Area filters are ordinary
-    `where` predicates on place fields from seattle_data_describe_dataset.
-    Without order_by, rows come in a stable but arbitrary order.
+    For counts and breakdowns, use count(*) with group_by, not row paging.
     With cursor, send only dataset_id, cursor, and optionally page_size or detail.
+    For all rows, give the user download_url (detail="full") instead of paging.
     Example: {"dataset_id": "kzjm-xkqj", "select": ["type", "count(*) AS n"],
     "group_by": ["type"], "order_by": ["n DESC"]}.
     Typically 1-5 s; fails with query_timeout after 30 s.
@@ -246,14 +275,11 @@ async def seattle_data_get_reference(
         ),
     ] = None,
     chunk_id: Annotated[
-        str | None, Field(min_length=1, max_length=64, description="Requires item_id.")
+        str | None, Field(min_length=1, max_length=64, description="Omit; no item is chunked.")
     ] = None,
     detail: Annotated[
         Detail | None,
-        Field(
-            description="Accepted for symmetry with the other tools; "
-            "reference bodies have one density."
-        ),
+        Field(description="Ignored."),
     ] = None,
 ) -> ToolResult:
     """Read the server's reference: capability summary, SoQL help, dataset guides, and the
