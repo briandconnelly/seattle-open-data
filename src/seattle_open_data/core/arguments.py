@@ -1,4 +1,4 @@
-"""Cross-argument rules the JSON Schema cannot express portably (PLAN §4).
+"""Cross-argument rules the JSON Schema cannot express portably (docs/design.md: Primitives).
 
 Single-field constraints (types, enums, ranges, patterns, empty strings) live in
 the published inputSchema; only combinations are checked here.

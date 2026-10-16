@@ -1,4 +1,4 @@
-"""Live checks of the upstream facts the design leans on (PLAN §2). Run with --run-integration."""
+"""Live checks of the upstream facts in docs/upstream-facts.md. Run with --run-integration."""
 
 from __future__ import annotations
 

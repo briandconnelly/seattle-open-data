@@ -1,6 +1,6 @@
 """Server assembly and the failure boundary.
 
-Every tool or resource failure leaves as the PLAN §6 envelope.
+Every tool or resource failure leaves as the error envelope (docs/design.md: Errors).
 """
 
 from __future__ import annotations

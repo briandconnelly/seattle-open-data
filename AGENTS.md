@@ -4,7 +4,7 @@ Canonical instructions for humans and agents working in this repo. `CLAUDE.md` p
 
 ## What this is
 
-An agent-friendly MCP server for Seattle Open Data. The design, its decision log, and the milestone plan are in `PLAN.md`; the contract standard is the `agent-friendly-mcp` skill, cited by rule id (e.g. `[6.repair-object]`).
+An agent-friendly MCP server for Seattle Open Data. The current design is in `docs/design.md`, probed upstream facts in `docs/upstream-facts.md`, and the decision log in `docs/decisions.md`; the contract standard is the `agent-friendly-mcp` skill, cited by rule id (e.g. `[6.repair-object]`).
 
 ## Toolchain
 
@@ -15,9 +15,10 @@ An agent-friendly MCP server for Seattle Open Data. The design, its decision log
 ## Rules
 
 - The tool surface is contract. `tests/snapshots/tools_list.json` pins it; regenerate with `UPDATE_SNAPSHOTS=1` only for an intended change, and note the change in `CHANGELOG.md`.
-- Every failure leaves as the PLAN §6 envelope. Raise `SeattleDataError` from handlers; never return ad-hoc error text.
+- Every failure leaves as the error envelope in `docs/design.md` (Errors). Raise `SeattleDataError` from handlers; never return ad-hoc error text.
 - Every `repair` must be a literal call that validates against the named tool's input schema; `tests/test_repairs.py` enforces this for documented and emitted repairs.
-- Never report an upstream fact you did not probe. Label reviewer-reported facts as such in `PLAN.md` §2.
+- Never report an upstream fact you did not probe. Label reviewer-reported facts as such in `docs/upstream-facts.md`.
+- When a design choice changes, update `docs/design.md` and add a row to the `docs/decisions.md` log.
 - Live tests use the `integration` marker and run with `uv run pytest --run-integration -m integration`.
 
 ## Branching and commits

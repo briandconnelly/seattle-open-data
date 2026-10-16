@@ -1,4 +1,7 @@
-"""Stateless, HMAC-signed cursors (PLAN §5). The key lives in process memory only."""
+"""Stateless, HMAC-signed cursors (docs/design.md: Query engine).
+
+The key lives in process memory only.
+"""
 
 from __future__ import annotations
 
