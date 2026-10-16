@@ -7,9 +7,7 @@ MCPB_VERSION := $(shell python3 -c 'import json; print(json.load(open("manifest.
 
 # Requires the mcpb CLI: npm install -g @anthropic-ai/mcpb
 mcpb: manifest
-	mcpb validate manifest.json
-	mkdir -p dist
-	mcpb pack . dist/seattle-open-data-$(MCPB_VERSION).mcpb
+	uv run python scripts/build_bundle.py
 
 test:
 	uv run pytest

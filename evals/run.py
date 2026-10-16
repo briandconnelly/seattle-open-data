@@ -65,7 +65,7 @@ def run(task: dict, out: Path) -> None:
 
 
 def main() -> None:
-    out = Path(sys.argv[1])
+    out = Path(sys.argv[1]).resolve()
     out.mkdir(parents=True, exist_ok=True)
     wanted = set(sys.argv[2:])
     for task in json.loads((ROOT / "evals" / "tasks.json").read_text()):

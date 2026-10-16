@@ -158,7 +158,7 @@ One offense. A report (`report_number`) can contain several offenses: 1,568,385 
                 {
                     "dataset_id": "tazs-3rd5",
                     "select": ["precinct", "count(distinct report_number) AS reports"],
-                    "where": "offense_date between '2025-01-01T00:00:00' and '2025-12-31T23:59:59'",
+                    "where": "report_date_time between '2025-01-01T00:00:00' and '2025-12-31T23:59:59'",
                     "group_by": ["precinct"],
                     "order_by": ["reports DESC"],
                 },

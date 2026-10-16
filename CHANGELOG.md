@@ -7,7 +7,7 @@ All notable changes to this project are documented here. The format follows [Kee
 ### Added
 
 - Curated guides for seven flagship datasets via `seattle_data_get_reference(topic="guides")` and `seattle-data://guides/{guide_id}`; search and describe link them, and describe returns their verified example queries.
-- MCPB bundle: `manifest.json` generated from pyproject and the live server (`make mcpb`), with an optional, sensitive Socrata app token setting.
+- MCPB bundle: `manifest.json` generated from pyproject and the live server; `make mcpb` packs an allowlisted staging copy and verifies the archive. Optional, sensitive Socrata app token setting.
 - Milestone 3: `seattle_data_query_dataset`. Clauses mode pages with signed cursors: keyset on `:id` for unordered row queries (`consistency: "stable"`), OFFSET with tie-breakers for ordered, grouped, and DISTINCT queries (`best_effort`). Rows are packed whole under a 24 KiB result budget; a paged query stops at 10,000 rows with `truncated: true`. Raw SoQL runs verbatim as one page, read incrementally and closed early. `near` compiles to `within_circle` on point or location columns. `coverage_warnings` flag filters on partial or unreliable place fields. Full detail adds `query_url`, `download_url`, and `effective_query`.
 - Cursors carry the first page's `page_size`, so a continuation keeps it unless overridden.
 
