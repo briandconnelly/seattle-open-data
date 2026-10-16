@@ -136,7 +136,7 @@
       ],
       "contact_email": "open.data@seattle.gov",
       "createdAt": "2010-01-08T21:48:17.000Z",
-      "data_updated_at": "2026-10-16T03:05:44.000Z",
+      "data_updated_at": "2026-10-16T03:10:47.000Z",
       "description": "Provides Seattle Fire Department 911 dispatches. Updated every 5 minutes.",
       "download_count": 61951,
       "hide_from_data_json": false,
@@ -159,7 +159,7 @@
       "publication_date": "2019-04-26T00:00:46.000Z",
       "resource_name": "fire-911",
       "type": "dataset",
-      "updatedAt": "2026-10-16T03:05:44.000Z"
+      "updatedAt": "2026-10-16T03:10:47.000Z"
      }
     },
     {
@@ -238,10 +238,10 @@
    ],
    "timings": {
     "searchMillis": [
-     13,
-     6
+     17,
+     7
     ],
-    "serviceMillis": 25
+    "serviceMillis": 32
    },
    "warnings": []
   },

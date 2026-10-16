@@ -542,9 +542,9 @@ All calls are blocking `tools/call` [7.execution-mode].
 | 5 Prompts | answered | None in v1 |
 | 6 Failure | answered (M1) | Envelope and taxonomy (§6) with literal repairs; per-tool code catalog and a worked payload per code at `seattle-data://errors/codes` [6.document-codes]; forced-error wire tests per tool, including framework validation failures |
 | 7 Long-running | answered | §7; tasks N/A |
-| 8 Token efficiency | **pending** (M3) | Contract in §4–§5: summary/full, byte-budgeted pages, paging by query kind, HTML stripped, system columns hidden. Untested until the M3 fixtures run |
+| 8 Token efficiency | answered (M3) | Summary/full, whole-row byte budget (wire result ≤ 24 KiB, tested), paging by query kind, 10,000-row cap with exact-boundary tests, HTML stripped, system columns hidden |
 | 9 Versioning | answered | Deterministic ordering; deprecation window; open top-level output for additions (§8); `listChanged` not advertised; fingerprint deferred per [9.fingerprint] |
-| Data facts | partly answered | Verified: catalog alias, computed-region coverage, council-layer nulls, place-field vocabularies and placeholders, `cachedContents` gaps; in M2 also layer label columns and dates, `within_circle` on a `point` column (121,985 Fire calls within 500 m of downtown), Fire 911 `datetime` as Pacific wall-clock time, and catalog `parent_fxf`/`access_points`. Still reviewer-only, for M3: `:id` keyset equivalence, the 1,000-row default, stream-stop |
+| Data facts | answered | Verified: catalog alias, computed-region coverage, council-layer nulls, place-field vocabularies and placeholders, `cachedContents` gaps; in M2 also layer label columns and dates, `within_circle` on a `point` column (121,985 Fire calls within 500 m of downtown), Fire 911 `datetime` as Pacific wall-clock time, and catalog `parent_fxf`/`access_points`. In M3 also: `:id` keyset paging equals OFFSET paging (two datasets), raw SoQL without LIMIT returns 1,000 rows, `$query` plus `$limit` is rejected (400), a 200,000-row response can be closed after 10 rows (3.2 s), and SODA2 accepts `$limit=1000000000` for `download_url` |
 
 ## 11. Product decisions (Brian, 2026-10-15)
 
@@ -605,3 +605,8 @@ No open product questions remain. Engineering unknowns are tracked as **pending*
 | `assigned_fraction` | From a separate unassigned-count query | From the grouping itself, reported only when all groups (≤100) came back, so it is exact | Milestone 2 implementation |
 | Federated `external_url` | Catalog `link` | The entry's ArcGIS access point from catalog metadata | Milestone 2 probe |
 | Filter views | Own facts | Inherit their parent's curated facts (place fields, time evidence) | Milestone 2 probe |
+| `not_implemented` | Pre-release code | Removed: all four tools implemented | Milestone 3 |
+| Continuation page size | Default 100 when omitted | Cursor carries the first page's `page_size` | Milestone 3: a recorded-fixture test exposed the reset |
+| Raw SoQL bound | Assumed `$limit` could cap it | `$query` + `$limit` is a 400, so the engine reads incrementally and closes the stream after `page_size` rows | Milestone 3 probe |
+| Upstream error positions | Passed through | Dropped in clauses mode: they index the assembled query, which the agent never wrote | Milestone 3 implementation |
+| Fixture recorder | Kept content-type and retry-after only | Also keeps X-SODA2-Fields/Types; tests sharing a fixture merge | Milestone 3: lossy recording silently changed replayed results |

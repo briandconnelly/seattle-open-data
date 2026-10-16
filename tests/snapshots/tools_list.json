@@ -577,7 +577,7 @@
         "openWorldHint": true,
         "readOnlyHint": true
       },
-      "description": "Run a bounded read or aggregate on one dataset.\n\nPrefer aggregates (count, group_by) on large datasets. Area filters are ordinary\n`where` predicates on place fields from seattle_data_describe_dataset.\nWith cursor, send only dataset_id, cursor, and optionally page_size or detail.\nExample: {\"dataset_id\": \"kzjm-xkqj\", \"select\": [\"type\", \"count(*) AS n\"],\n\"group_by\": [\"type\"], \"order_by\": [\"n DESC\"]}.\nTypically 1-5 s; fails with query_timeout after 30 s.",
+      "description": "Run a bounded read or aggregate on one dataset.\n\nPrefer aggregates (count, group_by) on large datasets. Area filters are ordinary\n`where` predicates on place fields from seattle_data_describe_dataset.\nWithout order_by, rows come in a stable but arbitrary order.\nWith cursor, send only dataset_id, cursor, and optionally page_size or detail.\nExample: {\"dataset_id\": \"kzjm-xkqj\", \"select\": [\"type\", \"count(*) AS n\"],\n\"group_by\": [\"type\"], \"order_by\": [\"n DESC\"]}.\nTypically 1-5 s; fails with query_timeout after 30 s.",
       "inputSchema": {
         "additionalProperties": false,
         "properties": {
@@ -666,7 +666,7 @@
             "type": "array"
           },
           "page_size": {
-            "description": "Rows per page. Default 100.",
+            "description": "Rows per page. Default 100; a continuation keeps the first page's size.",
             "maximum": 500,
             "minimum": 1,
             "type": "integer"

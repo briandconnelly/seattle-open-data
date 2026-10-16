@@ -2246,7 +2246,9 @@
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"v\",\"n\"]",
+   "x-soda2-types": "[\"text\",\"number\"]"
   },
   "status": 200
  },
@@ -2502,7 +2504,9 @@
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"v\",\"n\"]",
+   "x-soda2-types": "[\"text\",\"number\"]"
   },
   "status": 200
  },
@@ -2538,7 +2542,9 @@
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"v\",\"n\"]",
+   "x-soda2-types": "[\"text\",\"number\"]"
   },
   "status": 200
  },
@@ -2630,7 +2636,9 @@
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"v\",\"n\"]",
+   "x-soda2-types": "[\"text\",\"number\"]"
   },
   "status": 200
  },
@@ -2641,7 +2649,9 @@
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"n\"]",
+   "x-soda2-types": "[\"number\"]"
   },
   "status": 200
  },
@@ -2653,7 +2663,9 @@
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"lo\",\"hi\"]",
+   "x-soda2-types": "[\"floating_timestamp\",\"floating_timestamp\"]"
   },
   "status": 200
  }

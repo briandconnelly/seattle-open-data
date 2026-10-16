@@ -18,8 +18,7 @@ from seattle_open_data.constants import (
     SAMPLE_ROWS_MAX,
     SEARCH_PAGE_SIZE_MAX,
 )
-from seattle_open_data.core import arguments, catalog, describe, reference_service
-from seattle_open_data.core.errors import ErrorCode, Repair, SeattleDataError
+from seattle_open_data.core import arguments, catalog, describe, query, reference_service
 from seattle_open_data.core.http import get_client
 from seattle_open_data.core.models import (
     DescribeResult,
@@ -66,18 +65,6 @@ class Near(BaseModel):
     radius_m: Annotated[float, Field(gt=0, le=50_000, description="Radius in meters.")]
 
 
-def _not_implemented(tool: str) -> SeattleDataError:
-    return SeattleDataError(
-        ErrorCode.NOT_IMPLEMENTED,
-        f"{tool} is not implemented in this pre-release.",
-        repair=Repair(
-            next_step="read_capabilities",
-            tool="seattle_data_get_reference",
-            arguments={"topic": "capabilities"},
-        ),
-    )
-
-
 async def seattle_data_search_datasets(
     query: Annotated[
         str | None,
@@ -121,7 +108,7 @@ async def seattle_data_search_datasets(
         query=query,
         asset_scope=asset_scope or "tabular",
         category=category,
-        page_size=page_size or 10,
+        page_size=page_size,
         cursor=cursor,
         detail=detail or "summary",
     )
@@ -203,7 +190,12 @@ async def seattle_data_query_dataset(
         ),
     ] = None,
     page_size: Annotated[
-        int | None, Field(ge=1, le=QUERY_PAGE_SIZE_MAX, description="Rows per page. Default 100.")
+        int | None,
+        Field(
+            ge=1,
+            le=QUERY_PAGE_SIZE_MAX,
+            description="Rows per page. Default 100; a continuation keeps the first page's size.",
+        ),
     ] = None,
     cursor: Cursor = None,
     detail: DetailArg = None,
@@ -212,13 +204,32 @@ async def seattle_data_query_dataset(
 
     Prefer aggregates (count, group_by) on large datasets. Area filters are ordinary
     `where` predicates on place fields from seattle_data_describe_dataset.
+    Without order_by, rows come in a stable but arbitrary order.
     With cursor, send only dataset_id, cursor, and optionally page_size or detail.
     Example: {"dataset_id": "kzjm-xkqj", "select": ["type", "count(*) AS n"],
     "group_by": ["type"], "order_by": ["n DESC"]}.
     Typically 1-5 s; fails with query_timeout after 30 s.
     """
     arguments.check_query(locals())
-    raise _not_implemented("seattle_data_query_dataset")
+    result = await query.run(
+        get_client(),
+        dataset_id=dataset_id,
+        mode=mode or "clauses",
+        clauses={
+            "select": select,
+            "where": where,
+            "group_by": group_by,
+            "having": having,
+            "order_by": order_by,
+            "search_text": search_text,
+            "near": near.model_dump() if near else None,
+        },
+        soql=soql,
+        page_size=page_size,
+        cursor=cursor,
+        detail=detail or "summary",
+    )
+    return success(result)
 
 
 async def seattle_data_get_reference(

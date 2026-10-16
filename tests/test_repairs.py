@@ -55,7 +55,7 @@ def test_upstream_mapping_repairs_are_callable(status, body, input_schemas):
 EMITTED_CASES = [
     ("seattle_data_get_reference", {"topic": "soql", "item_id": "joins"}),
     ("seattle_data_get_reference", {"item_id": "dates"}),
-    ("seattle_data_query_dataset", {"dataset_id": "kzjm-xkqj"}),
+    ("seattle_data_get_reference", {"topic": "soql", "item_id": "syntax", "chunk_id": "2"}),
 ]
 
 

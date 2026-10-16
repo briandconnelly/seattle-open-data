@@ -9,7 +9,7 @@ import jsonschema
 import pytest
 from fastmcp.exceptions import McpError
 
-from seattle_open_data.core.errors import ErrorCode, ErrorEnvelope
+from seattle_open_data.core.errors import ErrorEnvelope
 from tests.conftest import wire
 
 ENVELOPE_SCHEMA = ErrorEnvelope.model_json_schema()
@@ -112,14 +112,6 @@ async def test_combination_failure_is_enveloped(client, input_schemas, tool, arg
     assert ([details["field"]] if "field" in details else details["fields"]) == fields
 
 
-async def test_unimplemented_query_says_so(client, input_schemas):
-    tool = "seattle_data_query_dataset"
-    result = wire(await client.call_tool_mcp(tool, {"dataset_id": "kzjm-xkqj"}))
-    envelope = assert_tool_envelope(result, input_schemas[tool])
-    assert envelope["code"] == ErrorCode.NOT_IMPLEMENTED
-    assert envelope["repair"]["tool"] == "seattle_data_get_reference"
-
-
 async def test_reference_domain_error(client, input_schemas):
     result = wire(
         await client.call_tool_mcp(
@@ -135,7 +127,9 @@ async def test_request_ids_differ_per_call(client):
     ids = set()
     for _ in range(3):
         result = wire(
-            await client.call_tool_mcp("seattle_data_query_dataset", {"dataset_id": "kzjm-xkqj"})
+            await client.call_tool_mcp(
+                "seattle_data_get_reference", {"topic": "soql", "item_id": "joins"}
+            )
         )
         ids.add(result["structuredContent"]["request_id"])
     assert len(ids) == 3

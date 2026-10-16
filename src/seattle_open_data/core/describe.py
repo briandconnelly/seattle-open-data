@@ -107,7 +107,7 @@ async def describe(
     detail: Detail,
 ) -> DescribeResult:
     view = await client.view(dataset_id)
-    _require_queryable(view, dataset_id)
+    require_queryable(view, dataset_id)
 
     # Filter views inherit their parent's curated facts.
     facts_id = view.get("modifyingViewUid") or dataset_id
@@ -115,7 +115,7 @@ async def describe(
     data_columns = [c for c in all_columns if not str(c.get("fieldName", "")).startswith(":")]
     time_columns = [c for c in data_columns if c.get("dataTypeName") in TIME_TYPES]
     coverage_columns = _coverage_columns(facts_id, time_columns)
-    places = _place_specs(facts_id, all_columns)
+    places = place_specs(facts_id, all_columns)
 
     row_count = _Outcome()
     coverage = {c["fieldName"]: _Outcome() for c in coverage_columns}
@@ -174,7 +174,7 @@ async def describe(
     )
 
 
-def _require_queryable(view: dict[str, Any], dataset_id: str) -> None:
+def require_queryable(view: dict[str, Any], dataset_id: str) -> None:
     asset_type = str(view.get("assetType") or view.get("viewType") or "unknown")
     if queryability(asset_type) == "supported" and view.get("viewType") == "tabular":
         return
@@ -217,7 +217,7 @@ def _coverage_columns(dataset_id: str, time_columns: list[dict[str, Any]]) -> li
     return primary or time_columns[:1]
 
 
-def _place_specs(dataset_id: str, columns: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def place_specs(dataset_id: str, columns: list[dict[str, Any]]) -> list[dict[str, Any]]:
     names = {c.get("fieldName") for c in columns}
     specs: list[dict[str, Any]] = [
         {"column": name, "source": "column", **facts}

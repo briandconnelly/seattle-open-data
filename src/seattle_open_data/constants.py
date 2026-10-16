@@ -115,3 +115,9 @@ TIME_EVIDENCE: dict[str, dict[str, dict[str, str]]] = {
 
 GEO_TYPES = frozenset({"point", "location"})
 TIME_TYPES = frozenset({"floating_timestamp", "calendar_date", "fixed_timestamp", "date"})
+
+#: Upper bound written into download_url; SODA2 accepted it when probed 2026-10-15.
+DOWNLOAD_LIMIT = 1_000_000_000
+URL_MAX_CHARS = 2048
+#: Below this assigned share a place field earns a coverage warning (PLAN §4).
+COVERAGE_WARNING_THRESHOLD = 0.9

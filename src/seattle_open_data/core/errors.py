@@ -33,7 +33,6 @@ class ErrorCode(StrEnum):
     INVALID_ARGUMENT = "invalid_argument"
     UPSTREAM_UNAVAILABLE = "upstream_unavailable"
     REFERENCE_NOT_FOUND = "reference_not_found"
-    NOT_IMPLEMENTED = "not_implemented"
     INTERNAL_ERROR = "internal_error"
 
 

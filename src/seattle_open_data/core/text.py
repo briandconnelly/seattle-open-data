@@ -29,3 +29,14 @@ def html_to_text(markup: str | None, *, limit: int | None = None) -> str | None:
     text = html.unescape(_TAG.sub("", text))
     text = _BLANK_LINES.sub("\n", text)
     return clean(text, limit=limit) or None
+
+
+def strip_control(value: object) -> object:
+    """Row values keep their spacing; only control characters go."""
+    if isinstance(value, str):
+        return _CONTROL.sub("", value)
+    if isinstance(value, dict):
+        return {k: strip_control(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [strip_control(v) for v in value]
+    return value

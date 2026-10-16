@@ -1097,7 +1097,7 @@
     "read"
    ],
    "rowIdentifierColumnId": 405818858,
-   "rowsUpdatedAt": 1792119944,
+   "rowsUpdatedAt": 1792120247,
    "rowsUpdatedBy": "pfbu-yuv5",
    "tableAuthor": {
     "disabledAt": 1638810231,
@@ -1279,7 +1279,9 @@
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"id\",\"label\"]",
+   "x-soda2-types": "[\"number\",\"text\"]"
   },
   "status": 200
  },
@@ -1299,7 +1301,9 @@
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"id\",\"label\"]",
+   "x-soda2-types": "[\"number\",\"number\"]"
   },
   "status": 200
  },
@@ -1511,14 +1515,16 @@
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"id\",\"label\"]",
+   "x-soda2-types": "[\"number\",\"text\"]"
   },
   "status": 200
  },
  "data.seattle.gov/resource/kzjm-xkqj.json?[[\"$group\", \":@computed_region_2day_rhn5\"], [\"$limit\", \"101\"], [\"$order\", \"n DESC\"], [\"$select\", \":@computed_region_2day_rhn5 AS v, count(*) AS n\"]]": {
   "body": [
    {
-    "n": "2034848"
+    "n": "2034850"
    },
    {
     "n": "32073",
@@ -1670,14 +1676,16 @@
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"v\",\"n\"]",
+   "x-soda2-types": "[\"number\",\"number\"]"
   },
   "status": 200
  },
  "data.seattle.gov/resource/kzjm-xkqj.json?[[\"$group\", \":@computed_region_cyqu_gs94\"], [\"$limit\", \"101\"], [\"$order\", \"n DESC\"], [\"$select\", \":@computed_region_cyqu_gs94 AS v, count(*) AS n\"]]": {
   "body": [
    {
-    "n": "2050388"
+    "n": "2050390"
    },
    {
     "n": "107993",
@@ -1693,7 +1701,9 @@
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"v\",\"n\"]",
+   "x-soda2-types": "[\"number\",\"number\"]"
   },
   "status": 200
  },
@@ -1904,11 +1914,13 @@
     "v": "37"
    },
    {
-    "n": "9794"
+    "n": "9796"
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"v\",\"n\"]",
+   "x-soda2-types": "[\"number\",\"number\"]"
   },
   "status": 200
  },
@@ -2027,7 +2039,7 @@
     "v": "17926"
    },
    {
-    "n": "2183"
+    "n": "2185"
    },
    {
     "n": "926",
@@ -2235,7 +2247,9 @@
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"v\",\"n\"]",
+   "x-soda2-types": "[\"number\",\"number\"]"
   },
   "status": 200
  },
@@ -2450,7 +2464,7 @@
     "v": "18"
    },
    {
-    "n": "9794"
+    "n": "9796"
    },
    {
     "n": "8305",
@@ -2490,30 +2504,36 @@
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"v\",\"n\"]",
+   "x-soda2-types": "[\"number\",\"number\"]"
   },
   "status": 200
  },
  "data.seattle.gov/resource/kzjm-xkqj.json?[[\"$select\", \"count(*) AS n\"]]": {
   "body": [
    {
-    "n": "2215905"
+    "n": "2215907"
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"n\"]",
+   "x-soda2-types": "[\"number\"]"
   },
   "status": 200
  },
  "data.seattle.gov/resource/kzjm-xkqj.json?[[\"$select\", \"min(datetime) AS lo, max(datetime) AS hi\"]]": {
   "body": [
    {
-    "hi": "2026-10-15T20:04:00.000",
+    "hi": "2026-10-15T20:06:00.000",
     "lo": "2003-11-07T09:30:48.000"
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"lo\",\"hi\"]",
+   "x-soda2-types": "[\"floating_timestamp\",\"floating_timestamp\"]"
   },
   "status": 200
  },
@@ -2837,7 +2857,9 @@
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"id\",\"label\"]",
+   "x-soda2-types": "[\"number\",\"text\"]"
   },
   "status": 200
  },
@@ -3089,7 +3111,9 @@
    }
   ],
   "headers": {
-   "content-type": "application/json;charset=utf-8"
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"id\",\"label\"]",
+   "x-soda2-types": "[\"number\",\"text\"]"
   },
   "status": 200
  }

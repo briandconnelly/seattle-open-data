@@ -2041,7 +2041,9 @@
    }
   ],
   "headers": {
-   "content-type": "application/json; charset=utf-8"
+   "content-type": "application/json; charset=utf-8",
+   "x-soda2-fields": "[\"permitnum\",\"housingunits\",\"contractorcompanyname\",\"statuscurrent\",\"housingunitsadded\",\"originalzip\",\"latitude\",\"permitclassmapped\",\"permittypedesc\",\"link\",\"description\",\"originalcity\",\"originalstate\",\"expiresdate\",\"location1\",\"housingunitsremoved\",\"originaladdress1\",\"permitclass\",\"applieddate\",\"estprojectcost\",\"issueddate\",\"longitude\"]",
+   "x-soda2-types": "[\"string\",\"number\",\"string\",\"string\",\"number\",\"string\",\"number\",\"string\",\"string\",\"url\",\"string\",\"string\",\"string\",\"floating_timestamp\",\"point\",\"number\",\"string\",\"string\",\"floating_timestamp\",\"number\",\"floating_timestamp\",\"number\"]"
   },
   "status": 200
  },
@@ -2052,7 +2054,9 @@
    }
   ],
   "headers": {
-   "content-type": "application/json; charset=utf-8"
+   "content-type": "application/json; charset=utf-8",
+   "x-soda2-fields": "[\"n\"]",
+   "x-soda2-types": "[\"number\"]"
   },
   "status": 200
  },
@@ -2063,7 +2067,9 @@
    }
   ],
   "headers": {
-   "content-type": "application/json; charset=utf-8"
+   "content-type": "application/json; charset=utf-8",
+   "x-soda2-fields": "[\"lo\"]",
+   "x-soda2-types": "[\"floating_timestamp\"]"
   },
   "status": 200
  }

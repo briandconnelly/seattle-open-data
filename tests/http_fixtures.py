@@ -15,6 +15,8 @@ import httpx
 
 FIXTURES = Path(__file__).parent / "fixtures" / "http"
 RECORDING = bool(os.environ.get("RECORD_FIXTURES"))
+#: The engine reads column names and types from the X-SODA2 headers; dropping them changes results.
+_KEPT_HEADERS = ("content-type", "retry-after", "x-soda2-fields", "x-soda2-types")
 
 
 def _key(request: httpx.Request) -> str:
@@ -25,7 +27,10 @@ def _key(request: httpx.Request) -> str:
 class Recorder(httpx.AsyncBaseTransport):
     def __init__(self, name: str) -> None:
         self.path = FIXTURES / f"{name}.json"
-        self.entries: dict[str, dict[str, Any]] = {}
+        # Tests may share a fixture file; merge rather than overwrite.
+        self.entries: dict[str, dict[str, Any]] = (
+            json.loads(self.path.read_text()) if self.path.exists() else {}
+        )
         self._live = httpx.AsyncHTTPTransport()
 
     async def handle_async_request(self, request: httpx.Request) -> httpx.Response:
@@ -33,11 +38,7 @@ class Recorder(httpx.AsyncBaseTransport):
         body = await response.aread()
         self.entries[_key(request)] = {
             "status": response.status_code,
-            "headers": {
-                k: v
-                for k, v in response.headers.items()
-                if k.lower() in ("content-type", "retry-after")
-            },
+            "headers": {k: v for k, v in response.headers.items() if k.lower() in _KEPT_HEADERS},
             "body": json.loads(body) if body else None,
         }
         # `aread()` already decoded the body; forwarding Content-Encoding would decode it twice.

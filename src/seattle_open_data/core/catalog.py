@@ -26,6 +26,7 @@ _EXTERNAL = frozenset({"federated_href", "href"})
 #: Views that render a parent dataset; search folds them into that parent.
 _FOLDED = frozenset({"map", "chart", "visualization", "calendar", "form"})
 
+_DEFAULT_PAGE_SIZE = 10
 _RESTART = Repair(next_step="restart_search", tool="seattle_data_search_datasets", arguments={})
 
 
@@ -55,7 +56,7 @@ async def search(
     query: str | None,
     asset_scope: AssetScope,
     category: str | None,
-    page_size: int,
+    page_size: int | None,
     cursor: str | None,
     detail: Detail,
 ) -> SearchResult:
@@ -63,8 +64,10 @@ async def search(
         state = cursors.decode(cursor, "search", restart=_RESTART)
         query, asset_scope, category = state["q"], state["scope"], state["cat"]
         offset = int(state["off"])
+        page_size = page_size or int(state.get("ps", _DEFAULT_PAGE_SIZE))
     else:
         offset = 0
+    page_size = page_size or _DEFAULT_PAGE_SIZE
 
     params: dict[str, Any] = {
         "domains": CATALOG_DOMAIN,
@@ -92,7 +95,13 @@ async def search(
     next_cursor = (
         cursors.encode(
             "search",
-            {"q": query, "scope": asset_scope, "cat": category, "off": next_offset},
+            {
+                "q": query,
+                "scope": asset_scope,
+                "cat": category,
+                "off": next_offset,
+                "ps": page_size,
+            },
         )
         if has_more
         else None

@@ -1,0 +1,862 @@
+{
+ "data.seattle.gov/api/views/33kz-ixgy.json?[]": {
+  "body": {
+   "approvals": [
+    {
+     "reviewedAt": 1531152946,
+     "reviewedAutomatically": true,
+     "state": "approved",
+     "submissionDetails": {
+      "permissionType": "READ"
+     },
+     "submissionId": 7526772,
+     "submissionObject": "public_audience_request",
+     "submissionOutcome": "change_audience",
+     "submissionOutcomeApplication": {
+      "failureCount": 0,
+      "status": "success"
+     },
+     "submittedAt": 1531152946,
+     "submitter": {
+      "displayName": "spd2internetData",
+      "id": "avyg-ej9j"
+     },
+     "targetAudience": "public",
+     "workflowId": 3127
+    },
+    {
+     "message": "The `strict_permissions` flag must be on to enable internal approvals.",
+     "state": "unsubmittable",
+     "targetAudience": "internal",
+     "workflowId": 4739
+    }
+   ],
+   "assetType": "dataset",
+   "attribution": "City of Seattle",
+   "attributionLink": "http://www.seattle.gov/police/",
+   "averageRating": 0,
+   "category": "Public Safety",
+   "clientContext": {
+    "clientContextVariables": [],
+    "inheritedVariables": {}
+   },
+   "columns": [
+    {
+     "dataTypeName": "text",
+     "description": "The unique number assigned to a CAD Event upon intake. ",
+     "fieldName": "cad_event_number",
+     "format": {
+      "align": "left"
+     },
+     "id": 635310063,
+     "name": "CAD Event Number",
+     "position": 1,
+     "renderTypeName": "text",
+     "tableColumnId": 63647759,
+     "width": 292
+    },
+    {
+     "dataTypeName": "text",
+     "description": "This field represents a numerical code that corresponds to a CAD Event disposition, which is logged when the event is cleared by a Call sign. It is also referred to as \"disposition desc\" in Data Driven. Note: When the clear by code is \"G,\" there are two possible scenarios: If the cc-relation is \"S,\" it indicates a duplicated event. Otherwise, it indicates a canceled event. Additional hardcoded descriptions include: Bad location, Citation, etc.",
+     "fieldName": "cad_event_clearance_description",
+     "format": {
+      "align": "left"
+     },
+     "id": 635310064,
+     "name": "CAD Event Clearance Description",
+     "position": 2,
+     "renderTypeName": "text",
+     "tableColumnId": 63647760,
+     "width": 256
+    },
+    {
+     "dataTypeName": "text",
+     "description": "The description of a numerical code corresponding to the method by which a CAD event was received.",
+     "fieldName": "call_type",
+     "format": {
+      "align": "left"
+     },
+     "id": 635310065,
+     "name": "Call Type",
+     "position": 3,
+     "renderTypeName": "text",
+     "tableColumnId": 63647761,
+     "width": 424
+    },
+    {
+     "dataTypeName": "text",
+     "description": "Priority of the call, as assigned by the CAD system. ",
+     "fieldName": "priority",
+     "format": {
+      "align": "left"
+     },
+     "id": 635310066,
+     "name": "Priority",
+     "position": 4,
+     "renderTypeName": "text",
+     "tableColumnId": 63647762,
+     "width": 208
+    },
+    {
+     "dataTypeName": "text",
+     "description": "How the call was classified, initially by the Communication Center. ",
+     "fieldName": "initial_call_type",
+     "format": {
+      "align": "left"
+     },
+     "id": 635310067,
+     "name": "Initial Call Type",
+     "position": 5,
+     "renderTypeName": "text",
+     "tableColumnId": 63647763,
+     "width": 304
+    },
+    {
+     "dataTypeName": "text",
+     "description": "The description of a numerical code corresponding to the CAD Event case type logged when the call is cleared by a Call Sign. Also refered as Mir description in Data Driven.",
+     "fieldName": "final_call_type",
+     "format": {
+      "align": "left"
+     },
+     "id": 635310068,
+     "name": "Final Call Type",
+     "position": 6,
+     "renderTypeName": "text",
+     "tableColumnId": 63647764,
+     "width": 280
+    },
+    {
+     "dataTypeName": "calendar_date",
+     "description": "The time a CAD Event was orginated or first recieved.",
+     "fieldName": "cad_event_original_time_queued",
+     "format": {
+      "align": "left",
+      "view": "date_time"
+     },
+     "id": 635310069,
+     "name": "CAD Event Original Time Queued",
+     "position": 7,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 139742871,
+     "width": 340
+    },
+    {
+     "dataTypeName": "calendar_date",
+     "description": "The timestamp when the first Call Sign (unit id) arrives at the scene of a CAD event.",
+     "fieldName": "cad_event_arrived_time",
+     "format": {
+      "align": "left"
+     },
+     "id": 635310070,
+     "name": "CAD Event Arrived Time",
+     "position": 8,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 139742870,
+     "width": 244
+    },
+    {
+     "dataTypeName": "text",
+     "description": "Geographical Precinct in which an officer was dispatched.",
+     "fieldName": "dispatch_precinct",
+     "format": {
+      "align": "left"
+     },
+     "id": 635310071,
+     "name": "Dispatch Precinct",
+     "position": 9,
+     "renderTypeName": "text",
+     "tableColumnId": 63647767,
+     "width": 196
+    },
+    {
+     "dataTypeName": "text",
+     "description": "Geographical district/sector to which a Call Sign was responded.",
+     "fieldName": "dispatch_sector",
+     "format": {
+      "align": "left"
+     },
+     "id": 635310072,
+     "name": "Dispatch Sector",
+     "position": 10,
+     "renderTypeName": "text",
+     "tableColumnId": 63647768,
+     "width": 172
+    },
+    {
+     "dataTypeName": "text",
+     "description": "Geographical district/sector to which a Call Sign was dispatched.",
+     "fieldName": "dispatch_beat",
+     "format": {
+      "align": "left"
+     },
+     "id": 635310073,
+     "name": "Dispatch Beat",
+     "position": 11,
+     "renderTypeName": "text",
+     "tableColumnId": 63647769,
+     "width": 148
+    },
+    {
+     "dataTypeName": "text",
+     "description": "The dispatched location longitude blurred to the one hundred block",
+     "fieldName": "dispatch_longitude",
+     "format": {},
+     "id": 635310074,
+     "name": "Dispatch Longitude",
+     "position": 12,
+     "renderTypeName": "text",
+     "tableColumnId": 111145317
+    },
+    {
+     "dataTypeName": "text",
+     "description": "The dispatched location latitude blurred to the one hundred block",
+     "fieldName": "dispatch_latitude",
+     "format": {},
+     "id": 635310075,
+     "name": "Dispatch Latitude",
+     "position": 13,
+     "renderTypeName": "text",
+     "tableColumnId": 111145316
+    },
+    {
+     "dataTypeName": "text",
+     "description": "Geographic reporting area to which a call sign was dispatched. Othewise known as Grid.",
+     "fieldName": "dispatch_reporting_area",
+     "format": {},
+     "id": 635310076,
+     "name": "Dispatch Reporting Area",
+     "position": 14,
+     "renderTypeName": "text",
+     "tableColumnId": 156236292
+    },
+    {
+     "dataTypeName": "text",
+     "description": "Categorizes units responding to a call. If Unit Type is \u2018CT\u2019, it\u2019s a CARE response; otherwise, it\u2019s SPD. If both CARE and SPD respond to the same call, it\u2019s shown as SPD/CARE Co-response. Note that it will show \"Error\" value when the value of unit type is \"Error\".",
+     "fieldName": "cad_event_response_category",
+     "format": {},
+     "id": 635310077,
+     "name": "CAD Event Response Category",
+     "position": 15,
+     "renderTypeName": "text",
+     "tableColumnId": 156236299
+    },
+    {
+     "dataTypeName": "text",
+     "description": "A unique alphanumeric code combining a CAD event ID (rin) and the associated dispatched call sign ID (unit id).",
+     "fieldName": "call_sign_dispatch_id",
+     "format": {},
+     "id": 635310078,
+     "name": "Call Sign Dispatch ID",
+     "position": 16,
+     "renderTypeName": "text",
+     "tableColumnId": 156236294
+    },
+    {
+     "dataTypeName": "calendar_date",
+     "description": "The timestamp when each Call Sign (unit id) dispatched to a CAD event.",
+     "fieldName": "call_sign_dispatch_time",
+     "format": {},
+     "id": 635310079,
+     "name": "Call Sign Dispatch Time",
+     "position": 17,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 156236288
+    },
+    {
+     "dataTypeName": "calendar_date",
+     "description": "Timestamp when the first CARE unit arrived at the scene. Null if no CARE unit responded to the call. Note: CARE is a program that addresses non-emergency situations requiring social services or mental health support.",
+     "fieldName": "first_care_call_sign_at_scene_time",
+     "format": {},
+     "id": 635310080,
+     "name": "First CARE Call Sign At Scene Time",
+     "position": 18,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 156236275
+    },
+    {
+     "dataTypeName": "calendar_date",
+     "description": "Timestamp when the first CARE unit is dispatched. Null if no CARE unit responded to the call. Note: CARE is a program that addresses non-emergency situations requiring social services or mental health support.",
+     "fieldName": "first_care_call_sign_dispatch_time",
+     "format": {},
+     "id": 635310081,
+     "name": "First CARE Call Sign Dispatch Time",
+     "position": 19,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 156236289
+    },
+    {
+     "dataTypeName": "calendar_date",
+     "description": "Timestmap the first unit arrived at the scene. This field is null if only SPD or CARE responded. ",
+     "fieldName": "first_co_response_call_sign_at_scene_time",
+     "format": {},
+     "id": 635310082,
+     "name": "First Co-Response Call Sign At Scene Time",
+     "position": 20,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 156236283
+    },
+    {
+     "dataTypeName": "calendar_date",
+     "description": "Timestmap the first unit dispatched. This field is null if only SPD or CARE responded. ",
+     "fieldName": "first_co_response_call_sign_dispatch_time",
+     "format": {},
+     "id": 635310083,
+     "name": "First Co-Response Call Sign Dispatch Time",
+     "position": 21,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 156236276
+    },
+    {
+     "dataTypeName": "calendar_date",
+     "description": "Timestamp when each SPD unit (all units not \u201cCT\u201d) arrives at the scene. Null if either CARE or SPD responds.",
+     "fieldName": "first_spd_call_sign_at_scene_time",
+     "format": {},
+     "id": 635310084,
+     "name": "First SPD Call Sign at Scene Time",
+     "position": 22,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 156236278
+    },
+    {
+     "dataTypeName": "calendar_date",
+     "description": "Timestamp when each SPD unit (all units not \u201cCT\u201d) is dispatched. Null if no SPD unit responds or if co-responding with CARE.",
+     "fieldName": "first_spd_call_sign_dispatch_time",
+     "format": {},
+     "id": 635310085,
+     "name": "First SPD Call Sign Dispatch Time",
+     "position": 23,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 156236297
+    },
+    {
+     "dataTypeName": "calendar_date",
+     "description": "Timestamp when last CARE unit completed a call and is ready for the next assignment. Null if no CARE unit responded to the call. Note: CARE is a program that addresses non-emergency situations requiring social services or mental health support.",
+     "fieldName": "last_care_call_sign_in_service_time",
+     "format": {},
+     "id": 635310086,
+     "name": "Last CARE Call Sign In-Service Time",
+     "position": 24,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 156236279
+    },
+    {
+     "dataTypeName": "calendar_date",
+     "description": "Timestmap the last unit completed a call and is ready for the next assignment. This field is null if only SPD or CARE responded.",
+     "fieldName": "last_co_response_call_sign_in_service_time",
+     "format": {},
+     "id": 635310087,
+     "name": "Last Co-Response Call Sign In-Service Time",
+     "position": 25,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 156236293
+    },
+    {
+     "dataTypeName": "calendar_date",
+     "description": "Timestamp when each SPD unit (all units not \u201cCT\u201d) completes a call and is ready for the next assignment. Null if no SPD unit responds or if co-responding with CARE",
+     "fieldName": "last_spd_call_sign_in_service_time",
+     "format": {},
+     "id": 635310088,
+     "name": "Last SPD Call Sign In-Service Time",
+     "position": 26,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 156236291
+    },
+    {
+     "dataTypeName": "text",
+     "description": "The total time in seconds for all CARE units from dispatched to when they finish their service times. This measures the overall service duration of CARE units, excluding idle times.",
+     "fieldName": "care_call_sign_total_service_time_s_",
+     "format": {},
+     "id": 635310089,
+     "name": "CARE Call Sign Total Service Time (s)",
+     "position": 27,
+     "renderTypeName": "text",
+     "tableColumnId": 156236281
+    },
+    {
+     "dataTypeName": "number",
+     "description": "The total time in seconds for all Co-response units from when they dispatched to when they finish their service times. This measures the overall service duration of all units.",
+     "fieldName": "co_response_call_sign_total_service_time_s_",
+     "format": {},
+     "id": 635310090,
+     "name": "Co-Response Call Sign Total Service Time (s)",
+     "position": 28,
+     "renderTypeName": "number",
+     "tableColumnId": 156236277
+    },
+    {
+     "dataTypeName": "number",
+     "description": "The total time in seconds for all SPD units from dispatched to when they finish their service times. This measures the overall service duration of SPD units, excluding idle times.",
+     "fieldName": "spd_call_sign_total_service_time_s_",
+     "format": {},
+     "id": 635310091,
+     "name": "SPD Call Sign Total Service Time (s)",
+     "position": 29,
+     "renderTypeName": "number",
+     "tableColumnId": 156236273
+    },
+    {
+     "dataTypeName": "number",
+     "description": "The total time in seconds from Dispatch Time to In-Service Time at the unit id level, indicating the duration a unit spent responding to a call, excluding idle times.",
+     "fieldName": "call_sign_total_service_time_s_",
+     "format": {},
+     "id": 635310092,
+     "name": "Call Sign Total Service Time (s)",
+     "position": 30,
+     "renderTypeName": "number",
+     "tableColumnId": 156236287
+    },
+    {
+     "dataTypeName": "number",
+     "description": "The time in seconds indicating the delay for the first CARE unit from the Original Queued Time to when they are dispatched. ",
+     "fieldName": "first_care_call_sign_dispatch_delay_time_s_",
+     "format": {},
+     "id": 635310093,
+     "name": "First CARE Call Sign Dispatch Delay Time (s)",
+     "position": 31,
+     "renderTypeName": "number",
+     "tableColumnId": 156236286
+    },
+    {
+     "dataTypeName": "number",
+     "description": "The time in seconds it takes for the first CARE unit to arrive on scene, calculated from the Original Queued Time to the First CARE on Scene.",
+     "fieldName": "first_care_call_sign_response_time_s_",
+     "format": {},
+     "id": 635310094,
+     "name": "First CARE Call Sign Response Time (s)",
+     "position": 32,
+     "renderTypeName": "number",
+     "tableColumnId": 156236295
+    },
+    {
+     "dataTypeName": "number",
+     "description": "The time in seconds indicating the delay for the first unit when SPD/CARE co-response from the Original Queued Time to when they are dispatched. ",
+     "fieldName": "first_co_response_call_sign_dispatch_delay_time_s_",
+     "format": {},
+     "id": 635310095,
+     "name": "First Co-Response Call Sign Dispatch Delay Time (s)",
+     "position": 33,
+     "renderTypeName": "number",
+     "tableColumnId": 156236280
+    },
+    {
+     "dataTypeName": "number",
+     "description": "The time in seconds it takes for the first SPD/CARE co-response unit to arrive on scene, calculated from the Original Queued Time to the First Co-response on Scene. ",
+     "fieldName": "first_co_response_call_sign_response_time_s_",
+     "format": {},
+     "id": 635310096,
+     "name": "First Co-Response Call Sign Response Time (s)",
+     "position": 34,
+     "renderTypeName": "number",
+     "tableColumnId": 156236282
+    },
+    {
+     "dataTypeName": "number",
+     "description": "The time in seconds indicating the delay for the first SPD unit from the Original Queued Time to when they are dispatched. ",
+     "fieldName": "first_spd_call_sign_dispatch_delay_time_s_",
+     "format": {},
+     "id": 635310097,
+     "name": "First SPD Call Sign Dispatch Delay Time (s)",
+     "position": 35,
+     "renderTypeName": "number",
+     "tableColumnId": 156236298
+    },
+    {
+     "dataTypeName": "number",
+     "description": "The time in seconds it takes for the first SPD unit to arrive on scene, calculated from the Original Queued Time to the First SPD on Scene.",
+     "fieldName": "first_spd_call_sign_response_time_s_",
+     "format": {},
+     "id": 635310098,
+     "name": "First SPD Call Sign Response Time (s)",
+     "position": 36,
+     "renderTypeName": "number",
+     "tableColumnId": 156236290
+    },
+    {
+     "dataTypeName": "number",
+     "description": "The time in seconds indicating the delay for each unit from the Original Queued Time to when they are dispatched.",
+     "fieldName": "call_sign_dispatch_delay_time_s_",
+     "format": {},
+     "id": 635310099,
+     "name": "Call Sign Dispatch Delay Time (s)",
+     "position": 37,
+     "renderTypeName": "number",
+     "tableColumnId": 156236284
+    },
+    {
+     "dataTypeName": "number",
+     "description": "The time in seconds it takes for each unit (identified by Call Sign ID) to arrive at the scene, measured from when the event is first queued to when the unit reaches the scene.",
+     "fieldName": "call_sign_response_time_s_",
+     "format": {},
+     "id": 635310100,
+     "name": "Call Sign Response Time (s)",
+     "position": 38,
+     "renderTypeName": "number",
+     "tableColumnId": 156236296
+    },
+    {
+     "dataTypeName": "calendar_date",
+     "description": "The timestamp when each Call Sign (unit id) arrives at the scene of a CAD event.",
+     "fieldName": "call_sign_at_scene_time",
+     "format": {},
+     "id": 635310101,
+     "name": "Call Sign at Scene Time",
+     "position": 39,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 156236274
+    },
+    {
+     "dataTypeName": "number",
+     "description": "The time in seconds it takes for the first unit to arrive on scene, calculated from the Original Queued Time to the First on Scene.",
+     "fieldName": "cad_event_first_response_time_s_",
+     "format": {},
+     "id": 635310102,
+     "name": "CAD Event First Response Time (s)",
+     "position": 40,
+     "renderTypeName": "number",
+     "tableColumnId": 156236285
+    },
+    {
+     "dataTypeName": "calendar_date",
+     "description": "Timestamp for when a Call Sign became available to respond to a new event.",
+     "fieldName": "call_sign_in_service_time",
+     "format": {},
+     "id": 635310103,
+     "name": "Call Sign In-Service Time",
+     "position": 41,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 156300438
+    },
+    {
+     "dataTypeName": "text",
+     "description": "Indicates whether a call type was a dispatch or an onview. ",
+     "fieldName": "call_type_indicator",
+     "format": {},
+     "id": 635310104,
+     "name": "Call Type Indicator",
+     "position": 42,
+     "renderTypeName": "text",
+     "tableColumnId": 156811082
+    },
+    {
+     "dataTypeName": "text",
+     "description": "Neighborhood/MCPP, Micro Community Policing Plan, location groupings.",
+     "fieldName": "dispatch_neighborhood",
+     "format": {},
+     "id": 635310105,
+     "name": "Dispatch Neighborhood",
+     "position": 43,
+     "renderTypeName": "text",
+     "tableColumnId": 156811081
+    },
+    {
+     "dataTypeName": "text",
+     "description": "The classification of call types based on the method through which CAD event is received.",
+     "fieldName": "call_type_received_classification",
+     "format": {},
+     "id": 635310106,
+     "name": "Call Type Received Classification",
+     "position": 44,
+     "renderTypeName": "text",
+     "tableColumnId": 156811083
+    },
+    {
+     "dataTypeName": "text",
+     "description": "The location of which a Call Sign made contact or was dispatched to. ",
+     "fieldName": "dispatch_address",
+     "format": {},
+     "id": 635310107,
+     "name": "Dispatch Address",
+     "position": 45,
+     "renderTypeName": "text",
+     "tableColumnId": 160484040
+    },
+    {
+     "dataTypeName": "number",
+     "description": "The number of dispatches an officer responded to over a particular period of time ",
+     "fieldName": "count_of_officers",
+     "format": {},
+     "id": 635310108,
+     "name": "Count Of Officers",
+     "position": 46,
+     "renderTypeName": "number",
+     "tableColumnId": 160484041
+    },
+    {
+     "dataTypeName": "text",
+     "description": "A grouping of final case type descriptions describing the type of Call.",
+     "fieldName": "event_group",
+     "format": {},
+     "id": 635310109,
+     "name": "Event Group",
+     "position": 47,
+     "renderTypeName": "text",
+     "tableColumnId": 165886174
+    },
+    {
+     "dataTypeName": "text",
+     "description": "The census tract represents small-area neighborhood units, while the census block is the smallest geographic unit used by the United States Census Bureau for tabulating data. Census tracts and blocks allow for the analysis of demographic and housing information.  The field contains the Census Tract ID and Census Block ID as one string with both IDs separated by a period. This string is derived from the 2020 Census.",
+     "fieldName": "census_block_2020",
+     "format": {},
+     "id": 635310116,
+     "name": "Census Block 2020",
+     "position": 48,
+     "renderTypeName": "text",
+     "tableColumnId": 168582439
+    }
+   ],
+   "createdAt": 1523643273,
+   "description": "Please review this brief video for a better understanding of how these data are created: https://www.youtube.com/watch?v=lvTCjVHxpAU\n\nThis data represents police response activity. Each row is a record of a Call for Service (CfS) logged with the Seattle Police Department (SPD) Communications Center. Calls originated from the community and range from in progress or active emergencies to requests for problem solving. Additionally, officers will log calls from their observations of the field. \n\nPrevious versions of this data set have withheld approximately 40% of calls. This updated process will release more than 95% of all calls but we will no longer provide latitude and longitude specific location data. In an effort to safeguard the privacy of our community, calls will only be located to the \u201cbeat\u201d level. Beats are the most granular unit of management used for patrol deployment. To learn more about patrol deployment, please visit: https://www.seattle.gov/police/about-us/about-policing/precinct-and-patrol-boundaries.\n\nAs with any data, certain conditions and qualifications apply:\n\n1)\tThese data are queried from the Data Analytics Platform (DAP), and updated incrementally on a daily basis. A full refresh will occur twice a year and is intended to reconcile minor changes.\n\n2)\tThis data set only contains records of police response. If a call is queued in the system but cleared before an officer can respond, it will not be included. \n\n3)\tThese data contain administrative call types. Use the \u201cInitial\u201d and \u201cFinal\u201d call type to identify the calls you wish to include in your analysis. \n\nWe invite you to engage these data, ask questions and explore.",
+   "diciBackend": false,
+   "displayType": "table",
+   "domainCName": "data.seattle.gov",
+   "downloadCount": 23204,
+   "flags": [
+    "default",
+    "federated",
+    "internalToPublicFederatedView",
+    "ownerMayBeContacted",
+    "restorable",
+    "restorePossibleForType"
+   ],
+   "grants": [
+    {
+     "flags": [
+      "public"
+     ],
+     "inherited": false,
+     "type": "viewer"
+    }
+   ],
+   "hideFromCatalog": false,
+   "hideFromDataJson": false,
+   "id": "33kz-ixgy",
+   "license": {
+    "name": "Public Domain"
+   },
+   "licenseId": "PUBLIC_DOMAIN",
+   "locale": "en_US",
+   "locked": false,
+   "metadata": {
+    "availableDisplayTypes": [
+     "table",
+     "fatrow",
+     "page"
+    ],
+    "custom_fields": {
+     "Common Core": {
+      "Contact Email": "open.data@seattle.gov",
+      "Publisher": "data.seattle.gov"
+     },
+     "Department": {
+      "Department": "Seattle Police Department"
+     },
+     "Refresh Frequency": {
+      "Frequency": "Daily"
+     }
+    },
+    "rowLabel": "A unique CAD Event. "
+   },
+   "name": "Call Data",
+   "newBackend": true,
+   "numberOfComments": 0,
+   "oid": 42220982,
+   "owner": {
+    "createdAt": 1670887287,
+    "displayName": "SPD_AskSPDAnalytics@seattle.gov",
+    "id": "hp7p-wh9r",
+    "members": [
+     {
+      "createdAt": 1473443304,
+      "disabledAt": 1638810234,
+      "displayName": "spd2internetData",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "avyg-ej9j",
+      "screenName": "spd2internetData",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1491495044,
+      "displayName": "Palay, Claire",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "wt5u-xzdz",
+      "screenName": "Palay, Claire",
+      "teamId": 1484711,
+      "teamRole": "owner",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1524592420,
+      "disabledAt": 1638810229,
+      "displayName": "Greg Kauper",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "g44j-g86n",
+      "screenName": "Greg Kauper",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1485819659,
+      "disabledAt": 1638810228,
+      "displayName": "7861 Atherley, Loren T",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "gj9e-qvnd",
+      "screenName": "7861 Atherley, Loren T",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1636756921,
+      "disabledAt": 1638810235,
+      "displayName": "Vonaschen-Cook, Mirs",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "shdq-d9dx",
+      "screenName": "Vonaschen-Cook, Mirs",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1376678977,
+      "disabledAt": 1638810232,
+      "displayName": "6506 Baden, Toby",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "6bay-fiph",
+      "screenName": "6506 Baden, Toby",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     }
+    ],
+    "screenName": "SPD_AskSPDAnalytics@seattle.gov",
+    "type": "team"
+   },
+   "provenance": "official",
+   "publicationAppendEnabled": false,
+   "publicationDate": 1781750761,
+   "publicationGroup": 15039751,
+   "publicationStage": "published",
+   "query": {},
+   "rights": [
+    "read"
+   ],
+   "rowsUpdatedAt": 1792106906,
+   "rowsUpdatedBy": "2866-np2t",
+   "tableAuthor": {
+    "createdAt": 1670887287,
+    "displayName": "SPD_AskSPDAnalytics@seattle.gov",
+    "id": "hp7p-wh9r",
+    "members": [
+     {
+      "createdAt": 1473443304,
+      "disabledAt": 1638810234,
+      "displayName": "spd2internetData",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "avyg-ej9j",
+      "screenName": "spd2internetData",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1491495044,
+      "displayName": "Palay, Claire",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "wt5u-xzdz",
+      "screenName": "Palay, Claire",
+      "teamId": 1484711,
+      "teamRole": "owner",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1524592420,
+      "disabledAt": 1638810229,
+      "displayName": "Greg Kauper",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "g44j-g86n",
+      "screenName": "Greg Kauper",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1485819659,
+      "disabledAt": 1638810228,
+      "displayName": "7861 Atherley, Loren T",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "gj9e-qvnd",
+      "screenName": "7861 Atherley, Loren T",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1636756921,
+      "disabledAt": 1638810235,
+      "displayName": "Vonaschen-Cook, Mirs",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "shdq-d9dx",
+      "screenName": "Vonaschen-Cook, Mirs",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1376678977,
+      "disabledAt": 1638810232,
+      "displayName": "6506 Baden, Toby",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "6bay-fiph",
+      "screenName": "6506 Baden, Toby",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     }
+    ],
+    "screenName": "SPD_AskSPDAnalytics@seattle.gov",
+    "type": "team"
+   },
+   "tableId": 20425016,
+   "tags": [
+    "911",
+    "calls for service",
+    "police"
+   ],
+   "totalTimesRated": 0,
+   "viewCount": 146720,
+   "viewLastModified": 1792084366,
+   "viewType": "tabular"
+  },
+  "headers": {
+   "content-type": "application/json; charset=utf-8"
+  },
+  "status": 200
+ }
+}

@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Added
 
+- Milestone 3: `seattle_data_query_dataset`. Clauses mode pages with signed cursors: keyset on `:id` for unordered row queries (`consistency: "stable"`), OFFSET with tie-breakers for ordered, grouped, and DISTINCT queries (`best_effort`). Rows are packed whole under a 24 KiB result budget; a paged query stops at 10,000 rows with `truncated: true`. Raw SoQL runs verbatim as one page, read incrementally and closed early. `near` compiles to `within_circle` on point or location columns. `coverage_warnings` flag filters on partial or unreliable place fields. Full detail adds `query_url`, `download_url`, and `effective_query`.
+- Cursors carry the first page's `page_size`, so a continuation keeps it unless overridden.
+
+### Removed
+
+- The pre-release `not_implemented` error code: every tool is implemented.
+
 - Milestone 2: `seattle_data_search_datasets` (Discovery API via the `cos-data.seattle.gov` alias; filter views marked `derived_from`; map and chart views folded; federated entries carry their ArcGIS access point) and `seattle_data_describe_dataset` (live row count and time coverage under a 10 s deadline with cached fallback; place fields from verified Seattle facts and computed-region layers, with reliability, values, placeholder counts, and assigned fraction; geo and time semantics).
 - `value_count` on place fields and an `other` place kind for unreviewed region layers.
 - Recorded-response HTTP fixtures (`RECORD_FIXTURES=1` to refresh) and live `integration` tests.
