@@ -70,7 +70,7 @@ All four tools share these properties:
        - Emitted on every page, for that page's results.
      - **`external_matches[]`** and **`external_search_status`** (`completed | unavailable`): first page of a `tabular` search only.
        - A second catalog request with `only=federated_href,href` and `limit: 3` runs concurrently with the primary, keeping `query` and `category`. Most of the catalog (498 of 699 entries) is federated, so a tabular search alone hides most leads.
-       - It has its own 5 s timeout. Any failure gives `unavailable` and leaves the primary result intact; a primary failure cancels it.
+       - It has its own 5 s timeout. Any failure gives `unavailable`, including an entry that is not an external asset with a valid id and link, and leaves the primary result intact; a primary failure cancels it.
        - Entries use the `datasets` shape, with `queryability: "external"` and `external_url`.
      - **`suggestion`:** first page only, when no result has a matched term (including an empty page). One literal call in the repair shape [6.repair-intent]: `drop_category` (same query and scope, no category) when a category was given, otherwise `browse` (`{}`). Its `alternative` says the result still needs checking and that Seattle may not publish the data. It is an alternative, not a repair, and never an error: an empty search is a true answer.
 

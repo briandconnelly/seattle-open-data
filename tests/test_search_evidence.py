@@ -144,6 +144,15 @@ async def test_evidence_ignores_a_trailing_s_and_common_words(client, tools_list
     assert found["matched_fields"] == ["title", "tags"]
 
 
+@pytest.mark.parametrize(
+    ("query", "column"), [("IDs", "ID"), ("ID", "IDs"), ("RVs", "RV"), ("RV", "RVs")]
+)
+async def test_short_plurals_match_both_ways(client, tools_list, query, column):
+    install(Catalog([item("aaaa-aaaa", "Vehicles", columns=[column])]))
+    out = await search(client, tools_list, {"query": query})
+    assert evidence(out, "aaaa-aaaa")["matched_fields"] == ["columns"]
+
+
 async def test_evidence_splits_api_field_names_on_underscores(client, tools_list):
     install(Catalog([item("aaaa-aaaa", "Levy Accomplishments", columns=["trees_planted"])]))
     out = await search(client, tools_list, {"query": "trees"})
@@ -255,8 +264,13 @@ async def test_external_failure_keeps_the_primary_result(client, tools_list, fai
 
 @pytest.mark.parametrize(
     "failure",
-    [httpx.Response(200, json={"results": [None], "resultSetSize": 1}), RuntimeError("bug")],
-    ids=["null-entry", "unexpected-exception"],
+    [
+        httpx.Response(200, json={"results": [None], "resultSetSize": 1}),
+        httpx.Response(200, json={"results": [{}], "resultSetSize": 1}),
+        httpx.Response(200, json=body([item("aaaa-bbbb", "A dataset, not an external link")])),
+        RuntimeError("bug"),
+    ],
+    ids=["null-entry", "empty-entry", "not-external", "unexpected-exception"],
 )
 async def test_any_external_failure_keeps_the_primary_result(client, tools_list, failure):
     install(Catalog([item("aaaa-aaaa", "Street Trees")], external=failure))

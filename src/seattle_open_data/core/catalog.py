@@ -12,6 +12,7 @@ import anyio
 
 from seattle_open_data.constants import (
     CATALOG_DOMAIN,
+    DATASET_ID_PATTERN,
     DISCOVERY_API,
     PUBLIC_HOST,
     SEARCH_EXTERNAL_LIMIT,
@@ -235,12 +236,23 @@ async def _external(
         body = _catalog_body(
             await client.get_json(DISCOVERY_API, params, timeout=SEARCH_EXTERNAL_TIMEOUT_SECONDS)
         )
-        out.body = [_summarize(item, detail) for item in body["results"][:SEARCH_EXTERNAL_LIMIT]]
+        leads = [_summarize(item, detail) for item in body["results"][:SEARCH_EXTERNAL_LIMIT]]
+        if not all(_is_lead(lead) for lead in leads):
+            raise shape_error("Expected only external catalog assets with a link.")
+        out.body = leads
     except SeattleDataError as exc:
         out.error = exc
     except Exception as exc:
         logger.exception("external-asset lookup failed unexpectedly")
         out.error = exc
+
+
+def _is_lead(summary: DatasetSummary) -> bool:
+    return (
+        re.fullmatch(DATASET_ID_PATTERN, summary.dataset_id) is not None
+        and summary.queryability == "external"
+        and summary.external_url is not None
+    )
 
 
 def _suggest(query: str, asset_scope: AssetScope, category: str | None) -> Repair:
@@ -272,8 +284,11 @@ def _terms(query: str) -> list[str]:
 
 
 def _variants(word: str) -> set[str]:
-    """A word matches its plural or singular: a trailing "s" only, no stemming."""
-    return {word, word[:-1]} if word.endswith("s") and len(word) > 3 else {word, word + "s"}
+    """A word matches its plural or singular: a trailing "s" only, no stemming.
+
+    Two-letter words ("us", "as") keep their "s"; three-letter plurals ("ids", "rvs") lose it.
+    """
+    return {word, word[:-1]} if word.endswith("s") and len(word) > 2 else {word, word + "s"}
 
 
 def _evidence(
