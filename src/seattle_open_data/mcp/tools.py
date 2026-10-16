@@ -1,5 +1,7 @@
-"""The four tools (PLAN §4). Handlers raise `SeattleDataError`; `mcp/server.py` turns
-every failure, including framework argument validation, into the error envelope."""
+"""The four tools (docs/design.md: Primitives).
+
+Handlers raise `SeattleDataError`; `mcp/server.py` turns every failure, including framework
+argument validation, into the error envelope."""
 
 from __future__ import annotations
 

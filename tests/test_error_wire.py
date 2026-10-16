@@ -1,4 +1,4 @@
-"""Milestone 1 exit test (b): every failure leaves as the PLAN §6 envelope, on the wire."""
+"""Every failure leaves as the error envelope (docs/design.md: Errors), on the wire."""
 
 from __future__ import annotations
 

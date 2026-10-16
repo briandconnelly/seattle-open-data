@@ -1,4 +1,4 @@
-"""Dataset inspection (PLAN §4, tool 2).
+"""Dataset inspection (docs/design.md: tool 2).
 
 Live aggregates run concurrently under one deadline; a slow dataset degrades to
 cached or absent values with an explicit status, never to a silent zero.

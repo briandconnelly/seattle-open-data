@@ -1,4 +1,7 @@
-"""Static reference resources (PLAN §4). Same content as `seattle_data_get_reference`."""
+"""Static reference resources (docs/design.md: Primitives).
+
+Same content as `seattle_data_get_reference`.
+"""
 
 from __future__ import annotations
 

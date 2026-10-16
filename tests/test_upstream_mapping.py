@@ -1,4 +1,7 @@
-"""Upstream SODA2 failures map onto the PLAN §6 taxonomy, including every query.soql.* variant."""
+"""Upstream SODA2 failures map onto the error taxonomy (docs/design.md: Errors).
+
+Covers every query.soql.* variant.
+"""
 
 from __future__ import annotations
 

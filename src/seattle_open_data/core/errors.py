@@ -1,4 +1,4 @@
-"""The single error envelope (PLAN §6) and the upstream → envelope mapping.
+"""The single error envelope (docs/design.md: Errors) and the upstream → envelope mapping.
 
 Tool failures carry `ErrorEnvelope` in `structuredContent` with `isError: true`.
 Resource failures carry the same envelope in JSON-RPC `error.data`, with only
@@ -171,7 +171,7 @@ def map_upstream_error(  # noqa: PLR0911 - one return per upstream failure class
     token_configured: bool = False,
     endpoint: Literal["resource", "views", "catalog"] = "resource",
 ) -> SeattleDataError:
-    """Translate a non-2xx SODA2 response into the envelope taxonomy (PLAN §6).
+    """Translate a non-2xx SODA2 response into the envelope taxonomy (docs/design.md: Errors).
 
     `endpoint` matters: SoQL codes mean something only for a /resource query, and a 404 means
     a missing dataset only on a dataset endpoint, not on the catalog.

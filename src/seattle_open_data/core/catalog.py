@@ -1,4 +1,4 @@
-"""Catalog search over the Socrata Discovery API (PLAN §4, tool 1)."""
+"""Catalog search over the Socrata Discovery API (docs/design.md: tool 1)."""
 
 from __future__ import annotations
 

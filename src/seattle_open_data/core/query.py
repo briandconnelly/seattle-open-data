@@ -1,4 +1,4 @@
-"""Bounded reads and aggregates (PLAN §4 tool 3, §5 paging)."""
+"""Bounded reads and aggregates (docs/design.md: tool 3, Query engine)."""
 
 from __future__ import annotations
 

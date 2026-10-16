@@ -1,4 +1,7 @@
-"""Seattle portal facts (PLAN §3). Extract a `Portal` type only when a second portal arrives."""
+"""Seattle portal facts (docs/design.md: Scope).
+
+Extract a `Portal` type only when a second portal arrives.
+"""
 
 from __future__ import annotations
 
@@ -35,7 +38,7 @@ DESCRIBE_AGGREGATE_TIMEOUT_SECONDS = 10.0
 UPSTREAM_MAX_BYTES = 8 * 1024 * 1024
 CURSOR_TTL_SECONDS = 3600
 
-#: Values publishers use instead of null in text place fields (PLAN §2).
+#: Values publishers use instead of null in text place fields (docs/upstream-facts.md).
 PLACEHOLDER_VALUES = frozenset({"-", "UNKNOWN", "NULL", "OOJ", "FK ERROR", "X", "0", ""})
 
 #: Computed-region layers seen on Seattle datasets; label columns and dates verified 2026-10-15.
@@ -75,7 +78,8 @@ REGION_LAYERS: dict[str, dict[str, str]] = {
     },
 }
 
-#: Text place fields per dataset, with reliability from the 2026-10-15 probe (PLAN §2).
+#: Text place fields per dataset, with reliability from the 2026-10-15 probe
+#: (docs/upstream-facts.md).
 PLACE_FIELDS: dict[str, dict[str, dict[str, str]]] = {
     "33kz-ixgy": {
         "dispatch_neighborhood": {"kind": "neighborhood", "reliability": "ok"},

@@ -35,7 +35,6 @@ htmlcov/
 
 # OS cruft
 .DS_Store
-PLAN.md
 CHANGELOG.md
 
 # Eval artifacts and local credentials

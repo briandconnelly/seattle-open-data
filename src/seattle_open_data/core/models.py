@@ -1,4 +1,4 @@
-"""Success output shapes for the four tools (PLAN §4).
+"""Success output shapes for the four tools (docs/design.md: Primitives).
 
 Top-level results are open (`extra="allow"`): the documented extension point for
 minor-release additions [9.additive-direction]. Nested objects are closed.
