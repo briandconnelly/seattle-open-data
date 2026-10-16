@@ -410,6 +410,9 @@ Framework argument-validation failures are normalized into this envelope, and a 
 | `rate_limited` | true | `retry`: the same tool and arguments; `retry_after_ms` from Retry-After |
 | `query_timeout` | true | `narrow`: the same tool and `dataset_id`; `alternative` suggests aggregation or a tighter `where` |
 | `cursor_expired`, `invalid_cursor` | false | `restart_from_first_page`: `seattle_data_query_dataset({dataset_id})`; `alternative` says to resend the original clauses |
+| `reference_not_found` | false | `list_items`: `seattle_data_get_reference({topic})`; `details.candidates` lists valid ids. Also the resource not-found code (JSON-RPC -32602) |
+| `not_implemented` | false | `read_capabilities`: `seattle_data_get_reference({topic: "capabilities"})`. Pre-release only; removed once milestones 2–3 land |
+| `internal_error` | false | none; logged with `request_id` |
 | `row_too_large`, `invalid_argument`, `upstream_unavailable` | per code | per catalog |
 
 Free-text offending values (`where`, `soql`) are omitted from `details.value`, and the error catalog discloses that policy [6.offending-value].
@@ -533,11 +536,11 @@ All calls are blocking `tools/call` [7.execution-mode].
 | § | Status | Answer |
 | --- | --- | --- |
 | 1 Server | answered | Name and prefix (§3). stdio, logs to stderr. Auth: an optional operator token with three distinct failure modes (none / rejected / generic 403). Implicit state: the cached schemas and an in-memory signing key, both lost on restart and documented. State handles: signed cursors with lifetime, binding, and expiry (§5) |
-| 2 Discovery | **pending** (M1 d) | Capability resource plus the reference tool; negative scope first. The 24 KiB budget and per-client `instructions` prefix lengths are unmeasured [2.instructions-prefix] |
-| 3 Tools | **pending** (M1 a) | Schemas (§4) with the documented open top level and dynamic maps; honest read-only annotations; untrusted-content handling. Idempotency keys, version preconditions, and patch ops are N/A (read-only). Schemas are sketches until the M1 snapshot |
+| 2 Discovery | answered (M1) | Capability resource plus the reference tool; negative scope first. Measured `tools/list`: 13,252 bytes against the 24 KiB budget, enforced in CI. Host captures (docs/host-captures): Codex prefixes `instructions` to every tool description; neither host truncated it. No prefix length is measured, so no prefix claim is made [2.instructions-prefix] |
+| 3 Tools | answered (M1) | Schemas (§4) with the documented open top level and dynamic maps; honest read-only annotations; untrusted-content handling. Idempotency keys, version preconditions, and patch ops are N/A (read-only). Schemas frozen by `tests/snapshots/tools_list.json` |
 | 4 Resources | answered | Static reference resources with templates, the tool fallback, and a 1-hour `ttlMs`. Completion deferred (few, listed ids). Subscriptions N/A (content changes only on upgrade) |
 | 5 Prompts | answered | None in v1 |
-| 6 Failure | **pending** (M1 b) | Envelope and taxonomy (§6) with literal repairs. The per-tool code catalog [6.document-codes] and worked payloads land with the M1 wire tests |
+| 6 Failure | answered (M1) | Envelope and taxonomy (§6) with literal repairs; per-tool code catalog and a worked payload per code at `seattle-data://errors/codes` [6.document-codes]; forced-error wire tests per tool, including framework validation failures |
 | 7 Long-running | answered | §7; tasks N/A |
 | 8 Token efficiency | **pending** (M3) | Contract in §4–§5: summary/full, byte-budgeted pages, paging by query kind, HTML stripped, system columns hidden. Untested until the M3 fixtures run |
 | 9 Versioning | answered | Deterministic ordering; deprecation window; open top-level output for additions (§8); `listChanged` not advertised; fingerprint deferred per [9.fingerprint] |
@@ -593,3 +596,7 @@ No open product questions remain. Engineering unknowns are tracked as **pending*
 | performance.seattle.gov | Open question | Out of scope: KPI-dashboard portal (median 2 columns, mostly stale) | Brian; facts verified by Claude |
 | Bulk export | Open question | No server-side export; `download_url` added (built, never fetched) so an agent can hand over a complete row set | Brian's condition; `download_url` proposed by Claude |
 | ArcGIS, transport | Open questions | Discovery-only; stdio only | Brian |
+| Pre-release codes | Not in taxonomy | `not_implemented` (until M2–M3), `internal_error`, `reference_not_found` | Milestone 1 implementation |
+| Validation `details.value` | Omit free-text values only | Never echo received argument values; only server- or catalog-minted values | Milestone 1 implementation (simpler rule; disclosed in the error catalog) |
+| `instructions` length | Unconstrained | Keep short: Codex repeats it in every tool description | Milestone 1 host capture |
+| Legacy floor | 2025-11-25 | Codex CLI 0.162.1 negotiates 2025-06-18 and is served; legacy handshake tested in CI | Milestone 1 host capture |
