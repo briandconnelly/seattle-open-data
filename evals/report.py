@@ -15,6 +15,8 @@ PREFIX = "mcp__seattle-open-data__"
 
 def summarize(path: Path) -> dict:
     events = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+    if any(e.get("type") == "thread.started" for e in events):
+        return _summarize_codex(events)
     calls, results = [], {}
     for event in events:
         message = event.get("message") or {}
@@ -36,8 +38,6 @@ def summarize(path: Path) -> dict:
                     except (TypeError, ValueError):
                         code = "error"
                 results[block.get("tool_use_id")] = code
-    if any(e.get("type") == "turn.completed" for e in events):
-        return _summarize_codex(events)
     final = next((e for e in reversed(events) if e.get("type") == "result"), {})
     return {
         "calls": [(name, results.get(call_id), args) for call_id, name, args in calls],
@@ -56,6 +56,9 @@ def _summarize_codex(events: list[dict]) -> dict:
         if item.get("type") == "mcp_tool_call"
     ]
     messages = [item.get("text", "") for item in items if item.get("type") == "agent_message"]
+    failure = next((e for e in events if e.get("type") == "turn.failed"), None)
+    if failure:
+        messages.append(f"[run failed: {(failure.get('error') or {}).get('message')}]")
     return {
         "calls": calls,
         "cost": None,
