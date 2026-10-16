@@ -27,6 +27,7 @@ class Document:
     title: str
     description: str
     body: str
+    dataset_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -504,7 +505,9 @@ TOPICS: dict[str, Topic] = {
         "guides",
         "Dataset guides",
         "What a row means, key fields, area filters, pitfalls, and verified queries for flagship datasets.",
-        tuple(Document(g.guide_id, g.title, g.description, g.render()) for g in GUIDES),
+        tuple(
+            Document(g.guide_id, g.title, g.description, g.render(), g.dataset_id) for g in GUIDES
+        ),
     ),
     "soql": Topic(
         "soql",
