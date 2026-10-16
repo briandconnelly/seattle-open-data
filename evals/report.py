@@ -87,21 +87,26 @@ def main() -> None:
     out = Path(sys.argv[1])
     show_answers = "--answers" in sys.argv
     tasks = json.loads((ROOT / "evals" / "tasks.json").read_text())
-    total = 0.0
+    total: float | None = 0.0
     for task in tasks:
         path = out / f"{task['id']}.transcript.jsonl"
         if not path.exists():
             continue
         s = summarize(path)
-        total += s["cost"] or 0
-        cost, calls = s["cost"] or 0, len(s["calls"])
-        print(f"\n## {task['id']}  (${cost:.2f}, {s['turns']} turns, {calls} calls)")
+        # Codex reports tokens, not dollars: an unknown cost is N/A, never $0.00.
+        total = None if total is None or s["cost"] is None else total + s["cost"]
+        calls = len(s["calls"])
+        print(f"\n## {task['id']}  ({_dollars(s['cost'])}, {s['turns']} turns, {calls} calls)")
         print(f"expect: {task['expect']}")
         for name, code, args in s["calls"]:
             print(f"  - {name}{' -> ' + code if code else ''}  {json.dumps(args)[:180]}")
         if show_answers:
             print("answer:\n" + s["answer"].strip()[:1800])
-    print(f"\ntotal cost ${total:.2f}")
+    print(f"\ntotal cost {_dollars(total)}")
+
+
+def _dollars(cost: float | None) -> str:
+    return "N/A" if cost is None else f"${cost:.2f}"
 
 
 if __name__ == "__main__":

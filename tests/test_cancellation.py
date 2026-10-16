@@ -8,18 +8,24 @@ import httpx
 from tests.test_review_whole import portal
 
 
+class BlockingStream(httpx.AsyncByteStream):
+    """A response body that never arrives; records whether httpx closed it."""
+
+    def __init__(self) -> None:
+        self.started, self.closed = anyio.Event(), anyio.Event()
+
+    async def __aiter__(self):
+        self.started.set()
+        await anyio.sleep_forever()
+        yield b"[]"
+
+    async def aclose(self) -> None:
+        self.closed.set()
+
+
 async def test_client_cancel_closes_upstream_stream(client):
-    started, closed = anyio.Event(), anyio.Event()
-
-    async def blocking_body():
-        started.set()
-        try:
-            await anyio.sleep_forever()
-            yield b"[]"
-        finally:
-            closed.set()
-
-    portal(lambda request: httpx.Response(200, content=blocking_body()))
+    stream = BlockingStream()
+    portal(lambda request: httpx.Response(200, stream=stream))
     async with anyio.create_task_group() as tg:
         tg.start_soon(
             client.call_tool_mcp,
@@ -27,7 +33,7 @@ async def test_client_cancel_closes_upstream_stream(client):
             {"dataset_id": "aaaa-bbbb", "select": ["name"]},
         )
         with anyio.fail_after(5):
-            await started.wait()
+            await stream.started.wait()
         tg.cancel_scope.cancel()
     with anyio.fail_after(2):
-        await closed.wait()
+        await stream.closed.wait()
