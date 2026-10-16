@@ -15,6 +15,8 @@ PREFIX = "mcp__seattle-open-data__"
 
 def summarize(path: Path) -> dict:
     events = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+    if any(e.get("type") == "thread.started" for e in events):
+        return _summarize_codex(events)
     calls, results = [], {}
     for event in events:
         message = event.get("message") or {}
@@ -45,25 +47,66 @@ def summarize(path: Path) -> dict:
     }
 
 
+def _summarize_codex(events: list[dict]) -> dict:
+    """Codex `exec --json`: tool calls are mcp_tool_call items; usage is tokens, not dollars."""
+    items = [e["item"] for e in events if e.get("type") == "item.completed" and e.get("item")]
+    calls = [
+        (str(item.get("tool")), _codex_error_code(item), item.get("arguments") or {})
+        for item in items
+        if item.get("type") == "mcp_tool_call"
+    ]
+    messages = [item.get("text", "") for item in items if item.get("type") == "agent_message"]
+    failure = next((e for e in events if e.get("type") == "turn.failed"), None)
+    if failure:
+        messages.append(f"[run failed: {(failure.get('error') or {}).get('message')}]")
+    return {
+        "calls": calls,
+        "cost": None,
+        "turns": sum(1 for e in events if e.get("type") == "turn.completed"),
+        "answer": messages[-1] if messages else "",
+    }
+
+
+def _codex_error_code(item: dict) -> str | None:
+    if item.get("error"):
+        return "error"
+    result = item.get("result") or {}
+    content = result.get("content") or [{}]
+    try:
+        payload = json.loads(content[0].get("text", ""))
+    except (TypeError, ValueError):
+        payload = {}
+    # Codex may drop isError; an envelope is recognizable by code + temporary.
+    is_envelope = isinstance(payload, dict) and {"code", "temporary"} <= payload.keys()
+    if result.get("isError") or result.get("is_error") or is_envelope:
+        return payload.get("code") if isinstance(payload, dict) and payload.get("code") else "error"
+    return None
+
+
 def main() -> None:
     out = Path(sys.argv[1])
     show_answers = "--answers" in sys.argv
     tasks = json.loads((ROOT / "evals" / "tasks.json").read_text())
-    total = 0.0
+    total: float | None = 0.0
     for task in tasks:
         path = out / f"{task['id']}.transcript.jsonl"
         if not path.exists():
             continue
         s = summarize(path)
-        total += s["cost"] or 0
-        cost, calls = s["cost"] or 0, len(s["calls"])
-        print(f"\n## {task['id']}  (${cost:.2f}, {s['turns']} turns, {calls} calls)")
+        # Codex reports tokens, not dollars: an unknown cost is N/A, never $0.00.
+        total = None if total is None or s["cost"] is None else total + s["cost"]
+        calls = len(s["calls"])
+        print(f"\n## {task['id']}  ({_dollars(s['cost'])}, {s['turns']} turns, {calls} calls)")
         print(f"expect: {task['expect']}")
         for name, code, args in s["calls"]:
             print(f"  - {name}{' -> ' + code if code else ''}  {json.dumps(args)[:180]}")
         if show_answers:
             print("answer:\n" + s["answer"].strip()[:1800])
-    print(f"\ntotal cost ${total:.2f}")
+    print(f"\ntotal cost {_dollars(total)}")
+
+
+def _dollars(cost: float | None) -> str:
+    return "N/A" if cost is None else f"${cost:.2f}"
 
 
 if __name__ == "__main__":
