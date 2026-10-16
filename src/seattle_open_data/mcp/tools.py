@@ -152,8 +152,9 @@ async def seattle_data_describe_dataset(
     (actual time range), place fields for "in <area>" questions (with reliability),
     and geo columns for `near`.
 
-    Call before querying a dataset whose columns you do not know. For area questions use
-    detail="full" and filter on `value`, not label; an area may span several values.
+    Call before querying a dataset whose columns you do not know.
+    For area questions, use detail="full".
+    Filter a place field on its `value`, never its label; an area may span several values.
     Example: {"dataset_id": "kzjm-xkqj", "detail": "full"}.
     Typically 1-3 s; fails with query_timeout after 30 s.
     """
@@ -189,17 +190,28 @@ async def seattle_data_query_dataset(
         Field(
             min_length=1,
             max_length=QUERY_TEXT_MAX_BYTES,
-            description="SoQL predicate, e.g. \"datetime >= '2026-09-01T00:00:00'\" "
-            "(no Z, no now()).",
+            description="SoQL predicate, e.g. \"datetime >= '2026-09-01T00:00:00'\". "
+            "Never append Z or call now(); both fail. Omit for all rows.",
         ),
     ] = None,
-    group_by: Annotated[list[Text] | None, Field(min_length=1)] = None,
-    having: Annotated[str | None, Field(min_length=1, max_length=QUERY_TEXT_MAX_BYTES)] = None,
+    group_by: Annotated[
+        list[Text] | None,
+        Field(min_length=1, description='e.g. ["type"]; omit for no grouping.'),
+    ] = None,
+    having: Annotated[
+        str | None,
+        Field(
+            min_length=1,
+            max_length=QUERY_TEXT_MAX_BYTES,
+            description='Predicate on aggregated rows, e.g. "n > 10"; omit for none.',
+        ),
+    ] = None,
     order_by: Annotated[
         list[Text] | None,
         Field(
             min_length=1,
-            description='e.g. ["n DESC"]; omit for arbitrary order. DESC lists nulls first.',
+            description='e.g. ["n DESC"]; omit for arbitrary order. DESC lists nulls first: '
+            "for most recent, add `col IS NOT NULL` to where.",
         ),
     ] = None,
     search_text: Annotated[
@@ -274,13 +286,6 @@ async def seattle_data_get_reference(
             description="An item from the topic's entries; omit for the topic index.",
         ),
     ] = None,
-    chunk_id: Annotated[
-        str | None, Field(min_length=1, max_length=64, description="Omit; no item is chunked.")
-    ] = None,
-    detail: Annotated[
-        Detail | None,
-        Field(description="Ignored."),
-    ] = None,
 ) -> ToolResult:
     """Read the server's reference: capability summary, SoQL help, dataset guides, and the
     full error catalog. Call with no arguments for the index.
@@ -288,8 +293,7 @@ async def seattle_data_get_reference(
     Example: {"topic": "soql", "item_id": "dates"}.
     """
     arguments.check_reference(locals())
-    del detail  # Reference bodies have one density.
-    result = reference_service.read(topic or "index", item_id, chunk_id)
+    result = reference_service.read(topic or "index", item_id)
     return success(result)
 
 

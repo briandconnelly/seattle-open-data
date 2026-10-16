@@ -208,6 +208,4 @@ class ReferenceResult(Open):
     version: str
     entries: list[ReferenceEntry] | None = None
     body: str | None = None
-    chunk_id: str | None = None
-    next_chunk_id: str | None = None
     source: Source

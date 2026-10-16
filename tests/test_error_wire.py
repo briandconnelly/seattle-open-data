@@ -98,7 +98,6 @@ COMBINATION_CASES = [
     ),
     ("seattle_data_search_datasets", {"cursor": "abc", "query": "fire"}, ["query"]),
     ("seattle_data_get_reference", {"item_id": "dates"}, ["topic", "item_id"]),
-    ("seattle_data_get_reference", {"topic": "soql", "chunk_id": "1"}, ["item_id", "chunk_id"]),
 ]
 
 
