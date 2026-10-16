@@ -286,3 +286,52 @@ async def test_cursor_for_another_dataset_is_rejected(client, tools_list, soda):
     )["structuredContent"]
     assert envelope["code"] == "invalid_cursor"
     assert envelope["repair"]["arguments"] == {"dataset_id": "76t5-zqzr"}
+
+
+def _json_size(clauses: dict) -> int:
+    return len(json.dumps(clauses, separators=(",", ":"), ensure_ascii=False).encode())
+
+
+def _at_cap(key: str, make) -> dict:
+    """The largest clauses `make(n)` builds whose compact JSON fits the 4 KiB cap."""
+    n = 0
+    while _json_size({key: make(n + 1)}) <= 4096:
+        n += 1
+    return {key: make(n)}
+
+
+def _where(char: str):
+    return lambda n: f"incident_number = '{char * n}'"
+
+
+_TWO_ROWS = [{":id": "row-1", "incident_number": "a"}, {":id": "row-2", "incident_number": "b"}]
+_AT_CAP = {
+    "ascii": _at_cap("where", _where("x")),
+    "quotes": _at_cap("where", _where('"')),
+    "non-ascii": _at_cap("where", _where("é")),
+    "many-list-items": _at_cap("order_by", lambda n: ["incident_number"] * n),
+}
+
+
+@pytest.mark.parametrize("clauses", list(_AT_CAP.values()), ids=list(_AT_CAP))
+@pytest.mark.soda_fixture("query_three_rows", overrides={"/resource/": (200, _TWO_ROWS)})
+async def test_clauses_at_the_cap_page_with_a_cursor_within_6_kib(
+    client, tools_list, soda, clauses
+):
+    result = (await q(client, tools_list, {"dataset_id": FIRE, "page_size": 1, **clauses}))[
+        "structuredContent"
+    ]
+    assert len(result["next_cursor"]) <= 6 * 1024
+
+
+@pytest.mark.parametrize(
+    "clauses",
+    [
+        pytest.param({"where": "incident_number = '" + '"' * 4070 + "'"}, id="quotes"),
+        pytest.param({"order_by": ["incident_number"] * 240}, id="many-list-items"),
+    ],
+)
+async def test_clauses_over_the_cap_as_json_are_rejected(client, tools_list, clauses):
+    assert _json_size(clauses) > 4096
+    envelope = (await q(client, tools_list, {"dataset_id": FIRE, **clauses}))["structuredContent"]
+    assert envelope["code"] == "invalid_argument"

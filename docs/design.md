@@ -211,7 +211,7 @@ Old or sparse region layers stay visible, flagged `partial` or `unreliable` with
   - Whole rows are packed by estimating a count, then trimming until the full serialized result fits the budget minus a 512-byte JSON-RPC reserve.
   - A single row that cannot fit fails with `row_too_large`, with projection guidance [8.truncation].
 - **Size bounds:**
-  - Clauses-query text is capped at 4 KiB (UTF-8, summed across clauses). The encoded cursor stays under about 6 KiB for ASCII text, but JSON escaping can grow it to about 16 KiB for quote-heavy or non-ASCII text.
+  - Clause arguments are capped at 4 KiB in total, measured as the compact UTF-8 JSON a cursor stores (escapes and list punctuation count), which bounds the encoded cursor at 6 KiB or less. `tests/test_query.py` checks the bound at the cap.
   - `query_url` is omitted, with `query_url_omitted: true`, when longer than 2 KiB.
 - A caller's own LIMIT is query semantics, not truncation.
 - **Deadlines:**
@@ -259,7 +259,7 @@ Upstream error mapping is endpoint-aware: SoQL codes come only from `/resource`,
 | `row_too_large`, `invalid_argument`, `upstream_unavailable` | per code | per catalog |
 
 The full per-tool catalog, with a worked payload per code, is served at `seattle-data://errors/codes` [6.document-codes].
-Received argument values are never echoed in `details.value`; only server- or catalog-minted values appear, plus the caller's pattern-constrained `dataset_id` (in `dataset_not_found` and `dataset_not_queryable`) [6.offending-value]. The served error catalog does not yet disclose the `dataset_id` exception: it describes dataset ids only as catalog-minted.
+Received argument values are never echoed in `details.value`; only server- or catalog-minted values appear, plus the caller's pattern-constrained `dataset_id` (in `dataset_not_found` and `dataset_not_queryable`) [6.offending-value]. The served error catalog discloses this policy, including the `dataset_id` exception.
 
 ## Execution model
 
@@ -296,7 +296,7 @@ All calls are blocking `tools/call` [7.execution-mode].
     - New top-level output fields ship in minor releases; the top-level result objects are open for exactly this.
     - New nested fields are breaking: a minor bump before 1.0, a major bump after.
     - Rediscovery is signalled by the version in `server/discover` and bounded by the 1-hour `ttlMs` [9.additive-direction].
-  - The surface never changes within a process [9.list-changed]. On 2026-07-28 `listChanged` is `false`, but FastMCP's legacy handshake advertises `listChanged: true`, and both eras advertise an empty prompts capability.
+  - The surface never changes within a process, so `listChanged` is `false` on every protocol era, and no prompts capability is advertised [9.list-changed]. FastMCP enables both by default; `mcp/server.py` turns them off, and `tests/test_legacy_protocol.py` pins it.
   - No capability fingerprint yet [9.fingerprint].
 
 ## Implicit state

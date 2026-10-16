@@ -13,6 +13,7 @@ from fastmcp import FastMCP
 from fastmcp.exceptions import McpError, NotFoundError
 from fastmcp.exceptions import ValidationError as FastMCPValidationError
 from fastmcp.server.middleware import Middleware
+from mcp.server import NotificationOptions
 from pydantic import ValidationError
 
 from seattle_open_data import __version__
@@ -132,7 +133,22 @@ def build_server() -> FastMCP:
     )
     register_tools(mcp)
     register_resources(mcp)
+    _advertise_fixed_surface(mcp)
     return mcp
+
+
+def _advertise_fixed_surface(mcp: FastMCP) -> None:
+    """Advertise only what is served: no prompts, and no listChanged [9.list-changed].
+
+    FastMCP registers prompt handlers on every server and turns on every listChanged
+    for legacy clients, and the SDK has no public way to undo either, so this reaches
+    into the low-level server. `tests/test_legacy_protocol.py` pins the result across
+    FastMCP upgrades.
+    """
+    low_level = mcp._mcp_server
+    for method in ("prompts/list", "prompts/get"):
+        low_level._request_handlers.pop(method, None)
+    low_level.notification_options = NotificationOptions()
 
 
 def main() -> None:

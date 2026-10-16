@@ -403,7 +403,7 @@ Fields:
 - `repair` (optional): one object `{next_step, tool, arguments, alternative?}`; `tool` + `arguments` is a literal callable next step. Absent when no corrective call exists.
 - `request_id` (optional): correlate with server logs.
 
-Value policy: received argument values are never echoed in `details.value`, because any parameter can carry a mispasted secret. `value` appears only for values the server or upstream catalog minted (dataset ids, column names).
+Value policy: received argument values are never echoed in `details.value`, because any parameter can carry a mispasted secret. `value` appears only for values the server or upstream catalog minted (dataset ids, column names), and for the caller's `dataset_id` in `dataset_not_found` and `dataset_not_queryable`: its input pattern allows only a 9-character id, which cannot carry a secret.
 """
 
 _AUTH_DOC = """\

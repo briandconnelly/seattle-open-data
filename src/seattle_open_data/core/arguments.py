@@ -9,6 +9,7 @@ from __future__ import annotations
 from typing import Any
 
 from seattle_open_data.constants import QUERY_TEXT_MAX_BYTES
+from seattle_open_data.core import cursor as cursors
 from seattle_open_data.core.errors import ErrorCode, ErrorDetails, Repair, SeattleDataError
 
 CLAUSE_ARGS = ("select", "where", "group_by", "having", "order_by", "search_text", "near")
@@ -69,17 +70,14 @@ def check_query(args: dict[str, Any]) -> None:
         return
     if args.get("soql") is not None:
         _reject(["soql"], "soql requires mode='soql'.", tool=tool)
-    text = "".join(
-        _as_text(args.get(name))
-        for name in ("select", "where", "group_by", "having", "order_by", "search_text")
-    )
-    if len(text.encode()) > QUERY_TEXT_MAX_BYTES:
-        present = [
-            n
-            for n in ("select", "where", "group_by", "having", "order_by", "search_text")
-            if args.get(n)
-        ]
-        _reject(present, f"Clause text exceeds {QUERY_TEXT_MAX_BYTES} bytes in total.", tool=tool)
+    # Measured as a cursor stores the clauses, so the cap also bounds the cursor (≤ 6 KiB).
+    present = {n: _plain(args[n]) for n in CLAUSE_ARGS if args.get(n) is not None}
+    if len(cursors.dump(present)) > QUERY_TEXT_MAX_BYTES:
+        _reject(
+            list(present),
+            f"Clause arguments exceed {QUERY_TEXT_MAX_BYTES} bytes in total, measured as JSON.",
+            tool=tool,
+        )
 
 
 def check_reference(args: dict[str, Any]) -> None:
@@ -94,9 +92,5 @@ def check_reference(args: dict[str, Any]) -> None:
         )
 
 
-def _as_text(value: Any) -> str:
-    if value is None:
-        return ""
-    if isinstance(value, list):
-        return ",".join(str(v) for v in value)
-    return str(value)
+def _plain(value: Any) -> Any:
+    return value.model_dump() if hasattr(value, "model_dump") else value
