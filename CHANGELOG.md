@@ -4,6 +4,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-16
+
 First release: a read-only, agent-friendly MCP server for Seattle Open Data (data.seattle.gov, Socrata SODA2).
 
 ### Added
@@ -27,7 +29,7 @@ First release: a read-only, agent-friendly MCP server for Seattle Open Data (dat
   - a tool-surface snapshot, the `tools/list` byte budget, and forced-error wire tests;
   - recorded-response HTTP fixtures and live integration tests that run every guide example;
   - a regression test for each finding from the milestone code reviews.
-- An eval harness (`evals/`) and a 14-task run in Claude Code (`evals/results/2026-10-15.md`).
+- An eval harness (`evals/`) that runs tasks headless in Claude Code or Codex, with results under `evals/results/`.
 
 ### Fixed
 

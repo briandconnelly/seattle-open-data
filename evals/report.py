@@ -36,6 +36,8 @@ def summarize(path: Path) -> dict:
                     except (TypeError, ValueError):
                         code = "error"
                 results[block.get("tool_use_id")] = code
+    if any(e.get("type") == "turn.completed" for e in events):
+        return _summarize_codex(events)
     final = next((e for e in reversed(events) if e.get("type") == "result"), {})
     return {
         "calls": [(name, results.get(call_id), args) for call_id, name, args in calls],
@@ -43,6 +45,39 @@ def summarize(path: Path) -> dict:
         "turns": final.get("num_turns"),
         "answer": final.get("result", ""),
     }
+
+
+def _summarize_codex(events: list[dict]) -> dict:
+    """Codex `exec --json`: tool calls are mcp_tool_call items; usage is tokens, not dollars."""
+    items = [e["item"] for e in events if e.get("type") == "item.completed" and e.get("item")]
+    calls = [
+        (str(item.get("tool")), _codex_error_code(item), item.get("arguments") or {})
+        for item in items
+        if item.get("type") == "mcp_tool_call"
+    ]
+    messages = [item.get("text", "") for item in items if item.get("type") == "agent_message"]
+    return {
+        "calls": calls,
+        "cost": None,
+        "turns": sum(1 for e in events if e.get("type") == "turn.completed"),
+        "answer": messages[-1] if messages else "",
+    }
+
+
+def _codex_error_code(item: dict) -> str | None:
+    if item.get("error"):
+        return "error"
+    result = item.get("result") or {}
+    content = result.get("content") or [{}]
+    try:
+        payload = json.loads(content[0].get("text", ""))
+    except (TypeError, ValueError):
+        payload = {}
+    # Codex may drop isError; an envelope is recognizable by code + temporary.
+    is_envelope = isinstance(payload, dict) and {"code", "temporary"} <= payload.keys()
+    if result.get("isError") or result.get("is_error") or is_envelope:
+        return payload.get("code") if isinstance(payload, dict) and payload.get("code") else "error"
+    return None
 
 
 def main() -> None:

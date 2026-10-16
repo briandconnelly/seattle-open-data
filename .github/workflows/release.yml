@@ -1,0 +1,168 @@
+name: Release
+
+# On a v* tag: verify versions agree, build the wheel, sdist, and .mcpb bundle, and
+# create a GitHub Release carrying all three. PyPI publishing stays off until the
+# repository variable PUBLISH_PYPI is "true" (and a `pypi` trusted publisher exists).
+
+on:
+  push:
+    tags: ["v*"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify version consistency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          enable-cache: false # release artifacts never build from a restored cache
+
+      - name: Sync dependencies
+        run: uv sync --locked
+
+      - name: Tag matches pyproject, manifest, and CHANGELOG versions
+        run: |
+          uv run python - "${GITHUB_REF_NAME#v}" <<'PY'
+          import json, re, sys, tomllib
+          from pathlib import Path
+
+          tag = sys.argv[1]
+          pyproject = tomllib.loads(Path("pyproject.toml").read_text())["project"]["version"]
+          manifest = json.loads(Path("manifest.json").read_text())["version"]
+          # Latest released section: the first `## [X.Y.Z]` heading, skipping [Unreleased].
+          m = re.search(r"^## \[(\d+\.\d+\.\d+[^\]]*)\]", Path("CHANGELOG.md").read_text(), re.M)
+          changelog = m.group(1) if m else None
+
+          errors = [
+              f"git tag {tag!r} != {name} version {value!r}"
+              for name, value in (
+                  ("pyproject", pyproject),
+                  ("manifest.json", manifest),
+                  ("latest CHANGELOG", changelog),
+              )
+              if value != tag
+          ]
+          if errors:
+              print("\n".join(errors))
+              sys.exit(1)
+          print(f"OK: tag, pyproject, manifest.json, and CHANGELOG all agree on {tag}")
+          PY
+
+      - name: Manifest is in sync with the live server
+        run: uv run python scripts/gen_manifest.py --check
+
+      - name: Lint, types, and tests
+        run: |
+          uv run ruff check
+          uv run ruff format --check
+          uv run ty check
+          uv run pytest
+
+  build:
+    name: Build distributions and bundle
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          enable-cache: false # release artifacts never build from a restored cache
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
+        with:
+          node-version: "22"
+          package-manager-cache: false
+
+      - name: Build wheel and sdist
+        run: uv build
+
+      - name: Install mcpb CLI
+        run: npm install -g @anthropic-ai/mcpb@2.1.2 # pin for reproducible bundles
+
+      - name: Build .mcpb bundle (allowlisted staging + archive check)
+        run: uv run python scripts/build_bundle.py
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    if: vars.PUBLISH_PYPI == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # OIDC trusted publishing
+    environment: pypi
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: dist
+          path: dist/
+
+      - name: Drop the bundle; PyPI takes only the wheel and sdist
+        run: rm -f dist/*.mcpb
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # release/v1
+        with:
+          # Reruns after a later failure must not trip PyPI's duplicate-file error.
+          skip-existing: true
+
+  release:
+    name: Create GitHub Release
+    needs: [build, publish]
+    # Runs when publish succeeded or was skipped because PyPI publishing is off.
+    if: >-
+      always() && needs.build.result == 'success' &&
+      (needs.publish.result == 'success' || needs.publish.result == 'skipped')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: dist
+          path: dist/
+
+      - name: Extract CHANGELOG section for this tag
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v v="$version" '
+            $0 ~ "^## \\["v"\\]" {flag=1; next}
+            flag && /^## \[/ {exit}
+            flag {print}
+          ' CHANGELOG.md > release_notes.md
+          if [ ! -s release_notes.md ]; then
+            echo "::error::No CHANGELOG section for $version"
+            exit 1
+          fi
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/*.whl dist/*.tar.gz dist/*.mcpb \
+            --title "$GITHUB_REF_NAME" --notes-file release_notes.md --verify-tag
