@@ -10,6 +10,9 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict
 
+# Pydantic resolves field annotations at class creation, so this stays a runtime import.
+from seattle_open_data.core.errors import Repair  # noqa: TC001
+
 Detail = Literal["summary", "full"]
 Queryability = Literal["supported", "external", "unsupported", "unknown"]
 Origin = Literal["live_query", "cached_metadata"]
@@ -50,10 +53,28 @@ class DatasetSummary(Closed):
     description: str | None = None
 
 
+MatchField = Literal["title", "tags", "columns", "description"]
+
+
+class MatchEvidence(Closed):
+    """Which query words a result's catalog metadata visibly contains; never a relevance verdict."""
+
+    dataset_id: str
+    matched_terms: list[str]
+    unmatched_terms: list[str]
+    matched_fields: list[MatchField]
+    #: The map or chart whose metadata matched, when the result was folded into its parent.
+    matched_via: str | None = None
+
+
 class SearchResult(Open):
     datasets: list[DatasetSummary]
     has_more: bool
     next_cursor: str | None = None
+    match_evidence: list[MatchEvidence] | None = None
+    external_matches: list[DatasetSummary] | None = None
+    external_search_status: Literal["completed", "unavailable"] | None = None
+    suggestion: Repair | None = None
     source: Source
 
 

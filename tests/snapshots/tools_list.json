@@ -10,7 +10,7 @@
         "openWorldHint": true,
         "readOnlyHint": true
       },
-      "description": "Find Seattle datasets by topic. Call first when you lack a dataset id.\n\nOnly results with queryability \"supported\" can be described or queried.\nExample: {\"query\": \"fire 911\"}. Typically 1-3 s.",
+      "description": "Find Seattle datasets by topic. Call first when you lack a dataset id.\n\nResults are candidates: match_evidence lists the query words each one's metadata\nlacks. Only queryability \"supported\" can be described or queried; a tabular search\nalso returns up to 3 external_matches, which cannot.\nExample: {\"query\": \"fire 911\"}. Typically 1-3 s.",
       "inputSchema": {
         "additionalProperties": false,
         "properties": {
@@ -115,8 +115,116 @@
             },
             "type": "array"
           },
+          "external_matches": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "asset_type": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "dataset_id": {
+                  "type": "string"
+                },
+                "derived_from": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "external_url": {
+                  "type": "string"
+                },
+                "guide_uri": {
+                  "type": "string"
+                },
+                "portal_url": {
+                  "type": "string"
+                },
+                "queryability": {
+                  "enum": [
+                    "supported",
+                    "external",
+                    "unsupported",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "dataset_id",
+                "title",
+                "asset_type",
+                "queryability",
+                "portal_url"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "external_search_status": {
+            "enum": [
+              "completed",
+              "unavailable"
+            ],
+            "type": "string"
+          },
           "has_more": {
             "type": "boolean"
+          },
+          "match_evidence": {
+            "items": {
+              "additionalProperties": false,
+              "description": "Which query words a result's catalog metadata visibly contains; never a relevance verdict.",
+              "properties": {
+                "dataset_id": {
+                  "type": "string"
+                },
+                "matched_fields": {
+                  "items": {
+                    "enum": [
+                      "title",
+                      "tags",
+                      "columns",
+                      "description"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "matched_terms": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "matched_via": {
+                  "type": "string"
+                },
+                "unmatched_terms": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "dataset_id",
+                "matched_terms",
+                "unmatched_terms",
+                "matched_fields"
+              ],
+              "type": "object"
+            },
+            "type": "array"
           },
           "next_cursor": {
             "type": "string"
@@ -137,6 +245,30 @@
             "required": [
               "request_id",
               "now_local"
+            ],
+            "type": "object"
+          },
+          "suggestion": {
+            "additionalProperties": false,
+            "properties": {
+              "alternative": {
+                "type": "string"
+              },
+              "arguments": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "next_step": {
+                "type": "string"
+              },
+              "tool": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "next_step",
+              "tool",
+              "arguments"
             ],
             "type": "object"
           }

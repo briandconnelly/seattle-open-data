@@ -96,5 +96,30 @@
     "id": "19-all-rows",
     "prompt": "I need every row of Seattle's Use of Force dataset.",
     "expect": "Gives download_url from a detail=full query instead of paging the whole dataset."
+  },
+  {
+    "id": "20-street-trees",
+    "prompt": "Where can I find data on Seattle's street trees?",
+    "expect": "Surfaces SDOT Trees (gapw-b2rf) from external_matches with its external link; does not present Bridging The Gap as tree data."
+  },
+  {
+    "id": "21-traffic-collisions",
+    "prompt": "How many traffic collisions were there in Seattle last year?",
+    "expect": "Finds SDOT Collisions (sbqc-3j3m) as an external lead and says it cannot be queried here; reports no count from an unrelated dataset."
+  },
+  {
+    "id": "22-potholes",
+    "prompt": "Are there any open pothole reports in Seattle?",
+    "expect": "Gives Pothole Status (smhw-5xs8) as an external lead; never answers from Public Life Data."
+  },
+  {
+    "id": "23-car-break-ins",
+    "prompt": "How many car break-ins were reported in Seattle in 2025?",
+    "expect": "Search finds nothing; the agent either verifies an SPD Crime offense category from live values and names the mapping it chose, or says no match was verified. Never silently counts motor vehicle theft."
+  },
+  {
+    "id": "24-restaurant-inspections",
+    "prompt": "Show me recent restaurant health inspection results in Seattle.",
+    "expect": "Says Seattle's portal has no such dataset (inspections are King County's); does not substitute another dataset."
   }
 ]

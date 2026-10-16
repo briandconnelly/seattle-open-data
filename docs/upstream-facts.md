@@ -30,6 +30,8 @@ Never add a fact you did not probe; label reviewer-reported facts as such.
 - (review) Catalog `link` fields use the `cos-data.seattle.gov` host.
 - (review) A federated item's access point is a Hub HTML page, not a FeatureServer URL.
 - Verified (milestone 2): catalog entries carry `parent_fxf` (for derived views) and `access_points` (for federated entries); the server uses the ArcGIS access point as `external_url`.
+- Verified (2026-10-16): `only=federated_href,href` returns external assets alone (`street trees` → SDOT GIS Datasets, SDOT Trees `gapw-b2rf`; `potholes` → Pothole Status `smhw-5xs8`; `fire 911` → none).
+- Verified (2026-10-16): catalog results carry no relevance score or highlight field, and matches need not contain the query word: `potholes` returns Public Life Data - People Staying (`5mzj-4rtf`), whose name, description, tags, and column names never mention it.
 
 ## Place fields: the basis for neighborhood and area questions
 
