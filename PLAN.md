@@ -1,6 +1,6 @@
-# Seattle Open Data MCP — Design Plan (draft v2.2)
+# Seattle Open Data MCP — Design Plan
 
-Status: design only, no code.
+Status: implemented through milestone 4. This document keeps the design as planned; where the build diverged, §12 records the change and the body has been updated to match.
 History:
 - **v1:** Claude and Codex (two rounds via amicus).
 - **v2:** revised after a critical review by an independent Opus 5.5 agent that ran live probes; its headline findings were re-run by Claude.
@@ -240,9 +240,9 @@ All four tools share these properties:
      - Text field example: `dispatch_neighborhood = 'CAPITOL HILL'`.
      - Computed-region example: `:@computed_region_ru88_fbhk IN ('8','44')`, using `values` from describe.
      - No server-side name resolver in v1 (§12).
-   - **`coverage_warnings[]`:** emitted when `where` references a place field whose reliability is `partial` or `unreliable`, or whose known placeholder share exceeds 10%.
+   - **`coverage_warnings[]`:** emitted when `where` (or `having`, or raw `soql`) references a place field whose reliability is `partial` or `unreliable`.
      - Fields are matched by identifier against the cached schema.
-     - Each warning carries `{column, reliability, reason, assigned_fraction?}`.
+     - Each warning carries `{column, reliability, reason}`.
      - This is the guard against the silent false zero (fixtures 13–14).
    - **`near?`:** `{column, latitude, longitude, radius_m}`, compiled to `within_circle`.
      - The column is validated against `geo_columns`.
@@ -272,7 +272,7 @@ A known dataset id and known fields need no preliminary call.
 ### Resources (static, process-versioned)
 
 - `seattle-data://capabilities`
-- `seattle-data://guides` and `seattle-data://guides/{guide_id}{?detail}`
+- `seattle-data://guides` and `seattle-data://guides/{guide_id}` (guides have one density, so no `detail`)
 - `seattle-data://soql/{section_id}`
 - `seattle-data://errors/{section_id}`
 
@@ -319,7 +319,7 @@ Dataset-specific pitfalls from §2:
 
 **Transport: SODA2 GET only in v1.**
 - An optional `SOCRATA_APP_TOKEN` is sent as `X-App-Token`.
-- The token is never accepted as a tool argument, never echoed, and never recorded in cassettes.
+- The token is never accepted as a tool argument, never echoed, and never recorded in test fixtures.
 - A rejected configured token is an operator error; the server never silently falls back to anonymous access.
 - A generic 403 maps to `upstream_forbidden` unless the response body proves the token was the cause.
 - SODA3 is evidence-gated (§9).
@@ -407,11 +407,10 @@ Framework argument-validation failures are normalized into this envelope, and a 
 | `dataset_not_queryable` | false | `find_tabular`: `seattle_data_search_datasets({asset_scope: "tabular"})`; `alternative` gives the external link |
 | `app_token_rejected` | false | `read_auth`: `seattle_data_get_reference({topic: "errors", item_id: "authentication"})` (operator action) |
 | `upstream_forbidden` | false | none |
-| `rate_limited` | true | `retry`: the same tool and arguments; `retry_after_ms` from Retry-After |
+| `rate_limited` | true | none: `temporary: true` already means retry unchanged after `retry_after_ms` (from Retry-After); a literal retry repair would echo caller text |
 | `query_timeout` | true | `narrow`: the same tool and `dataset_id`; `alternative` suggests aggregation or a tighter `where` |
 | `cursor_expired`, `invalid_cursor` | false | `restart_from_first_page`: `seattle_data_query_dataset({dataset_id})`; `alternative` says to resend the original clauses |
 | `reference_not_found` | false | `list_items`: `seattle_data_get_reference({topic})`; `details.candidates` lists valid ids. Also the resource not-found code (JSON-RPC -32602) |
-| `not_implemented` | false | `read_capabilities`: `seattle_data_get_reference({topic: "capabilities"})`. Pre-release only; removed once milestones 2–3 land |
 | `internal_error` | false | none; logged with `request_id` |
 | `row_too_large`, `invalid_argument`, `upstream_unavailable` | per code | per catalog |
 
@@ -425,7 +424,7 @@ Separately, cwms-tools has two gaps Codex found:
 All calls are blocking `tools/call` [7.execution-mode].
 - **Expected latency** [7.declare-duration]:
   - 1–3 s for metadata;
-  - up to about 20 s for describe (two 10 s aggregate deadlines);
+  - up to about 25 s for describe (two 10 s aggregate phases plus a 5 s region-label lookup);
   - up to 30 s for queries, then `query_timeout`.
 
   The latency is stated in the tool descriptions.
@@ -465,7 +464,7 @@ All calls are blocking `tools/call` [7.execution-mode].
 **Stack:** Python, uv, FastMCP 4, Pydantic, httpx, ijson; ruff, ty, prek.
 - Mirror cwms-tools' shared `core/` producers with a thin `mcp/` layer.
 - The Typer CLI and its parity tests come after release.
-- Tests: vcrpy cassettes (token-scrubbed, aggregate-heavy) plus an opt-in live `integration` marker; no volatile exact counts in assertions.
+- Tests: recorded HTTP fixtures (`tests/http_fixtures.py`) plus an opt-in live `integration` marker; no volatile exact counts in assertions.
 
 **Milestones**
 
@@ -614,3 +613,4 @@ No open product questions remain. Engineering unknowns are tracked as **pending*
 | Guides | Planned | Seven guides with live-probed facts; every example runs in the integration suite. Probing corrected several unit-of-observation assumptions: SPD call rows are dispatches, crime rows are offenses, use-of-force rows are subjects, and Road Weather stopped updating in June 2026 | Milestone 4 |
 | Eval | 12-14 fixtures planned | 14 tasks run in Claude Code 2.1.301: 14/14 pass; one guide error found (crime neighborhood placeholders are pre-2017) and fixed. See `evals/results/2026-10-15.md` | Milestone 4 eval run |
 | Bundle | `mcpb pack .` | Allowlisted staging copy plus an archive check | Codex review of milestone 4 |
+| Whole-project review | Per-branch reviews only | Kimi (Codex was rate-limited) plus Claude's publication checks: error-catalog examples made to match emitted envelopes (no `rate_limited` repair; no echoed value; cursor reasons per failure); unpopulated `coverage_warnings.assigned_fraction` and unused placeholder-share threshold removed; reference `detail` documented as accepted but ignored; describe duration corrected to about 25 s; stale docs fixed | Pre-publication review |

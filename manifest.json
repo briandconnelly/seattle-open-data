@@ -8,6 +8,13 @@
     "name": "Brian Connelly",
     "email": "bdc@bconnelly.net"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/briandconnelly/seattle-open-data"
+  },
+  "homepage": "https://github.com/briandconnelly/seattle-open-data",
+  "documentation": "https://github.com/briandconnelly/seattle-open-data#readme",
+  "support": "https://github.com/briandconnelly/seattle-open-data/issues",
   "license": "MIT",
   "keywords": [
     "seattle",

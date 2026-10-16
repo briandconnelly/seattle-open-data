@@ -136,7 +136,7 @@ async def seattle_data_describe_dataset(
 
     Use before querying an unfamiliar dataset, and with detail="full" to get place-field values.
     Example: {"dataset_id": "kzjm-xkqj", "detail": "full"}.
-    Typically 1-3 s; up to about 20 s on very large datasets.
+    Typically 1-3 s; up to about 25 s on very large datasets.
     """
     result = await describe.describe(
         get_client(),
@@ -248,7 +248,13 @@ async def seattle_data_get_reference(
     chunk_id: Annotated[
         str | None, Field(min_length=1, max_length=64, description="Requires item_id.")
     ] = None,
-    detail: DetailArg = None,
+    detail: Annotated[
+        Detail | None,
+        Field(
+            description="Accepted for symmetry with the other tools; "
+            "reference bodies have one density."
+        ),
+    ] = None,
 ) -> ToolResult:
     """Read the server's reference: capability summary, SoQL help, dataset guides, and the
     full error catalog. Call with no arguments for the index.

@@ -160,7 +160,7 @@
         "openWorldHint": true,
         "readOnlyHint": true
       },
-      "description": "Decide whether and how to query a dataset: columns, live row count, time coverage,\nplace fields for \"in <area>\" questions (with reliability), and geo columns for `near`.\n\nUse before querying an unfamiliar dataset, and with detail=\"full\" to get place-field values.\nExample: {\"dataset_id\": \"kzjm-xkqj\", \"detail\": \"full\"}.\nTypically 1-3 s; up to about 20 s on very large datasets.",
+      "description": "Decide whether and how to query a dataset: columns, live row count, time coverage,\nplace fields for \"in <area>\" questions (with reliability), and geo columns for `near`.\n\nUse before querying an unfamiliar dataset, and with detail=\"full\" to get place-field values.\nExample: {\"dataset_id\": \"kzjm-xkqj\", \"detail\": \"full\"}.\nTypically 1-3 s; up to about 25 s on very large datasets.",
       "inputSchema": {
         "additionalProperties": false,
         "properties": {
@@ -740,9 +740,6 @@
             "items": {
               "additionalProperties": false,
               "properties": {
-                "assigned_fraction": {
-                  "type": "number"
-                },
                 "column": {
                   "type": "string"
                 },
@@ -865,7 +862,7 @@
             "type": "string"
           },
           "detail": {
-            "description": "summary (default) or full; changes field density, never row count.",
+            "description": "Accepted for symmetry with the other tools; reference bodies have one density.",
             "enum": [
               "summary",
               "full"

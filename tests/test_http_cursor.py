@@ -84,3 +84,19 @@ def test_cursor_expires(monkeypatch):
         cursor.decode(token, "search", restart=RESTART)
     assert caught.value.envelope.code == ErrorCode.CURSOR_EXPIRED
     assert caught.value.envelope.repair == RESTART
+
+
+async def test_stream_rows_reads_pretty_printed_json():
+    """Filter views answer with pretty-printed JSON, but replayed fixtures are compact."""
+    body = (
+        b'[ {\n  ":id" : "row-1",\n  "name" : "a"\n}, {\n  ":id" : "row-2",\n  "name" : "b"\n} ]\n'
+    )
+
+    def handler(request):
+        return httpx.Response(200, headers={"X-SODA2-Fields": '[":id","name"]'}, content=body)
+
+    client = SodaClient(transport=httpx.MockTransport(handler))
+    out = await client.stream_rows("8tqq-u7ib", {}, max_rows=1)
+    assert out.rows == [{":id": "row-1", "name": "a"}]
+    assert out.more is True
+    assert out.fields == [":id", "name"]

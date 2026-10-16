@@ -2,7 +2,7 @@
 
 An agent-friendly [MCP](https://modelcontextprotocol.io/) server for [Seattle Open Data](https://data.seattle.gov/) (Socrata SODA2).
 
-**Status: pre-release (milestone 3).** All four tools work against the live portal. Curated dataset guides and the release evaluation come next (milestone 4). See [PLAN.md](PLAN.md).
+**Status: pre-release (0.1.0).** All four tools work against the live portal, with curated guides for seven flagship datasets. See [PLAN.md](PLAN.md) for the design and decision log, and [evals/results](evals/results) for the agent evaluation.
 
 ## Tools
 
@@ -25,7 +25,9 @@ Claude Code:
 claude mcp add seattle-open-data -- uv run --directory /path/to/seattle-open-data seattle-open-data
 ```
 
-Optional: set `SOCRATA_APP_TOKEN` to use a Socrata application token.
+Optional: set `SOCRATA_APP_TOKEN` to use a Socrata application token. A rejected token is reported as `app_token_rejected`, never silently dropped.
+
+To build the installable MCPB bundle (needs the `mcpb` CLI): `make mcpb`.
 
 ## Develop
 

@@ -72,6 +72,11 @@ def test_rate_limited_reads_retry_after():
     assert err["retry_after_ms"] == 12_000
 
 
+def test_rate_limited_has_no_repair():
+    """temporary=true already means retry unchanged; a retry repair would echo caller text."""
+    assert "repair" not in mapped(429, {}, {"Retry-After": "3"})
+
+
 def test_rate_limited_without_header():
     err = mapped(429)
     assert err["temporary"] is True

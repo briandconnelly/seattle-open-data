@@ -266,11 +266,6 @@ ERROR_EXAMPLES: dict[ErrorCode, dict[str, Any]] = {
         "message": "The upstream service throttled this request.",
         "temporary": True,
         "retry_after_ms": 10000,
-        "repair": {
-            "next_step": "retry",
-            "tool": "seattle_data_query_dataset",
-            "arguments": {"dataset_id": _DS, "select": ["count(*) AS calls"]},
-        },
     },
     ErrorCode.QUERY_TIMEOUT: {
         "code": "query_timeout",
@@ -309,8 +304,11 @@ ERROR_EXAMPLES: dict[ErrorCode, dict[str, Any]] = {
     },
     ErrorCode.INVALID_CURSOR: {
         "code": "invalid_cursor",
-        "message": "The cursor is malformed or was issued for a different dataset.",
-        "details": {"field": "cursor", "reason": "Signature check failed."},
+        "message": "The cursor belongs to a different tool.",
+        "details": {
+            "field": "cursor",
+            "reason": "Use a cursor only with the tool that returned it.",
+        },
         "temporary": False,
         "retry_after_ms": None,
         "repair": {
@@ -341,8 +339,12 @@ ERROR_EXAMPLES: dict[ErrorCode, dict[str, Any]] = {
     },
     ErrorCode.REFERENCE_NOT_FOUND: {
         "code": "reference_not_found",
-        "message": "No reference item 'joins' under topic 'soql'.",
-        "details": {"field": "item_id", "value": "joins", "reason": "Unknown item."},
+        "message": "No such reference item under topic 'soql'.",
+        "details": {
+            "field": "item_id",
+            "reason": "Unknown item.",
+            "candidates": ["syntax", "filtering", "aggregation", "dates", "geography", "paging"],
+        },
         "temporary": False,
         "retry_after_ms": None,
         "repair": {
@@ -456,7 +458,7 @@ Errors: an unknown column returns `no_such_column`; any other `query.soql.*` rej
         f"""\
 - `has_more: true` ⇔ `next_cursor` present. Continue with `cursor` (and `dataset_id`); other query arguments are rejected.
 - `truncated: true` means rows beyond a cap are not reachable by paging: the {QUERY_LOGICAL_CAP:,}-row cap, or a raw SoQL page.
-- `consistency`: `stable` for unordered row queries (keyset on `:id`); `best_effort` for ordered, grouped, or DISTINCT queries.
+- `consistency`: `stable` for unordered row queries (keyset on `:id`); `best_effort` for ordered, grouped, or DISTINCT queries; `single_page` for raw SoQL, which is never paged.
 - Without `order_by`, rows come in a stable but arbitrary order. A continuation keeps the first page's `page_size` unless you pass a new one.
 - A page may hold fewer than `page_size` rows when rows are wide: whole rows are packed under a byte budget, and the cursor resumes right after the last one returned.
 - Raw SoQL: set `LIMIT` ≤ page_size (max {QUERY_PAGE_SIZE_MAX}) and advance `OFFSET` yourself. Without LIMIT, Socrata returns 1,000 rows.""",

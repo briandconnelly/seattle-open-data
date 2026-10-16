@@ -46,27 +46,42 @@ def decode(cursor: str, kind: str, *, restart: Repair) -> dict[str, Any]:
         signature = _unb64(signature_part)
         data = json.loads(payload)
     except (ValueError, json.JSONDecodeError) as exc:
-        raise _error(ErrorCode.INVALID_CURSOR, "The cursor is malformed.", restart) from exc
+        raise _error(
+            ErrorCode.INVALID_CURSOR,
+            "The cursor is malformed.",
+            "It could not be decoded.",
+            restart,
+        ) from exc
     expected = hmac.new(_KEY, payload, hashlib.sha256).digest()[:16]
     if not hmac.compare_digest(signature, expected):
         raise _error(
             ErrorCode.CURSOR_EXPIRED,
             "The cursor has expired or the server restarted.",
+            "Its signature does not match: cursors do not survive a server restart.",
             restart,
         )
-    if data.get("v") != _VERSION or data.get("k") != kind:
-        raise _error(ErrorCode.INVALID_CURSOR, "The cursor belongs to a different tool.", restart)
+    if data.get("v") != _VERSION:
+        raise _error(
+            ErrorCode.INVALID_CURSOR,
+            "The cursor uses an unsupported format.",
+            "It was issued by a different server version.",
+            restart,
+        )
+    if data.get("k") != kind:
+        raise _error(
+            ErrorCode.INVALID_CURSOR,
+            "The cursor belongs to a different tool.",
+            "Use a cursor only with the tool that returned it.",
+            restart,
+        )
     if time.time() - int(data.get("t", 0)) > CURSOR_TTL_SECONDS:
-        raise _error(ErrorCode.CURSOR_EXPIRED, "The cursor has expired.", restart)
+        raise _error(
+            ErrorCode.CURSOR_EXPIRED, "The cursor has expired.", "Cursors last 1 hour.", restart
+        )
     return data["s"]
 
 
-def _error(code: ErrorCode, message: str, restart: Repair) -> SeattleDataError:
+def _error(code: ErrorCode, message: str, reason: str, restart: Repair) -> SeattleDataError:
     return SeattleDataError(
-        code,
-        message,
-        details=ErrorDetails(
-            field="cursor", reason="Cursors last 1 hour and do not survive a restart."
-        ),
-        repair=restart,
+        code, message, details=ErrorDetails(field="cursor", reason=reason), repair=restart
     )

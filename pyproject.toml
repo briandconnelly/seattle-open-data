@@ -27,6 +27,12 @@ dependencies = [
     "tzdata>=2025.2",
 ]
 
+[project.urls]
+Homepage = "https://github.com/briandconnelly/seattle-open-data"
+Repository = "https://github.com/briandconnelly/seattle-open-data"
+Issues = "https://github.com/briandconnelly/seattle-open-data/issues"
+Changelog = "https://github.com/briandconnelly/seattle-open-data/blob/main/CHANGELOG.md"
+
 [project.scripts]
 seattle-open-data = "seattle_open_data.mcp.server:main"
 

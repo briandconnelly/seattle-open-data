@@ -43,6 +43,8 @@ async def test_region_layer_label_columns(live):
         "ru88-fbhk": "name",
         "cyqu-gs94": "c_district",
         "kuhn-3gp2": "name",
+        "q256-3sug": "zcta5ce10",
+        "2day-rhn5": "name10",
     }.items():
         view = await client.view(layer)
         assert label in {c["fieldName"] for c in view["columns"]}, layer

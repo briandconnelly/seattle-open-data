@@ -167,7 +167,6 @@ class CoverageWarning(Closed):
     column: str
     reliability: Reliability
     reason: str
-    assigned_fraction: float | None = None
 
 
 class QueryResult(Open):
