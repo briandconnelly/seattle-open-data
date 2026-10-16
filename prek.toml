@@ -57,6 +57,14 @@ pass_filenames = false
 files = "\\.py$"
 
 [[repos.hooks]]
+id = "gen-manifest"
+name = "MCPB manifest in sync (gen_manifest --check)"
+language = "system"
+entry = "uv run python scripts/gen_manifest.py --check"
+pass_filenames = false
+files = "^(pyproject\\.toml|manifest\\.json|scripts/gen_manifest\\.py|src/seattle_open_data/mcp/.*\\.py)$"
+
+[[repos.hooks]]
 id = "pytest-fast"
 name = "pytest (fast subset)"
 language = "system"

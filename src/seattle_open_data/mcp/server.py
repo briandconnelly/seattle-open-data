@@ -141,4 +141,5 @@ def main() -> None:
     )
     # FastMCP logs a traceback for every expected domain error; EnvelopeMiddleware logs the rest.
     logging.getLogger("fastmcp.server.server").setLevel(logging.CRITICAL)
+    logging.getLogger("httpx").setLevel(logging.WARNING)
     build_server().run(transport="stdio", show_banner=False)

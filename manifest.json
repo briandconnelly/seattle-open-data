@@ -1,0 +1,75 @@
+{
+  "manifest_version": "0.4",
+  "name": "seattle-open-data",
+  "display_name": "Seattle Open Data",
+  "version": "0.1.0",
+  "description": "Agent-friendly MCP server for Seattle Open Data (data.seattle.gov, Socrata SODA).",
+  "author": {
+    "name": "Brian Connelly",
+    "email": "bdc@bconnelly.net"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seattle",
+    "open-data",
+    "socrata",
+    "soda",
+    "mcp",
+    "agent"
+  ],
+  "server": {
+    "type": "uv",
+    "entry_point": "src/seattle_open_data/mcp/server.py",
+    "mcp_config": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${__dirname}",
+        "--frozen",
+        "--no-dev",
+        "seattle-open-data"
+      ],
+      "env": {
+        "SOCRATA_APP_TOKEN": "${user_config.app_token}"
+      }
+    }
+  },
+  "compatibility": {
+    "platforms": [
+      "darwin",
+      "linux",
+      "win32"
+    ],
+    "runtimes": {
+      "python": ">=3.13"
+    }
+  },
+  "user_config": {
+    "app_token": {
+      "type": "string",
+      "title": "Socrata app token (optional)",
+      "description": "A Socrata application token raises rate limits. Leave blank to query anonymously. A rejected token is reported, never silently dropped.",
+      "sensitive": true,
+      "required": false
+    }
+  },
+  "tools": [
+    {
+      "name": "seattle_data_search_datasets",
+      "description": "Find Seattle datasets by topic. Use first when the dataset id is unknown."
+    },
+    {
+      "name": "seattle_data_describe_dataset",
+      "description": "Decide whether and how to query a dataset: columns, live row count, time coverage, place fields for \"in <area>\" questions (with reliability), and geo columns for `near`."
+    },
+    {
+      "name": "seattle_data_query_dataset",
+      "description": "Run a bounded read or aggregate on one dataset."
+    },
+    {
+      "name": "seattle_data_get_reference",
+      "description": "Read the server's reference: capability summary, SoQL help, dataset guides, and the full error catalog. Call with no arguments for the index."
+    }
+  ]
+}

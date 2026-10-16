@@ -50,6 +50,9 @@ jobs:
       - name: Type check (ty)
         run: uv run ty check
 
+      - name: MCPB manifest in sync
+        run: uv run python scripts/gen_manifest.py --check
+
       - name: Test (pytest + coverage)
         run: uv run pytest --cov=seattle_open_data --cov-report=term
 
