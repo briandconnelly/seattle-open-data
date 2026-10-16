@@ -36,7 +36,14 @@ uv sync
 uv run pytest
 uv run ruff check && uv run ruff format --check && uv run ty check
 UPDATE_SNAPSHOTS=1 uv run pytest tests/test_contract.py   # after an intended tool-surface change
+uv run pytest --run-integration -m integration            # live tests against data.seattle.gov
+uv run python evals/run.py [--host claude|codex] <out_dir> [task_id ...]
+uv run python evals/report.py <out_dir> --answers
 ```
+
+## Release
+
+Bump the version in `pyproject.toml`, run `make manifest`, move the CHANGELOG `[Unreleased]` entries under the new version, merge, then push a `vX.Y.Z` tag. The release workflow checks that the versions agree, builds the wheel, sdist, and `.mcpb`, and attaches all three to a GitHub Release. Publishing to PyPI is off until the repository variable `PUBLISH_PYPI` is `true`.
 
 ## License
 

@@ -11,6 +11,7 @@ import json
 import os
 import subprocess
 import sys
+import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -32,11 +33,14 @@ def run(task: dict, out: Path, host: str) -> None:
         str(capture),
     ]
     command = codex_command(task, args) if host == "codex" else claude_command(task, args, out)
+    env = {**os.environ, "CODEX_HOME": str(codex_home(out))} if host == "codex" else os.environ
     with (
         (out / f"{task['id']}.transcript.jsonl").open("w") as stdout,
         (out / f"{task['id']}.stderr.txt").open("w") as stderr,
     ):
-        code = subprocess.call(command, cwd=out, stdout=stdout, stderr=stderr, env=os.environ)
+        code = subprocess.call(
+            command, cwd=out, stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr, env=env
+        )
     print(f"{task['id']}: exit {code}", flush=True)
 
 
@@ -59,6 +63,28 @@ def claude_command(task: dict, args: list[str], out: Path) -> list[str]:
         "stream-json",
         "--verbose",
     ]
+
+
+def codex_home(out: Path) -> Path:
+    """A clean CODEX_HOME: the user's login and model, but none of their MCP servers,
+    apps, hooks, or web search, so answers can only come from this server."""
+    home = out / "codex-home"
+    home.mkdir(exist_ok=True)
+    user = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex"))
+    auth = home / "auth.json"
+    if not auth.is_symlink():
+        auth.symlink_to(user / "auth.json")
+    settings = (
+        tomllib.loads((user / "config.toml").read_text()) if (user / "config.toml").exists() else {}
+    )
+    lines = [
+        f"{key} = {json.dumps(settings[key])}"
+        for key in ("model", "model_reasoning_effort")
+        if key in settings
+    ]
+    lines += ['web_search = "disabled"', "", "[features]", "apps = false"]
+    (home / "config.toml").write_text("\n".join(lines) + "\n")
+    return home
 
 
 def codex_command(task: dict, args: list[str]) -> list[str]:
