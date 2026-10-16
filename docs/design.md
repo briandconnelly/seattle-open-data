@@ -259,7 +259,7 @@ Upstream error mapping is endpoint-aware: SoQL codes come only from `/resource`,
 | `row_too_large`, `invalid_argument`, `upstream_unavailable` | per code | per catalog |
 
 The full per-tool catalog, with a worked payload per code, is served at `seattle-data://errors/codes` [6.document-codes].
-Received argument values are never echoed in `details.value`; only server- or catalog-minted values appear, plus the caller's pattern-constrained `dataset_id` (in `dataset_not_found` and `dataset_not_queryable`) [6.offending-value]. The served error catalog does not yet disclose the `dataset_id` exception: it describes dataset ids only as catalog-minted.
+Received argument values are never echoed in `details.value`; only server- or catalog-minted values appear, plus the caller's pattern-constrained `dataset_id` (in `dataset_not_found` and `dataset_not_queryable`) [6.offending-value]. The served error catalog discloses this policy, including the `dataset_id` exception.
 
 ## Execution model
 

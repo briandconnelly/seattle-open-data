@@ -70,3 +70,13 @@ def test_query_description_states_the_real_cap():
     from seattle_open_data.mcp.tools import seattle_data_query_dataset
 
     assert f"{QUERY_LOGICAL_CAP:,} rows" in (seattle_data_query_dataset.__doc__ or "")
+
+
+def test_error_catalog_discloses_the_dataset_id_echo():
+    """dataset_not_found and dataset_not_queryable put the caller's dataset_id in details.value."""
+    from seattle_open_data.core import reference_service
+
+    body = reference_service.read("errors", "envelope").body
+    assert body is not None
+    policy = next(line for line in body.splitlines() if line.startswith("Value policy:"))
+    assert "caller's `dataset_id`" in policy
