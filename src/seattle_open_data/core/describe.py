@@ -13,6 +13,7 @@ import anyio
 
 from seattle_open_data.constants import (
     DESCRIBE_AGGREGATE_TIMEOUT_SECONDS,
+    DESCRIBE_DEADLINE_SECONDS,
     GEO_TYPES,
     PLACE_FIELDS,
     PLACEHOLDER_VALUES,
@@ -29,6 +30,7 @@ from seattle_open_data.core.errors import (
     SeattleDataError,
 )
 from seattle_open_data.core.guides import BY_DATASET
+from seattle_open_data.core.http import shape_error
 from seattle_open_data.core.models import (
     Column,
     ColumnStats,
@@ -45,7 +47,7 @@ from seattle_open_data.core.models import (
     TimeSemantics,
 )
 from seattle_open_data.core.reference import topic_uri
-from seattle_open_data.core.text import clean, html_to_text
+from seattle_open_data.core.text import clean, html_to_text, strip_control
 
 if TYPE_CHECKING:
     from collections.abc import Awaitable, Callable, Iterable
@@ -101,7 +103,19 @@ def _raise_actionable(outcomes: Iterable[_Outcome]) -> None:
             raise outcome.error
 
 
-async def describe(
+async def describe(client: SodaClient, *, dataset_id: str, **kwargs: Any) -> DescribeResult:
+    """Bounded as a whole; the per-phase deadlines inside keep partial results useful."""
+    try:
+        with anyio.fail_after(DESCRIBE_DEADLINE_SECONDS):
+            return await _describe(client, dataset_id=dataset_id, **kwargs)
+    except TimeoutError as exc:
+        raise SeattleDataError(
+            ErrorCode.QUERY_TIMEOUT,
+            f"Describe did not finish within {DESCRIBE_DEADLINE_SECONDS:.0f} s.",
+        ) from exc
+
+
+async def _describe(
     client: SodaClient,
     *,
     dataset_id: str,
@@ -259,12 +273,16 @@ def place_specs(dataset_id: str, columns: list[dict[str, Any]]) -> list[dict[str
 
 async def _count(client: SodaClient, dataset_id: str) -> int:
     rows = await client.soql(dataset_id, {"$select": "count(*) AS n"})
+    if len(rows) != 1 or not str(rows[0].get("n", "")).isdigit():
+        raise shape_error("Expected one count row.")
     return int(rows[0]["n"])
 
 
 async def _min_max(client: SodaClient, dataset_id: str, column: str) -> dict[str, Any]:
     rows = await client.soql(dataset_id, {"$select": f"min({column}) AS lo, max({column}) AS hi"})
-    return rows[0] if rows else {}
+    if len(rows) != 1:
+        raise shape_error("Expected one min/max row.")
+    return rows[0]
 
 
 async def _value_groups(client: SodaClient, dataset_id: str, column: str) -> list[dict[str, Any]]:
@@ -305,6 +323,7 @@ async def _region_labels(
             )
             if not ids:
                 continue
+            labels[spec["column"]] = {}
             try:
                 rows = await client.soql(
                     spec["layer_id"],
@@ -314,7 +333,10 @@ async def _region_labels(
                         "$limit": len(ids),
                     },
                 )
-            except SeattleDataError:
+            except SeattleDataError as exc:
+                if exc.envelope.code in _ACTIONABLE:
+                    raise
+                # Values keep their numeric ids; labels_available says the names are missing.
                 continue
             labels[spec["column"]] = {
                 str(r["id"]): clean(str(r.get("label", "")), limit=100) or "" for r in rows
@@ -423,6 +445,8 @@ def _place_field(
     if len(groups.value) <= _MAX_VALUES:
         field.value_count = len(assigned)
         names = labels.get(spec["column"], {})
+        if spec["column"] in labels:
+            field.labels_available = bool(names)
         field.values = sorted(
             (
                 PlaceValue(
@@ -483,4 +507,4 @@ def _fill(rows: Any, columns: list[dict[str, Any]]) -> list[dict[str, Any]] | No
     if not isinstance(rows, list):
         return None
     names = [c["fieldName"] for c in columns]
-    return [{name: row.get(name) for name in names} for row in rows]
+    return [{name: strip_control(row.get(name)) for name in names} for row in rows]

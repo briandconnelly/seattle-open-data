@@ -9,10 +9,13 @@ from decimal import Decimal
 from typing import TYPE_CHECKING, Any
 from urllib.parse import urlencode
 
+import anyio
+
 from seattle_open_data.constants import (
     DOWNLOAD_LIMIT,
     GEO_TYPES,
     PUBLIC_HOST,
+    QUERY_DEADLINE_SECONDS,
     QUERY_LOGICAL_CAP,
     RESULT_BYTE_BUDGET,
     URL_MAX_CHARS,
@@ -68,7 +71,30 @@ def _restart(dataset_id: str) -> Repair:
     )
 
 
-async def run(
+async def run(client: SodaClient, *, dataset_id: str, **kwargs: Any) -> QueryResult:
+    """One query, bounded as a whole: metadata fetch plus the upstream stream."""
+    try:
+        with anyio.fail_after(QUERY_DEADLINE_SECONDS):
+            return await _run(client, dataset_id=dataset_id, **kwargs)
+    except TimeoutError as exc:
+        raise SeattleDataError(
+            ErrorCode.QUERY_TIMEOUT,
+            f"The query did not finish within {QUERY_DEADLINE_SECONDS:.0f} s.",
+            repair=_narrow(dataset_id),
+        ) from exc
+
+
+def _narrow(dataset_id: str) -> Repair:
+    return Repair(
+        next_step="narrow",
+        tool=_TOOL,
+        arguments={"dataset_id": dataset_id},
+        alternative="Aggregate server-side (count(*) with group_by) "
+        "or add a tighter where on a time column.",
+    )
+
+
+async def _run(
     client: SodaClient,
     *,
     dataset_id: str,
@@ -112,13 +138,7 @@ async def run(
             # Upstream positions index the assembled query, which the agent never wrote.
             envelope.details.position = None
         if envelope.code == ErrorCode.QUERY_TIMEOUT and envelope.repair is None:
-            envelope.repair = Repair(
-                next_step="narrow",
-                tool=_TOOL,
-                arguments={"dataset_id": dataset_id},
-                alternative="Aggregate server-side (count(*) with group_by) "
-                "or add a tighter where on a time column.",
-            )
+            envelope.repair = _narrow(dataset_id)
         raise
 
 
@@ -420,10 +440,11 @@ def _fit(result: QueryResult, rows: list[dict[str, Any]], settle: Callable[[int]
     while count > 0 and wire_size(result) > budget:
         count -= 1
         settle(count)
-    if rows and count == 0:
+    # Also catches a page with no rows whose column descriptors alone overflow the budget.
+    if (rows and count == 0) or wire_size(result) > budget:
         raise SeattleDataError(
             ErrorCode.ROW_TOO_LARGE,
-            "A single row exceeds the response byte budget.",
+            "A single row, or the column list alone, exceeds the response byte budget.",
             details=ErrorDetails(field="select", reason="Select fewer or narrower columns."),
             repair=Repair(
                 next_step="project_fewer_columns",

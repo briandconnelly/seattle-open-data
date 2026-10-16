@@ -47,6 +47,7 @@ def topic_uri(topic: str, item_id: str | None = None) -> str:
 
 INSTRUCTIONS = f"""\
 Read-only access to Seattle's open data portal (data.seattle.gov) through Socrata SODA2.
+This text ends with the line {INSTRUCTIONS_SENTINEL}. If your copy does not, call seattle_data_get_reference(topic="capabilities") for the full rules.
 Does NOT: write data, read private datasets, query other portals (performance.seattle.gov, King County, data.wa.gov), query ArcGIS federated layers, geocode addresses, forecast, or export in bulk.
 Rules:
 - For "in <area>" questions, read place_fields from seattle_data_describe_dataset and heed coverage_warnings from seattle_data_query_dataset; never report a near-zero count from an unreliable field as fact.

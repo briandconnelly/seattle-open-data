@@ -136,7 +136,7 @@ async def seattle_data_describe_dataset(
 
     Use before querying an unfamiliar dataset, and with detail="full" to get place-field values.
     Example: {"dataset_id": "kzjm-xkqj", "detail": "full"}.
-    Typically 1-3 s; up to about 25 s on very large datasets.
+    Typically 1-3 s; fails with query_timeout after 30 s.
     """
     result = await describe.describe(
         get_client(),

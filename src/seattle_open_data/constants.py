@@ -120,3 +120,6 @@ TIME_TYPES = frozenset({"floating_timestamp", "calendar_date", "fixed_timestamp"
 #: Upper bound written into download_url; SODA2 accepted it when probed 2026-10-15.
 DOWNLOAD_LIMIT = 1_000_000_000
 URL_MAX_CHARS = 2048
+#: Whole-call deadlines, metadata fetch included; tool descriptions state these.
+QUERY_DEADLINE_SECONDS = 30.0
+DESCRIBE_DEADLINE_SECONDS = 30.0

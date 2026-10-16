@@ -14,6 +14,7 @@ from seattle_open_data.core import cursor as cursors
 from seattle_open_data.core.context import make_source
 from seattle_open_data.core.errors import Repair
 from seattle_open_data.core.guides import BY_DATASET
+from seattle_open_data.core.http import shape_error
 from seattle_open_data.core.models import DatasetSummary, Detail, Queryability, SearchResult
 from seattle_open_data.core.reference import topic_uri
 from seattle_open_data.core.text import clean, html_to_text
@@ -30,6 +31,17 @@ _FOLDED = frozenset({"map", "chart", "visualization", "calendar", "form"})
 
 _DEFAULT_PAGE_SIZE = 10
 _RESTART = Repair(next_step="restart_search", tool="seattle_data_search_datasets", arguments={})
+
+
+def _catalog_body(body: Any) -> dict[str, Any]:
+    """An unexpected catalog shape must not read as "no datasets match"."""
+    if (
+        not isinstance(body, dict)
+        or not isinstance(body.get("results"), list)
+        or not str(body.get("resultSetSize", "")).isdigit()
+    ):
+        raise shape_error("Expected a Discovery API result object.")
+    return body
 
 
 def queryability(asset_type: str) -> Queryability:
@@ -87,9 +99,9 @@ async def search(
         # Maps and charts are requested only to be folded into their parent datasets.
         params["only"] = "dataset,filter,map,chart"
 
-    body = await client.get_json(DISCOVERY_API, params)
-    results = body.get("results", []) if isinstance(body, dict) else []
-    total = int(body.get("resultSetSize", 0)) if isinstance(body, dict) else 0
+    body = _catalog_body(await client.get_json(DISCOVERY_API, params))
+    results = body["results"]
+    total = int(body["resultSetSize"])
 
     datasets = await _fold(client, results, detail)
     next_offset = offset + len(results)
@@ -146,7 +158,7 @@ async def _fold(client: SodaClient, results: list[Any], detail: Detail) -> list[
                 "limit": len(missing),
             },
         )
-        for item in body.get("results", []) if isinstance(body, dict) else []:
+        for item in _catalog_body(body)["results"]:
             summary = _summarize(item, detail)
             parents[summary.dataset_id] = summary
     out: list[DatasetSummary] = []

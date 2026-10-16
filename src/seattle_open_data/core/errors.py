@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import re
 from enum import StrEnum
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -169,8 +169,12 @@ def map_upstream_error(  # noqa: PLR0911 - one return per upstream failure class
     *,
     dataset_id: str | None = None,
     token_configured: bool = False,
+    endpoint: Literal["resource", "views", "catalog"] = "resource",
 ) -> SeattleDataError:
     """Translate a non-2xx SODA2 response into the envelope taxonomy (PLAN §6).
+
+    `endpoint` matters: SoQL codes mean something only for a /resource query, and a 404 means
+    a missing dataset only on a dataset endpoint, not on the catalog.
 
     Upstream message text is never echoed verbatim [3.sec-sanitize]; only the
     symbolic upstream code and its position travel in `details`.
@@ -178,7 +182,7 @@ def map_upstream_error(  # noqa: PLR0911 - one return per upstream failure class
     body = body or {}
     headers = headers or {}
 
-    soql_code = _soql_code(body)
+    soql_code = _soql_code(body) if endpoint == "resource" else None
     if soql_code is not None:
         if soql_code.endswith("no-such-column"):
             return SeattleDataError(
@@ -227,6 +231,13 @@ def map_upstream_error(  # noqa: PLR0911 - one return per upstream failure class
             ErrorCode.UPSTREAM_FORBIDDEN,
             "The upstream service refused access to this resource.",
             details=ErrorDetails(reason="Access denied upstream.", upstream_code=upstream_code),
+        )
+    if status == 404 and endpoint == "catalog":
+        return SeattleDataError(
+            ErrorCode.UPSTREAM_UNAVAILABLE,
+            "The catalog service answered with HTTP 404.",
+            details=ErrorDetails(reason="Catalog endpoint not found.", upstream_code=upstream_code),
+            temporary=False,
         )
     if status == 404:
         return SeattleDataError(

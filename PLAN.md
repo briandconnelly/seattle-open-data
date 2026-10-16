@@ -424,7 +424,7 @@ Separately, cwms-tools has two gaps Codex found:
 All calls are blocking `tools/call` [7.execution-mode].
 - **Expected latency** [7.declare-duration]:
   - 1–3 s for metadata;
-  - up to about 25 s for describe (two 10 s aggregate phases plus a 5 s region-label lookup);
+  - up to 30 s for describe and for query, each bounded as a whole call (metadata fetch included), then `query_timeout`. httpx timeouts alone are per read, so a trickling response needed the overall deadline;
   - up to 30 s for queries, then `query_timeout`.
 
   The latency is stated in the tool descriptions.
@@ -614,3 +614,4 @@ No open product questions remain. Engineering unknowns are tracked as **pending*
 | Eval | 12-14 fixtures planned | 14 tasks run in Claude Code 2.1.301: 14/14 pass; one guide error found (crime neighborhood placeholders are pre-2017) and fixed. See `evals/results/2026-10-15.md` | Milestone 4 eval run |
 | Bundle | `mcpb pack .` | Allowlisted staging copy plus an archive check | Codex review of milestone 4 |
 | Whole-project review | Per-branch reviews only | Kimi (Codex was rate-limited) plus Claude's publication checks: error-catalog examples made to match emitted envelopes (no `rate_limited` repair; no echoed value; cursor reasons per failure); unpopulated `coverage_warnings.assigned_fraction` and unused placeholder-share threshold removed; reference `detail` documented as accepted but ignored; describe duration corrected to about 25 s; stale docs fixed | Pre-publication review |
+| Codex whole-project review | Kimi only | 7 findings, all fixed with regressions: upstream shape validation (no empty success from an error body), whole-call 30 s deadlines, budget check on empty pages, region-label failures surfaced (`labels_available`), describe samples sanitized, endpoint-aware error mapping (catalog 404 is `upstream_unavailable`; SoQL codes only from `/resource`), and an `instructions` head that names its sentinel. A per-tool fault matrix now asserts every emitted code is documented for its tool | Codex whole-project review |

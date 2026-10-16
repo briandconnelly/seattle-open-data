@@ -111,6 +111,7 @@ class PlaceField(Closed):
     assigned_fraction: float | None = None
     layer_id: str | None = None
     label_column: str | None = None
+    labels_available: bool | None = None
     boundary_vintage: str | None = None
     stats_status: Literal["ok", "timeout", "unavailable"] | None = None
 

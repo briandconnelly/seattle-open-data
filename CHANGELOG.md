@@ -20,6 +20,7 @@ First release: a read-only, agent-friendly MCP server for Seattle Open Data (dat
   - **`near`:** compiles to `within_circle`.
   - **`coverage_warnings`:** flag filters on partial or unreliable place fields.
 - `seattle_data_get_reference` and `seattle-data://` resources: the capability summary, SoQL help, the error catalog with a worked example per code, and curated guides for seven flagship datasets.
+- Upstream responses are validated: an unexpected shape, such as an error object or `null` where rows belong, is `upstream_unavailable`, never an empty result. Describe and query are bounded as whole calls (30 s), not just per network read.
 - One error envelope on both carriers: `structuredContent` with `isError` for tools, and JSON-RPC `error.data` for resources. It covers framework argument-validation failures, and every `repair` is a literal, schema-valid call.
 - An MCPB bundle built from an allowlisted staging copy (`make mcpb`), with an optional, sensitive Socrata app token setting.
 - Tests:
