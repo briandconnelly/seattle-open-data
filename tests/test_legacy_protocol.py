@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import pytest
 from fastmcp import Client
 
 from seattle_open_data.core.reference import INSTRUCTIONS
@@ -26,3 +27,14 @@ async def test_legacy_handshake_serves_the_same_contract():
         )
         assert result["isError"] is True
         assert result["structuredContent"]["code"] == "invalid_argument"
+
+
+@pytest.mark.parametrize("mode", ["legacy", "modern"])
+async def test_capabilities_advertise_a_fixed_surface_without_prompts(mode):
+    """[9.list-changed]: the surface never changes in a process; there are no prompts."""
+    kwargs = {"mode": "legacy"} if mode == "legacy" else {}
+    async with Client(build_server(), **kwargs) as client:
+        capabilities = client.server_capabilities.model_dump(exclude_none=True)
+    assert "prompts" not in capabilities
+    assert not capabilities["tools"].get("list_changed")
+    assert not capabilities["resources"].get("list_changed")

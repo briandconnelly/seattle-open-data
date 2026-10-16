@@ -42,3 +42,5 @@ First release: a read-only, agent-friendly MCP server for Seattle Open Data (dat
 ### Fixed
 
 - A blank optional app token no longer breaks the installed bundle. Claude Desktop passes it through as the literal `${user_config.app_token}`, which Socrata's firewall rejects with a 403. An unexpanded placeholder or blank value now means anonymous access, with a warning on stderr.
+- Query cursors stay within 6 KiB. The 4 KiB clause cap is now measured as the JSON a cursor stores, so quote-heavy text and long lists can no longer inflate a cursor to about 11 KB. Cursors keep non-ASCII text unescaped, so a valid non-ASCII query near the cap no longer fails with a misleading `row_too_large`.
+- The server no longer advertises a prompts capability (it has no prompts) or `listChanged: true` to legacy clients (its surface never changes).

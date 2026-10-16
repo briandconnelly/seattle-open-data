@@ -28,12 +28,13 @@ def _unb64(text: str) -> bytes:
     return base64.urlsafe_b64decode(text + "=" * (-len(text) % 4))
 
 
+def dump(data: Any) -> bytes:
+    """Compact UTF-8 JSON; non-ASCII stays raw so it costs its UTF-8 size, not `\\uXXXX`."""
+    return json.dumps(data, separators=(",", ":"), sort_keys=True, ensure_ascii=False).encode()
+
+
 def encode(kind: str, state: dict[str, Any]) -> str:
-    payload = json.dumps(
-        {"v": _VERSION, "k": kind, "t": int(time.time()), "s": state},
-        separators=(",", ":"),
-        sort_keys=True,
-    ).encode()
+    payload = dump({"v": _VERSION, "k": kind, "t": int(time.time()), "s": state})
     signature = hmac.new(_KEY, payload, hashlib.sha256).digest()[:16]
     return f"{_b64(payload)}.{_b64(signature)}"
 
