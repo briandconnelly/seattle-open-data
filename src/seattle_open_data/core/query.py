@@ -39,6 +39,9 @@ if TYPE_CHECKING:
 
 _AGGREGATE = re.compile(r"\b(count|sum|avg|min|max|stddev_pop|stddev_samp)\s*\(", re.IGNORECASE)
 _IDENTIFIER = re.compile(r"[:@A-Za-z_][\w:@]*")
+#: A backtick identifier or string literal, in one pass so neither opens the other.
+_QUOTED = re.compile(r"`[^`]*`|'(?:[^']|'')*'")
+_ALIAS_DECLARATION = re.compile(r"\bas\s+(?:`[^`]*`|[A-Za-z_]\w*)", re.IGNORECASE)
 _DIRECTION = re.compile(r"\s+(asc|desc)(\s+nulls\s+(first|last))?\s*$", re.IGNORECASE)
 _VIEW_TTL_SECONDS = 3600
 #: Room for the JSON-RPC envelope and protocol fields around the tool result.
@@ -184,8 +187,7 @@ async def _run_clauses(
         has_more=False,
         truncated=False,
         consistency="stable" if plan["kind"] == "keyset" else "best_effort",
-        coverage_warnings=_warnings(" ".join([*where, clauses.get("having") or ""]), places)
-        or None,
+        coverage_warnings=_warnings(_written(clauses, where), places) or None,
         source=make_source(retrieved=True),
     )
     if detail == "full":
@@ -454,8 +456,16 @@ def _fit(result: QueryResult, rows: list[dict[str, Any]], settle: Callable[[int]
         )
 
 
+def _written(clauses: dict[str, Any], where: list[str]) -> str:
+    """Every clause the agent wrote, as raw SoQL mode would scan it; an omitted select is not."""
+    lists = [clauses.get(k) or [] for k in ("select", "group_by", "order_by")]
+    return " ".join([*where, clauses.get("having") or "", *(item for x in lists for item in x)])
+
+
 def _warnings(text: str, places: list[dict[str, Any]]) -> list[CoverageWarning]:
-    used = set(_IDENTIFIER.findall(text))
+    """Warn on place fields the text reads; string literals and `AS alias` names are not reads."""
+    unquoted = _QUOTED.sub(lambda m: m.group() if m.group().startswith("`") else " ", text)
+    used = set(_IDENTIFIER.findall(_ALIAS_DECLARATION.sub(" ", unquoted)))
     return [
         CoverageWarning(
             column=p["column"],

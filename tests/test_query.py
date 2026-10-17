@@ -17,6 +17,7 @@ from tests.conftest import wire
 
 TOOL = "seattle_data_query_dataset"
 FIRE = "kzjm-xkqj"
+CRIME = "tazs-3rd5"
 SEPT = "datetime between '2026-09-01T00:00:00' and '2026-09-30T23:59:59'"
 THREE_CALLS = "incident_number in ('F260124133', 'F260124199', 'F260124257')"
 
@@ -205,6 +206,69 @@ async def test_unreliable_place_field_warns(client, tools_list, soda):
     warning = out["coverage_warnings"][0]
     assert warning["column"] == ":@computed_region_cyqu_gs94"
     assert warning["reliability"] == "unreliable"
+
+
+@pytest.mark.soda_fixture("query_coverage_grouped")
+async def test_grouping_by_a_partial_place_field_warns_in_both_modes(client, tools_list, soda):
+    clauses = {
+        "dataset_id": CRIME,
+        "select": ["neighborhood", "count(*) AS n"],
+        "group_by": ["neighborhood"],
+        "order_by": ["n DESC"],
+        "page_size": 3,
+    }
+    soql = "SELECT neighborhood, count(*) AS n GROUP BY neighborhood ORDER BY n DESC LIMIT 3"
+    raw = {"dataset_id": CRIME, "mode": "soql", "soql": soql, "page_size": 3}
+    first = (await q(client, tools_list, clauses))["structuredContent"]
+    page_two = {"dataset_id": CRIME, "cursor": first["next_cursor"]}
+    for out in (
+        first,
+        (await q(client, tools_list, page_two))["structuredContent"],
+        (await q(client, tools_list, raw))["structuredContent"],
+    ):
+        assert [(w["column"], w["reliability"]) for w in out.get("coverage_warnings") or []] == [
+            ("neighborhood", "partial")
+        ]
+
+
+PARTIAL = [{"column": "neighborhood", "reliability": "partial", "reason": "gaps"}]
+
+
+@pytest.mark.parametrize(
+    ("clauses", "warns"),
+    [
+        ({"select": ["neighborhood"]}, True),
+        ({"select": ["neighborhood AS area"]}, True),
+        ({"group_by": ["neighborhood"]}, True),
+        ({"order_by": ["neighborhood DESC"]}, True),
+        ({"having": "count(neighborhood) > 1"}, True),
+        ({"where": "neighborhood = 'CAPITOL HILL'"}, True),
+        ({"select": ["count(*) AS neighborhood"]}, False),
+        ({"select": ["offense_id AS `offense's id`", "neighborhood", "'a' AS note"]}, True),
+        ({"select": ["count(*) AS `neighborhood`"]}, False),
+        ({"select": ["`neighborhood`"]}, True),
+        ({"select": ["'neighborhood' AS label"]}, False),
+        ({"where": "offense = 'neighborhood'"}, False),
+    ],
+)
+def test_coverage_scan_reads_each_clause_but_not_aliases_or_literals(clauses, warns):
+    where = [f"({clauses['where']})"] if "where" in clauses else []
+    assert bool(query._warnings(query._written(clauses, where), PARTIAL)) is warns
+
+
+@pytest.mark.soda_fixture("query_coverage_implied_select")
+async def test_omitted_select_does_not_warn_for_every_place_column(client, tools_list, soda):
+    out = (
+        await q(
+            client,
+            tools_list,
+            {"dataset_id": CRIME, "where": "offense_id = '0'", "page_size": 1},
+        )
+    )["structuredContent"]
+    assert out.get("coverage_warnings") is None
+    sent = resource_requests(soda)
+    if sent:
+        assert "neighborhood" in sent[-1]["$select"], "the implied select does include the field"
 
 
 @pytest.mark.soda_fixture("query_near")

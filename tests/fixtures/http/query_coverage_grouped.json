@@ -1,0 +1,2099 @@
+{
+ "data.seattle.gov/api/views/tazs-3rd5.json?[]": {
+  "body": {
+   "approvals": [
+    {
+     "reviewedAt": 1584114567,
+     "reviewedAutomatically": true,
+     "state": "approved",
+     "submissionDetails": {
+      "permissionType": "READ"
+     },
+     "submissionId": 7444598,
+     "submissionObject": "public_audience_request",
+     "submissionOutcome": "change_audience",
+     "submissionOutcomeApplication": {
+      "endedAt": 1584114567,
+      "failureCount": 0,
+      "startedAt": 1584114567,
+      "status": "success"
+     },
+     "submittedAt": 1584114567,
+     "submitter": {
+      "displayName": "Wang, Xinbao",
+      "id": "2866-np2t"
+     },
+     "targetAudience": "public",
+     "workflowId": 3127
+    },
+    {
+     "message": "The `strict_permissions` flag must be on to enable internal approvals.",
+     "state": "unsubmittable",
+     "targetAudience": "internal",
+     "workflowId": 4739
+    }
+   ],
+   "assetType": "dataset",
+   "attribution": "SPD",
+   "averageRating": 0,
+   "category": "Public Safety",
+   "clientContext": {
+    "clientContextVariables": [],
+    "inheritedVariables": {}
+   },
+   "columns": [
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "2120-096194",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "1919-343672",
+      "top": [
+       {
+        "count": "18",
+        "item": "2023-018027"
+       },
+       {
+        "count": "18",
+        "item": "2025-162098"
+       },
+       {
+        "count": "16",
+        "item": "2023-124881"
+       },
+       {
+        "count": "15",
+        "item": "2023-346113"
+       },
+       {
+        "count": "14",
+        "item": "2024-337659"
+       },
+       {
+        "count": "13",
+        "item": "2020-220030"
+       },
+       {
+        "count": "13",
+        "item": "2022-015811"
+       },
+       {
+        "count": "12",
+        "item": "2026-037979"
+       },
+       {
+        "count": "12",
+        "item": "2022-297056"
+       },
+       {
+        "count": "12",
+        "item": "2023-240907"
+       },
+       {
+        "count": "11",
+        "item": "2024-008884"
+       },
+       {
+        "count": "11",
+        "item": "2025-351641"
+       },
+       {
+        "count": "11",
+        "item": "2020-113942"
+       },
+       {
+        "count": "11",
+        "item": "2023-232252"
+       },
+       {
+        "count": "11",
+        "item": "2025-045004"
+       },
+       {
+        "count": "10",
+        "item": "2024-130040"
+       },
+       {
+        "count": "10",
+        "item": "2024-131616"
+       },
+       {
+        "count": "10",
+        "item": "2011-409287"
+       },
+       {
+        "count": "10",
+        "item": "2025-252076"
+       },
+       {
+        "count": "10",
+        "item": "2021-053061"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Primary key/UID for the overall report. One report can contain multiple offenses, as denoted by the Offense ID.  ",
+     "fieldName": "report_number",
+     "format": {},
+     "id": 631332060,
+     "name": "Report Number",
+     "position": 1,
+     "renderTypeName": "text",
+     "tableColumnId": 94676713
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "2026-10-15T22:24:05.000",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "1975-12-16T15:00:00.000",
+      "top": [
+       {
+        "count": "18",
+        "item": "2025-06-12T13:34:51.000"
+       },
+       {
+        "count": "18",
+        "item": "2023-02-02T16:56:16.000"
+       },
+       {
+        "count": "16",
+        "item": "2023-05-08T10:16:03.000"
+       },
+       {
+        "count": "15",
+        "item": "2023-12-01T19:06:31.000"
+       },
+       {
+        "count": "14",
+        "item": "2025-07-01T09:30:10.000"
+       },
+       {
+        "count": "13",
+        "item": "2020-07-23T00:24:41.000"
+       },
+       {
+        "count": "13",
+        "item": "2022-01-20T02:50:53.000"
+       },
+       {
+        "count": "12",
+        "item": "2012-01-10T11:04:00.000"
+       },
+       {
+        "count": "12",
+        "item": "2023-08-21T14:58:10.000"
+       },
+       {
+        "count": "12",
+        "item": "2022-11-04T16:45:42.000"
+       },
+       {
+        "count": "12",
+        "item": "2026-02-08T20:37:37.000"
+       },
+       {
+        "count": "11",
+        "item": "2020-04-04T22:56:41.000"
+       },
+       {
+        "count": "11",
+        "item": "2024-01-10T18:23:03.000"
+       },
+       {
+        "count": "11",
+        "item": "2023-08-13T22:59:28.000"
+       },
+       {
+        "count": "11",
+        "item": "2025-02-18T08:00:30.000"
+       },
+       {
+        "count": "11",
+        "item": "2025-12-01T07:42:34.000"
+       },
+       {
+        "count": "10",
+        "item": "2024-10-23T02:25:48.000"
+       },
+       {
+        "count": "10",
+        "item": "2024-05-15T01:02:09.000"
+       },
+       {
+        "count": "10",
+        "item": "2021-03-03T20:40:38.000"
+       },
+       {
+        "count": "10",
+        "item": "2016-06-30T10:55:00.000"
+       }
+      ]
+     },
+     "dataTypeName": "calendar_date",
+     "description": "Date and time the offense(s) was reported. (Can differ from date of occurrence)  ",
+     "fieldName": "report_date_time",
+     "format": {},
+     "id": 631332061,
+     "name": "Report DateTime",
+     "position": 2,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 158958117
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "9999918849",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "10000684691",
+      "top": [
+       {
+        "count": "2",
+        "item": "71550484989"
+       },
+       {
+        "count": "2",
+        "item": "70507901970"
+       },
+       {
+        "count": "2",
+        "item": "70507823258"
+       },
+       {
+        "count": "2",
+        "item": "71446625503"
+       },
+       {
+        "count": "2",
+        "item": "71549966187"
+       },
+       {
+        "count": "2",
+        "item": "71452750840"
+       },
+       {
+        "count": "1",
+        "item": "12170224868"
+       },
+       {
+        "count": "1",
+        "item": "7628266631"
+       },
+       {
+        "count": "1",
+        "item": "42294956970"
+       },
+       {
+        "count": "1",
+        "item": "33913501078"
+       },
+       {
+        "count": "1",
+        "item": "7692138436"
+       },
+       {
+        "count": "1",
+        "item": "7688480362"
+       },
+       {
+        "count": "1",
+        "item": "7663907597"
+       },
+       {
+        "count": "1",
+        "item": "7638793900"
+       },
+       {
+        "count": "1",
+        "item": "52772457142"
+       },
+       {
+        "count": "1",
+        "item": "27466196741"
+       },
+       {
+        "count": "1",
+        "item": "7630041428"
+       },
+       {
+        "count": "1",
+        "item": "7699427874"
+       },
+       {
+        "count": "1",
+        "item": "12602081098"
+       },
+       {
+        "count": "1",
+        "item": "7639858880"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Distinct identifier to denote when there are multiple offenses associated with a single report.",
+     "fieldName": "offense_id",
+     "format": {
+      "noCommas": "true"
+     },
+     "id": 631332062,
+     "name": "Offense ID",
+     "position": 3,
+     "renderTypeName": "text",
+     "tableColumnId": 159181107
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "2026-10-15T20:32:00.000",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "1900-01-01T00:00:00.000",
+      "top": [
+       {
+        "count": "277",
+        "item": "2020-03-08T00:00:00.000"
+       },
+       {
+        "count": "238",
+        "item": "2020-05-01T00:00:00.000"
+       },
+       {
+        "count": "206",
+        "item": "2020-03-15T00:00:00.000"
+       },
+       {
+        "count": "153",
+        "item": "2020-04-01T00:00:00.000"
+       },
+       {
+        "count": "130",
+        "item": "2020-05-10T00:00:00.000"
+       },
+       {
+        "count": "121",
+        "item": "2020-01-01T00:00:00.000"
+       },
+       {
+        "count": "114",
+        "item": "2020-05-18T00:00:00.000"
+       },
+       {
+        "count": "109",
+        "item": "2020-05-11T00:00:00.000"
+       },
+       {
+        "count": "105",
+        "item": "2020-05-03T00:00:00.000"
+       },
+       {
+        "count": "103",
+        "item": "2020-03-01T00:00:00.000"
+       },
+       {
+        "count": "100",
+        "item": "2020-05-08T00:00:00.000"
+       },
+       {
+        "count": "100",
+        "item": "2023-01-01T00:00:00.000"
+       },
+       {
+        "count": "99",
+        "item": "2022-01-01T00:00:00.000"
+       },
+       {
+        "count": "99",
+        "item": "2020-05-13T00:00:00.000"
+       },
+       {
+        "count": "95",
+        "item": "2021-01-01T00:00:00.000"
+       },
+       {
+        "count": "94",
+        "item": "2020-05-14T00:00:00.000"
+       },
+       {
+        "count": "92",
+        "item": "2020-05-12T00:00:00.000"
+       },
+       {
+        "count": "88",
+        "item": "2020-05-15T00:00:00.000"
+       },
+       {
+        "count": "86",
+        "item": "2024-01-01T00:00:00.000"
+       },
+       {
+        "count": "81",
+        "item": "2020-05-20T00:00:00.000"
+       }
+      ]
+     },
+     "dataTypeName": "calendar_date",
+     "description": "Date of Offense is the Offense start date and if null then Event Start Date.",
+     "fieldName": "offense_date",
+     "format": {},
+     "id": 631332063,
+     "name": "Offense Date",
+     "position": 4,
+     "renderTypeName": "calendar_date",
+     "tableColumnId": 157219198
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "B",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "-",
+      "top": [
+       {
+        "count": "1234906",
+        "item": "A"
+       },
+       {
+        "count": "331998",
+        "item": "B"
+       },
+       {
+        "count": "1641",
+        "item": "-"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Corresponding offense group.  ",
+     "fieldName": "nibrs_group_a_b",
+     "format": {},
+     "id": 631332064,
+     "name": "NIBRS Group AB",
+     "position": 5,
+     "renderTypeName": "text",
+     "tableColumnId": 94676718
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "SOCIETY",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "-",
+      "top": [
+       {
+        "count": "963790",
+        "item": "PROPERTY"
+       },
+       {
+        "count": "225236",
+        "item": "PERSON"
+       },
+       {
+        "count": "192112",
+        "item": "ANY"
+       },
+       {
+        "count": "130810",
+        "item": "SOCIETY"
+       },
+       {
+        "count": "54956",
+        "item": "NOT_A_CRIME"
+       },
+       {
+        "count": "1641",
+        "item": "-"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Corresponding offense crime against category. ",
+     "fieldName": "nibrs_crime_against_category",
+     "format": {},
+     "id": 631332065,
+     "name": "NIBRS Crime Against Category",
+     "position": 6,
+     "renderTypeName": "text",
+     "tableColumnId": 94676719
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "WEAPON LAW VIOLATION",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "999",
+      "top": [
+       {
+        "count": "473434",
+        "item": "LARCENY-THEFT"
+       },
+       {
+        "count": "192112",
+        "item": "ALL OTHER"
+       },
+       {
+        "count": "146574",
+        "item": "BURGLARY"
+       },
+       {
+        "count": "140632",
+        "item": "ASSAULT OFFENSES"
+       },
+       {
+        "count": "129546",
+        "item": "PROPERTY OFFENSES (INCLUDES STOLEN, DESTRUCTION)"
+       },
+       {
+        "count": "93820",
+        "item": "MOTOR VEHICLE THEFT"
+       },
+       {
+        "count": "87938",
+        "item": "EXTORTION/FRAUD/FORGERY/BRIBERY (INCLUDES BAD CHECKS)"
+       },
+       {
+        "count": "54912",
+        "item": "999"
+       },
+       {
+        "count": "47238",
+        "item": "AGGRAVATED ASSAULT"
+       },
+       {
+        "count": "38024",
+        "item": "TRESPASS"
+       },
+       {
+        "count": "33637",
+        "item": "NARCOTIC VIOLATIONS (INCLUDES DRUG EQUIP.)"
+       },
+       {
+        "count": "29955",
+        "item": "ROBBERY"
+       },
+       {
+        "count": "24534",
+        "item": "VIOLATION OF NO CONTACT ORDER"
+       },
+       {
+        "count": "22413",
+        "item": "DUI"
+       },
+       {
+        "count": "13525",
+        "item": "WEAPON LAW VIOLATION"
+       },
+       {
+        "count": "11964",
+        "item": "NON-VIOLENT FAMILY OFFENSES"
+       },
+       {
+        "count": "5504",
+        "item": "RAPE"
+       },
+       {
+        "count": "4632",
+        "item": "SEX OFFENSES"
+       },
+       {
+        "count": "4367",
+        "item": "PROSTITUTION OFFENSES"
+       },
+       {
+        "count": "3064",
+        "item": "DISORDERLY CONDUCT & VAGRANCY VIOLATIONS"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Categorization of Offense Codes (NIBRS Codes) into Sub Categories for reporting. Data Driven refers to these as Offense.",
+     "fieldName": "offense_sub_category",
+     "format": {},
+     "id": 631332066,
+     "name": "Offense Sub Category",
+     "position": 7,
+     "renderTypeName": "text",
+     "tableColumnId": 157219191
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "Shots Fired (Eyewitness/Casings/Property Damage)",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "-",
+      "top": [
+       {
+        "count": "1558178",
+        "item": "-"
+       },
+       {
+        "count": "7671",
+        "item": "Shots Fired (Eyewitness/Casings/Property Damage)"
+       },
+       {
+        "count": "2148",
+        "item": "Shooting (Non-Fatal Injury)"
+       },
+       {
+        "count": "548",
+        "item": "Shooting (Fatal Injury)"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Shots  Fired Event statistic only, other event statistics not included. Used to identify shots fired records.",
+     "fieldName": "shooting_type_group",
+     "format": {},
+     "id": 631332067,
+     "name": "Shooting Type Group",
+     "position": 8,
+     "renderTypeName": "text",
+     "tableColumnId": 157219196
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "YUKON AVE S / S HENDERSON ST",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "-",
+      "top": [
+       {
+        "count": "228196",
+        "item": "REDACTED"
+       },
+       {
+        "count": "172748",
+        "item": "-"
+       },
+       {
+        "count": "7017",
+        "item": "4XX BLOCK OF NE NORTHGATE WAY"
+       },
+       {
+        "count": "4954",
+        "item": "14XX BLOCK OF S LANE ST"
+       },
+       {
+        "count": "3979",
+        "item": "14XX BLOCK OF BROADWAY"
+       },
+       {
+        "count": "3800",
+        "item": "14XX BLOCK OF 2ND AVE"
+       },
+       {
+        "count": "3717",
+        "item": "5XX BLOCK OF 3RD AVE"
+       },
+       {
+        "count": "3675",
+        "item": "4XX BLOCK OF PINE ST"
+       },
+       {
+        "count": "3669",
+        "item": "3XX BLOCK OF NE NORTHGATE WAY"
+       },
+       {
+        "count": "3588",
+        "item": "26XX BLOCK OF SW BARTON ST"
+       },
+       {
+        "count": "3559",
+        "item": "14XX BLOCK OF 3RD AVE"
+       },
+       {
+        "count": "3536",
+        "item": "15XX BLOCK OF 3RD AVE"
+       },
+       {
+        "count": "3512",
+        "item": "132XX BLOCK OF AURORA AVE N"
+       },
+       {
+        "count": "3459",
+        "item": "6XX BLOCK OF 5TH AVE S"
+       },
+       {
+        "count": "3349",
+        "item": "5XX BLOCK OF PINE ST"
+       },
+       {
+        "count": "3204",
+        "item": "38XX BLOCK OF RAINIER AVE S"
+       },
+       {
+        "count": "2729",
+        "item": "3XX BLOCK OF 9TH AVE"
+       },
+       {
+        "count": "2702",
+        "item": "43XX BLOCK OF UNIVERSITY WAY NE"
+       },
+       {
+        "count": "2454",
+        "item": "3XX BLOCK OF PINE ST"
+       },
+       {
+        "count": "2242",
+        "item": "26XX BLOCK OF NE UNIVERSITY VILLAGE ST"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Offense(s) address location blurred to the one hundred block. ",
+     "fieldName": "block_address",
+     "format": {},
+     "id": 631332068,
+     "name": "Block Address",
+     "position": 9,
+     "renderTypeName": "text",
+     "tableColumnId": 96284865
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "REDACTED",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "-1.0",
+      "top": [
+       {
+        "count": "228196",
+        "item": "REDACTED"
+       },
+       {
+        "count": "172983",
+        "item": "-1.0"
+       },
+       {
+        "count": "10559",
+        "item": "47.7086028"
+       },
+       {
+        "count": "4954",
+        "item": "47.59665466"
+       },
+       {
+        "count": "3925",
+        "item": "47.72503555"
+       },
+       {
+        "count": "3766",
+        "item": "47.60878866"
+       },
+       {
+        "count": "3592",
+        "item": "47.52102758"
+       },
+       {
+        "count": "3510",
+        "item": "47.61132124"
+       },
+       {
+        "count": "3484",
+        "item": "47.59665538"
+       },
+       {
+        "count": "3476",
+        "item": "47.6102463"
+       },
+       {
+        "count": "3162",
+        "item": "47.61190424"
+       },
+       {
+        "count": "3143",
+        "item": "47.56888116"
+       },
+       {
+        "count": "2804",
+        "item": "47.60241242"
+       },
+       {
+        "count": "2702",
+        "item": "47.66053224"
+       },
+       {
+        "count": "2671",
+        "item": "47.57967225"
+       },
+       {
+        "count": "2661",
+        "item": "47.60412807"
+       },
+       {
+        "count": "2660",
+        "item": "47.71717447"
+       },
+       {
+        "count": "2606",
+        "item": "47.61351951"
+       },
+       {
+        "count": "2454",
+        "item": "47.61097516"
+       },
+       {
+        "count": "2141",
+        "item": "47.60974973"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Offense(s) spatial coordinate blurred to the one hundred block. ",
+     "fieldName": "latitude",
+     "format": {},
+     "id": 631332069,
+     "name": "Latitude",
+     "position": 10,
+     "renderTypeName": "text",
+     "tableColumnId": 158519099
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "REDACTED",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "-0.793982400354556",
+      "top": [
+       {
+        "count": "228196",
+        "item": "REDACTED"
+       },
+       {
+        "count": "172983",
+        "item": "-1.0"
+       },
+       {
+        "count": "8664",
+        "item": "-122.324615154453"
+       },
+       {
+        "count": "4930",
+        "item": "-122.31343650376"
+       },
+       {
+        "count": "2962",
+        "item": "-122.327680645916"
+       },
+       {
+        "count": "2803",
+        "item": "-122.335928553433"
+       },
+       {
+        "count": "2646",
+        "item": "-122.323443931995"
+       },
+       {
+        "count": "2625",
+        "item": "-122.344996828047"
+       },
+       {
+        "count": "2437",
+        "item": "-122.337320425615"
+       },
+       {
+        "count": "2340",
+        "item": "-122.320771380782"
+       },
+       {
+        "count": "2217",
+        "item": "-122.33108219875"
+       },
+       {
+        "count": "2188",
+        "item": "-122.338449515478"
+       },
+       {
+        "count": "2131",
+        "item": "-122.313148999916"
+       },
+       {
+        "count": "2025",
+        "item": "-122.367311992631"
+       },
+       {
+        "count": "1781",
+        "item": "-122.334817770244"
+       },
+       {
+        "count": "1756",
+        "item": "-122.338146741842"
+       },
+       {
+        "count": "1722",
+        "item": "-122.289921959317"
+       },
+       {
+        "count": "1547",
+        "item": "-122.268030090357"
+       },
+       {
+        "count": "1465",
+        "item": "-122.338701509139"
+       },
+       {
+        "count": "1458",
+        "item": "-122.338449521803"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Offense(s) spatial coordinate blurred to the one hundred block.  ",
+     "fieldName": "longitude",
+     "format": {},
+     "id": 631332070,
+     "name": "Longitude",
+     "position": 11,
+     "renderTypeName": "text",
+     "tableColumnId": 158519100
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "W3",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "-",
+      "top": [
+       {
+        "count": "52646",
+        "item": "K3"
+       },
+       {
+        "count": "43353",
+        "item": "U1"
+       },
+       {
+        "count": "42193",
+        "item": "E2"
+       },
+       {
+        "count": "40679",
+        "item": "Q3"
+       },
+       {
+        "count": "39604",
+        "item": "B2"
+       },
+       {
+        "count": "39574",
+        "item": "U3"
+       },
+       {
+        "count": "39194",
+        "item": "D1"
+       },
+       {
+        "count": "38390",
+        "item": "R2"
+       },
+       {
+        "count": "37784",
+        "item": "U2"
+       },
+       {
+        "count": "37341",
+        "item": "L2"
+       },
+       {
+        "count": "37187",
+        "item": "E1"
+       },
+       {
+        "count": "36833",
+        "item": "M3"
+       },
+       {
+        "count": "36506",
+        "item": "E3"
+       },
+       {
+        "count": "35697",
+        "item": "D2"
+       },
+       {
+        "count": "35428",
+        "item": "M1"
+       },
+       {
+        "count": "35305",
+        "item": "B1"
+       },
+       {
+        "count": "35209",
+        "item": "B3"
+       },
+       {
+        "count": "33948",
+        "item": "N3"
+       },
+       {
+        "count": "33886",
+        "item": "N2"
+       },
+       {
+        "count": "33057",
+        "item": "Q2"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Designated police sector boundary where offense(s) occurred.  ",
+     "fieldName": "beat",
+     "format": {},
+     "id": 631332071,
+     "name": "Beat",
+     "position": 12,
+     "renderTypeName": "text",
+     "tableColumnId": 96284881
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "West",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "-",
+      "top": [
+       {
+        "count": "487198",
+        "item": "North"
+       },
+       {
+        "count": "422954",
+        "item": "West"
+       },
+       {
+        "count": "257264",
+        "item": "East"
+       },
+       {
+        "count": "230533",
+        "item": "South"
+       },
+       {
+        "count": "155228",
+        "item": "Southwest"
+       },
+       {
+        "count": "9769",
+        "item": "-"
+       },
+       {
+        "count": "5599",
+        "item": "OOJ"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Designated police precinct boundary where offense(s) occurred.  ",
+     "fieldName": "precinct",
+     "format": {},
+     "id": 631332072,
+     "name": "Precinct",
+     "position": 13,
+     "renderTypeName": "text",
+     "tableColumnId": 96284866
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "W",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "-",
+      "top": [
+       {
+        "count": "120713",
+        "item": "U"
+       },
+       {
+        "count": "115889",
+        "item": "E"
+       },
+       {
+        "count": "113526",
+        "item": "K"
+       },
+       {
+        "count": "110121",
+        "item": "B"
+       },
+       {
+        "count": "106776",
+        "item": "D"
+       },
+       {
+        "count": "105185",
+        "item": "M"
+       },
+       {
+        "count": "100165",
+        "item": "R"
+       },
+       {
+        "count": "97416",
+        "item": "Q"
+       },
+       {
+        "count": "90652",
+        "item": "L"
+       },
+       {
+        "count": "89632",
+        "item": "N"
+       },
+       {
+        "count": "80231",
+        "item": "S"
+       },
+       {
+        "count": "79234",
+        "item": "W"
+       },
+       {
+        "count": "76042",
+        "item": "J"
+       },
+       {
+        "count": "75976",
+        "item": "F"
+       },
+       {
+        "count": "70855",
+        "item": "C"
+       },
+       {
+        "count": "70487",
+        "item": "G"
+       },
+       {
+        "count": "50110",
+        "item": "O"
+       },
+       {
+        "count": "11213",
+        "item": "-"
+       },
+       {
+        "count": "4140",
+        "item": "99"
+       },
+       {
+        "count": "155",
+        "item": "OOJ"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Designated police sector boundary where offense(s) occurred.",
+     "fieldName": "sector",
+     "format": {},
+     "id": 631332073,
+     "name": "Sector",
+     "position": 14,
+     "renderTypeName": "text",
+     "tableColumnId": 96284875
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "WALLINGFORD",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "-",
+      "top": [
+       {
+        "count": "745991",
+        "item": "-"
+       },
+       {
+        "count": "57543",
+        "item": "DOWNTOWN COMMERCIAL"
+       },
+       {
+        "count": "55343",
+        "item": "CAPITOL HILL"
+       },
+       {
+        "count": "45417",
+        "item": "NORTHGATE"
+       },
+       {
+        "count": "42912",
+        "item": "QUEEN ANNE"
+       },
+       {
+        "count": "37903",
+        "item": "SLU/CASCADE"
+       },
+       {
+        "count": "33341",
+        "item": "UNIVERSITY"
+       },
+       {
+        "count": "30190",
+        "item": "ROOSEVELT/RAVENNA"
+       },
+       {
+        "count": "29741",
+        "item": "BALLARD SOUTH"
+       },
+       {
+        "count": "29108",
+        "item": "FIRST HILL"
+       },
+       {
+        "count": "25920",
+        "item": "CHINATOWN/INTERNATIONAL DISTRICT"
+       },
+       {
+        "count": "21836",
+        "item": "LAKECITY"
+       },
+       {
+        "count": "21252",
+        "item": "CENTRAL AREA/SQUIRE PARK"
+       },
+       {
+        "count": "21153",
+        "item": "BELLTOWN"
+       },
+       {
+        "count": "17731",
+        "item": "SANDPOINT"
+       },
+       {
+        "count": "16850",
+        "item": "GREENWOOD"
+       },
+       {
+        "count": "16650",
+        "item": "BITTERLAKE"
+       },
+       {
+        "count": "15508",
+        "item": "SODO"
+       },
+       {
+        "count": "15377",
+        "item": "NORTH BEACON HILL"
+       },
+       {
+        "count": "14994",
+        "item": "FREMONT"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Designated Micro-Community Policing Plans (MCPP) boundary where offense(s) occurred.",
+     "fieldName": "neighborhood",
+     "format": {},
+     "id": 631332074,
+     "name": "Neighborhood",
+     "position": 15,
+     "renderTypeName": "text",
+     "tableColumnId": 157219192
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "REDACTED",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "-",
+      "top": [
+       {
+        "count": "228196",
+        "item": "REDACTED"
+       },
+       {
+        "count": "9369",
+        "item": "-"
+       },
+       {
+        "count": "7981",
+        "item": "2055"
+       },
+       {
+        "count": "5868",
+        "item": "4115"
+       },
+       {
+        "count": "5415",
+        "item": "6612"
+       },
+       {
+        "count": "4754",
+        "item": "12995"
+       },
+       {
+        "count": "4417",
+        "item": "12522"
+       },
+       {
+        "count": "4313",
+        "item": "10484"
+       },
+       {
+        "count": "4205",
+        "item": "1930"
+       },
+       {
+        "count": "4188",
+        "item": "7090"
+       },
+       {
+        "count": "3865",
+        "item": "4218"
+       },
+       {
+        "count": "3769",
+        "item": "600"
+       },
+       {
+        "count": "3585",
+        "item": "1498"
+       },
+       {
+        "count": "3584",
+        "item": "11042"
+       },
+       {
+        "count": "3555",
+        "item": "4072"
+       },
+       {
+        "count": "3524",
+        "item": "2630"
+       },
+       {
+        "count": "3264",
+        "item": "3413"
+       },
+       {
+        "count": "3064",
+        "item": "8590"
+       },
+       {
+        "count": "2795",
+        "item": "2071"
+       },
+       {
+        "count": "2754",
+        "item": "4043"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Geographic reporting area of the Report Location from Mark43.",
+     "fieldName": "reporting_area",
+     "format": {},
+     "id": 631332075,
+     "name": "Reporting Area",
+     "position": 16,
+     "renderTypeName": "text",
+     "tableColumnId": 157219197
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "VIOLENT CRIME",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "ALL OTHER",
+      "top": [
+       {
+        "count": "768857",
+        "item": "ALL OTHER"
+       },
+       {
+        "count": "716351",
+        "item": "PROPERTY CRIME"
+       },
+       {
+        "count": "83337",
+        "item": "VIOLENT CRIME"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Grouping of Offense Sub Categories for reporting. These include Violent, Property. Data Driven refers to these as Offense Category.",
+     "fieldName": "offense_category",
+     "format": {},
+     "id": 631332076,
+     "name": "Offense Category",
+     "position": 17,
+     "renderTypeName": "text",
+     "tableColumnId": 157219194
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "Wire Fraud",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "-",
+      "top": [
+       {
+        "count": "198342",
+        "item": "Theft From Motor Vehicle"
+       },
+       {
+        "count": "192112",
+        "item": "All Other Offenses"
+       },
+       {
+        "count": "146574",
+        "item": "Burglary/Breaking & Entering"
+       },
+       {
+        "count": "120700",
+        "item": "Destruction/Damage/Vandalism of Property"
+       },
+       {
+        "count": "109151",
+        "item": "All Other Larceny"
+       },
+       {
+        "count": "96763",
+        "item": "Simple Assault"
+       },
+       {
+        "count": "93820",
+        "item": "Motor Vehicle Theft"
+       },
+       {
+        "count": "76559",
+        "item": "Shoplifting"
+       },
+       {
+        "count": "54912",
+        "item": "Not Reportable to NIBRS"
+       },
+       {
+        "count": "48401",
+        "item": "Theft of Motor Vehicle Parts or Accessories"
+       },
+       {
+        "count": "47238",
+        "item": "Aggravated Assault"
+       },
+       {
+        "count": "43869",
+        "item": "Intimidation"
+       },
+       {
+        "count": "38024",
+        "item": "Trespass of Real"
+       },
+       {
+        "count": "36273",
+        "item": "Theft From Building"
+       },
+       {
+        "count": "29955",
+        "item": "Robbery"
+       },
+       {
+        "count": "28856",
+        "item": "Drug/Narcotic Violations"
+       },
+       {
+        "count": "24534",
+        "item": "Violation of No Contact Orders"
+       },
+       {
+        "count": "22789",
+        "item": "Credit Card/Automated Teller Machine Fraud"
+       },
+       {
+        "count": "22413",
+        "item": "Driving Under the Influence"
+       },
+       {
+        "count": "15484",
+        "item": "Identity Theft"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "NIBRS Offense code description",
+     "fieldName": "nibrs_offense_code_description",
+     "format": {},
+     "id": 631332077,
+     "name": "NIBRS Offense Code Description",
+     "position": 18,
+     "renderTypeName": "text",
+     "tableColumnId": 157219189
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "999",
+      "non_null": "1568545",
+      "null": "0",
+      "smallest": "-",
+      "top": [
+       {
+        "count": "198342",
+        "item": "23F"
+       },
+       {
+        "count": "192112",
+        "item": "90Z"
+       },
+       {
+        "count": "146574",
+        "item": "220"
+       },
+       {
+        "count": "120700",
+        "item": "290"
+       },
+       {
+        "count": "109151",
+        "item": "23H"
+       },
+       {
+        "count": "96763",
+        "item": "13B"
+       },
+       {
+        "count": "93820",
+        "item": "240"
+       },
+       {
+        "count": "76559",
+        "item": "23C"
+       },
+       {
+        "count": "54912",
+        "item": "999"
+       },
+       {
+        "count": "48401",
+        "item": "23G"
+       },
+       {
+        "count": "47238",
+        "item": "13A"
+       },
+       {
+        "count": "43869",
+        "item": "13C"
+       },
+       {
+        "count": "38024",
+        "item": "90J"
+       },
+       {
+        "count": "36273",
+        "item": "23D"
+       },
+       {
+        "count": "29955",
+        "item": "120"
+       },
+       {
+        "count": "28856",
+        "item": "35A"
+       },
+       {
+        "count": "24534",
+        "item": "500"
+       },
+       {
+        "count": "22789",
+        "item": "26B"
+       },
+       {
+        "count": "22413",
+        "item": "90D"
+       },
+       {
+        "count": "15484",
+        "item": "26F"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "Reported NIBRS offense code",
+     "fieldName": "nibrs_offense_code",
+     "format": {},
+     "id": 631332078,
+     "name": "NIBRS_offense_code",
+     "position": 19,
+     "renderTypeName": "text",
+     "tableColumnId": 157219190
+    },
+    {
+     "cachedContents": {
+      "cardinality": "1568545",
+      "count": "1568545",
+      "largest": "REDACTED",
+      "non_null": "1568542",
+      "null": "3",
+      "smallest": "-",
+      "top": [
+       {
+        "count": "647187",
+        "item": "-"
+       },
+       {
+        "count": "228196",
+        "item": "REDACTED"
+       },
+       {
+        "count": "3450",
+        "item": "4301.1010"
+       },
+       {
+        "count": "3284",
+        "item": "11402.1010"
+       },
+       {
+        "count": "2742",
+        "item": "9000.1024"
+       },
+       {
+        "count": "2737",
+        "item": "8101.2003"
+       },
+       {
+        "count": "2596",
+        "item": "8102.1009"
+       },
+       {
+        "count": "2475",
+        "item": "1201.1004"
+       },
+       {
+        "count": "2425",
+        "item": "8102.1004"
+       },
+       {
+        "count": "2389",
+        "item": "1201.3000"
+       },
+       {
+        "count": "2182",
+        "item": "10102.2014"
+       },
+       {
+        "count": "2163",
+        "item": "7101.2001"
+       },
+       {
+        "count": "2148",
+        "item": "602.2005"
+       },
+       {
+        "count": "2133",
+        "item": "8102.2037"
+       },
+       {
+        "count": "2038",
+        "item": "8102.1003"
+       },
+       {
+        "count": "1801",
+        "item": "8200.1003"
+       },
+       {
+        "count": "1798",
+        "item": "8401.1004"
+       },
+       {
+        "count": "1666",
+        "item": "9100.1002"
+       },
+       {
+        "count": "1601",
+        "item": "8102.1002"
+       },
+       {
+        "count": "1501",
+        "item": "9100.2009"
+       }
+      ]
+     },
+     "dataTypeName": "text",
+     "description": "The census tract represents small-area neighborhood units, while the census block is the smallest geographic unit used by the United States Census Bureau for tabulating data. Census tracts and blocks allow for the analysis of demographic and housing information. The field contains the Census Tract ID and Census Block ID as one string with both IDs separated by a period. This string is derived from the 2020 Census.",
+     "fieldName": "census_block_2020",
+     "format": {},
+     "id": 631332079,
+     "name": "Census Block 2020",
+     "position": 20,
+     "renderTypeName": "text",
+     "tableColumnId": 167185239
+    }
+   ],
+   "createdAt": 1581703032,
+   "description": "The Seattle Police Department (SPD) replaced its Records Management System (RMS) in May 2019. To preserve data quality and continuity between systems (2008-Present), SPD relied on the National Incident-Based Reporting System (NIBRS). The standardization of crime classifications allows for comparison over time. For more information on definitions and classifications, please visit https://www.fbi.gov/services/cjis/ucr/nibrs. \n\nAdditional groupings are used to analyze crime in SPD\u2019s <a href=\"http://www.seattle.gov/police/information-and-data/crime-dashboard\">Crime Dashboard</a>. Violent and property crime categories align with best practices. For additional inquiries, we encourage the use of the underline data to align with the corresponding query. \n\nDisclaimer: Only finalized (UCR approved) reports are released. Those in draft, awaiting approval, or completed after the update, will not appear until the subsequent day(s). Data is updated once every twenty-four hours. Records and classification changes will occur as a report makes its way through the approval and investigative process.",
+   "diciBackend": false,
+   "displayType": "table",
+   "domainCName": "data.seattle.gov",
+   "downloadCount": 53443,
+   "flags": [
+    "default",
+    "federated",
+    "internalToPublicFederatedView",
+    "ownerMayBeContacted",
+    "restorable",
+    "restorePossibleForType"
+   ],
+   "grants": [
+    {
+     "flags": [
+      "public"
+     ],
+     "inherited": false,
+     "type": "viewer"
+    }
+   ],
+   "hideFromCatalog": false,
+   "hideFromDataJson": false,
+   "id": "tazs-3rd5",
+   "license": {
+    "name": "Public Domain"
+   },
+   "licenseId": "PUBLIC_DOMAIN",
+   "locked": false,
+   "metadata": {
+    "attachments": [
+     {
+      "assetId": "c1eb764d-95e4-4557-a60b-f0fda65d6d59",
+      "filename": "SPD_DSG_OFFENSE_METADATA.pdf",
+      "name": "SPD_DSG_OFFENSE_METADATA.pdf"
+     }
+    ],
+    "availableDisplayTypes": [
+     "table",
+     "fatrow",
+     "page"
+    ],
+    "custom_fields": {
+     "Common Core": {
+      "Contact Email": "open.data@seattle.gov",
+      "Publisher": "data.seattle.gov"
+     },
+     "Department": {
+      "Department": "Seattle Police Department"
+     },
+     "Refresh Frequency": {
+      "Frequency": "Daily"
+     }
+    },
+    "rowLabel": "Crime Data: 2008-Present"
+   },
+   "name": "SPD Crime Data: 2008-Present",
+   "newBackend": true,
+   "numberOfComments": 0,
+   "oid": 42093241,
+   "owner": {
+    "createdAt": 1670887287,
+    "displayName": "SPD_AskSPDAnalytics@seattle.gov",
+    "id": "hp7p-wh9r",
+    "members": [
+     {
+      "createdAt": 1473443304,
+      "disabledAt": 1638810234,
+      "displayName": "spd2internetData",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "avyg-ej9j",
+      "screenName": "spd2internetData",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1491495044,
+      "displayName": "Palay, Claire",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "wt5u-xzdz",
+      "screenName": "Palay, Claire",
+      "teamId": 1484711,
+      "teamRole": "owner",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1524592420,
+      "disabledAt": 1638810229,
+      "displayName": "Greg Kauper",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "g44j-g86n",
+      "screenName": "Greg Kauper",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1485819659,
+      "disabledAt": 1638810228,
+      "displayName": "7861 Atherley, Loren T",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "gj9e-qvnd",
+      "screenName": "7861 Atherley, Loren T",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1636756921,
+      "disabledAt": 1638810235,
+      "displayName": "Vonaschen-Cook, Mirs",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "shdq-d9dx",
+      "screenName": "Vonaschen-Cook, Mirs",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1376678977,
+      "disabledAt": 1638810232,
+      "displayName": "6506 Baden, Toby",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "6bay-fiph",
+      "screenName": "6506 Baden, Toby",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     }
+    ],
+    "screenName": "SPD_AskSPDAnalytics@seattle.gov",
+    "type": "team"
+   },
+   "provenance": "official",
+   "publicationAppendEnabled": false,
+   "publicationDate": 1776952735,
+   "publicationGroup": 16888351,
+   "publicationStage": "published",
+   "query": {},
+   "rights": [
+    "read"
+   ],
+   "rowsUpdatedAt": 1792165489,
+   "rowsUpdatedBy": "2866-np2t",
+   "tableAuthor": {
+    "createdAt": 1670887287,
+    "displayName": "SPD_AskSPDAnalytics@seattle.gov",
+    "id": "hp7p-wh9r",
+    "members": [
+     {
+      "createdAt": 1473443304,
+      "disabledAt": 1638810234,
+      "displayName": "spd2internetData",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "avyg-ej9j",
+      "screenName": "spd2internetData",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1491495044,
+      "displayName": "Palay, Claire",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "wt5u-xzdz",
+      "screenName": "Palay, Claire",
+      "teamId": 1484711,
+      "teamRole": "owner",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1524592420,
+      "disabledAt": 1638810229,
+      "displayName": "Greg Kauper",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "g44j-g86n",
+      "screenName": "Greg Kauper",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1485819659,
+      "disabledAt": 1638810228,
+      "displayName": "7861 Atherley, Loren T",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "gj9e-qvnd",
+      "screenName": "7861 Atherley, Loren T",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1636756921,
+      "disabledAt": 1638810235,
+      "displayName": "Vonaschen-Cook, Mirs",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "shdq-d9dx",
+      "screenName": "Vonaschen-Cook, Mirs",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     },
+     {
+      "createdAt": 1376678977,
+      "disabledAt": 1638810232,
+      "displayName": "6506 Baden, Toby",
+      "flags": [
+       "siteMember"
+      ],
+      "id": "6bay-fiph",
+      "screenName": "6506 Baden, Toby",
+      "teamId": 1484711,
+      "teamRole": "member",
+      "type": "interactive"
+     }
+    ],
+    "screenName": "SPD_AskSPDAnalytics@seattle.gov",
+    "type": "team"
+   },
+   "tableId": 20356519,
+   "tags": [
+    "crime",
+    "seastat",
+    "mcpp",
+    "offenses",
+    "nibrs",
+    "beat",
+    "data-driven"
+   ],
+   "totalTimesRated": 0,
+   "viewCount": 127797,
+   "viewLastModified": 1792163125,
+   "viewType": "tabular"
+  },
+  "headers": {
+   "content-type": "application/json; charset=utf-8"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/tazs-3rd5.json?[[\"$group\", \"neighborhood\"], [\"$limit\", \"4\"], [\"$offset\", \"3\"], [\"$order\", \"n DESC, neighborhood\"], [\"$select\", \"neighborhood, count(*) AS n\"]]": {
+  "body": [
+   {
+    "n": "45417",
+    "neighborhood": "NORTHGATE"
+   },
+   {
+    "n": "42912",
+    "neighborhood": "QUEEN ANNE"
+   },
+   {
+    "n": "37903",
+    "neighborhood": "SLU/CASCADE"
+   },
+   {
+    "n": "33341",
+    "neighborhood": "UNIVERSITY"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"neighborhood\",\"n\"]",
+   "x-soda2-types": "[\"text\",\"number\"]"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/tazs-3rd5.json?[[\"$group\", \"neighborhood\"], [\"$limit\", \"4\"], [\"$order\", \"n DESC, neighborhood\"], [\"$select\", \"neighborhood, count(*) AS n\"]]": {
+  "body": [
+   {
+    "n": "745991",
+    "neighborhood": "-"
+   },
+   {
+    "n": "57543",
+    "neighborhood": "DOWNTOWN COMMERCIAL"
+   },
+   {
+    "n": "55343",
+    "neighborhood": "CAPITOL HILL"
+   },
+   {
+    "n": "45417",
+    "neighborhood": "NORTHGATE"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"neighborhood\",\"n\"]",
+   "x-soda2-types": "[\"text\",\"number\"]"
+  },
+  "status": 200
+ },
+ "data.seattle.gov/resource/tazs-3rd5.json?[[\"$query\", \"SELECT neighborhood, count(*) AS n GROUP BY neighborhood ORDER BY n DESC LIMIT 3\"]]": {
+  "body": [
+   {
+    "n": "745991",
+    "neighborhood": "-"
+   },
+   {
+    "n": "57543",
+    "neighborhood": "DOWNTOWN COMMERCIAL"
+   },
+   {
+    "n": "55343",
+    "neighborhood": "CAPITOL HILL"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"neighborhood\",\"n\"]",
+   "x-soda2-types": "[\"text\",\"number\"]"
+  },
+  "status": 200
+ }
+}

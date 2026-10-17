@@ -58,8 +58,8 @@ HEAD_RULES: tuple[str, ...] = (
     'For "in <area>", filter only on place values listed by '
     'seattle_data_describe_dataset(detail="full"), or, where describe omits values, '
     "by a group_by query on that field; never guess one.",
-    "Never report a count filtered on an unreliable field in coverage_warnings as the answer; "
-    "report a partial field's count only with its reliability caveat.",
+    "Never report a count filtered or grouped on an unreliable field in coverage_warnings as the "
+    "answer; report a partial field's counts only with its reliability caveat.",
     'Take dates ("today", "last week") from source.now_local, not your clock.',
     "Judge freshness by data_coverage, not updated_at.",
     "On isError, branch on structuredContent.code. temporary=false: never retry unchanged. "
@@ -107,7 +107,7 @@ CAPABILITIES = f"""\
 
 ## Semantics
 - Search: `match_evidence` reports which query words appear in each result's title, tags, column names, or description. It is visible overlap, not relevance: the catalog also matches on stemming and metadata the server cannot see. `external_matches` (first page of a tabular search) are federated or external assets; `external_search_status: "unavailable"` means that lookup failed, not that none exist. `suggestion` is one alternative search, offered when no result contains a query word.
-- Place fields: `values` is absent when a field has more than 100 values or `stats_status` is not ok. Fields marked `partial` or `unreliable` undercount; a query filtering on one repeats this in `coverage_warnings`.
+- Place fields: `values` is absent when a field has more than 100 values or `stats_status` is not ok. Fields marked `partial` or `unreliable` undercount; a query that selects, filters, groups, or orders by one repeats this in `coverage_warnings`.
 - Time: `floating_timestamp` and `calendar_date` values have no timezone. `source.now_local` is the current Seattle wall-clock time. `data_coverage` can lag `updated_at` by weeks.
 - Paging: clauses-mode queries page with `next_cursor`; cursors last 1 hour and do not survive a server restart. A query returns at most {QUERY_LOGICAL_CAP:,} rows; beyond that `truncated` is true. Raw SoQL is not paged.
 - `consistency: "best_effort"` means pages of an ordered or grouped query can shift if the dataset changes mid-walk.
