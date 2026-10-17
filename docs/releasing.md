@@ -4,7 +4,7 @@
 
 ## Cut a release
 
-1. Bump `version` in `pyproject.toml`, run `make manifest`, and move the CHANGELOG `[Unreleased]` entries under a new `## [X.Y.Z] - YYYY-MM-DD` heading. Merge.
+1. Bump `version` in `pyproject.toml` and the README status line, run `make manifest` and `uv lock`, and move the CHANGELOG `[Unreleased]` entries under a new `## [X.Y.Z] - YYYY-MM-DD` heading. Merge.
 2. Rehearse from `main`: `gh workflow run release.yml -f publish_to=testpypi`. It runs the version check, the full gate, the build, and the smoke tests, then uploads the wheel and sdist to TestPyPI. It never touches PyPI or GitHub Releases. TestPyPI accepts each version once, so a repeat rehearsal skips the upload; use `-f publish_to=none` to rehearse without it.
 3. Tag and push: `git tag vX.Y.Z && git push origin vX.Y.Z`.
 4. Approve the `pypi` deployment when GitHub asks. The workflow then uploads to PyPI and creates the GitHub Release with the wheel, sdist, and `.mcpb`, using the CHANGELOG section as its notes.

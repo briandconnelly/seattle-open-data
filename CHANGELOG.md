@@ -4,6 +4,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-16
+
 ### Changed
 
 - Three repair `next_step` values are gone: `restart_search` and `restart_from_first_page` (cursor errors) are now `read_paging`, and `narrow` (`query_timeout`) is now `inspect_for_narrowing`, with different tools and arguments (see Fixed, #16). A client that branches on the old values must update.
