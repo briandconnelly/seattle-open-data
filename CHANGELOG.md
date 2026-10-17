@@ -11,6 +11,7 @@ All notable changes to this project are documented here. The format follows [Kee
   - The first page of a tabular search also returns up to 3 `external_matches` (federated ArcGIS or external links, not queryable here) and `external_search_status`. The lookup runs alongside the search; if it fails, the search still succeeds.
   - When no result contains a query word, `suggestion` offers one alternative search call.
 - A new rule in `instructions` and the capability summary: treat search results as candidates, and say so when none fits.
+- Agents learn where to report a defect in this server. A new rule in `instructions` and the capability summary points at the issue tracker and asks the agent to offer it to the user with the error code, `request_id`, and version rather than filing unasked. A new `## Defects` section in the capability summary says what counts as a server defect and what does not (correctly reported upstream failures, the operator's token, malformed calls, the publisher's data).
 
 ## [0.1.0] - 2026-10-16
 

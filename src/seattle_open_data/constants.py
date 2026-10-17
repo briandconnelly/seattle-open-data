@@ -33,6 +33,10 @@ CACHE_TTL_SECONDS = 3600
 
 INSTRUCTIONS_SENTINEL = "END SEATTLE OPEN DATA INSTRUCTIONS"
 
+#: Where a defect in this server is reported. Also `[project.urls] Issues` in pyproject.toml,
+#: and from there manifest.json `support`; `tests/test_issues_url.py` pins the copies together.
+ISSUES_URL = "https://github.com/briandconnelly/seattle-open-data/issues"
+
 UPSTREAM_TIMEOUT_SECONDS = 30.0
 DESCRIBE_AGGREGATE_TIMEOUT_SECONDS = 10.0
 #: The external-asset lookup beside a tabular search is optional; it must not stall the search.
