@@ -40,7 +40,7 @@ if TYPE_CHECKING:
 _AGGREGATE = re.compile(r"\b(count|sum|avg|min|max|stddev_pop|stddev_samp)\s*\(", re.IGNORECASE)
 _IDENTIFIER = re.compile(r"[:@A-Za-z_][\w:@]*")
 _LITERAL = re.compile(r"'(?:[^']|'')*'")
-_ALIAS_DECLARATION = re.compile(r"\bas\s+[A-Za-z_]\w*", re.IGNORECASE)
+_ALIAS_DECLARATION = re.compile(r"\bas\s+(?:`[^`]*`|[A-Za-z_]\w*)", re.IGNORECASE)
 _DIRECTION = re.compile(r"\s+(asc|desc)(\s+nulls\s+(first|last))?\s*$", re.IGNORECASE)
 _VIEW_TTL_SECONDS = 3600
 #: Room for the JSON-RPC envelope and protocol fields around the tool result.
