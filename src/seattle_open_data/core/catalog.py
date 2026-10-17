@@ -50,7 +50,13 @@ _DEFAULT_PAGE_SIZE = 10
 #: Bounds cursor size; a duplicate can reappear only after this many results.
 _SEEN_CAP = 200
 _TOOL = "seattle_data_search_datasets"
-_RESTART = Repair(next_step="restart_search", tool=_TOOL, arguments={})
+#: `{}` would browse the whole catalog, not restart this search (#16).
+_RESTART = Repair(
+    next_step="read_paging",
+    tool="seattle_data_get_reference",
+    arguments={"topic": "soql", "item_id": "paging"},
+    alternative="Resend the first-page search with all its original arguments, without cursor.",
+)
 #: Asks the catalog for federated and external links only (probed 2026-10-16).
 _EXTERNAL_ONLY = "federated_href,href"
 

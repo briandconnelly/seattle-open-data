@@ -46,7 +46,6 @@ _DIRECTION = re.compile(r"\s+(asc|desc)(\s+nulls\s+(first|last))?\s*$", re.IGNOR
 _VIEW_TTL_SECONDS = 3600
 #: Room for the JSON-RPC envelope and protocol fields around the tool result.
 _ENVELOPE_RESERVE = 512
-_TOOL = "seattle_data_query_dataset"
 _DEFAULT_PAGE_SIZE = 100
 
 _views: dict[str, tuple[float, dict[str, Any]]] = {}
@@ -65,13 +64,14 @@ def forget_view(dataset_id: str) -> None:
     _views.pop(dataset_id, None)
 
 
-def _restart(dataset_id: str) -> Repair:
-    return Repair(
-        next_step="restart_from_first_page",
-        tool=_TOOL,
-        arguments={"dataset_id": dataset_id},
-        alternative="Resend the original query arguments without cursor.",
-    )
+#: The original clauses cannot be echoed back, and a `{dataset_id}`-only query would
+#: answer a different question, so the repair reads how to restart instead (#16).
+_RESTART = Repair(
+    next_step="read_paging",
+    tool="seattle_data_get_reference",
+    arguments={"topic": "soql", "item_id": "paging"},
+    alternative="Resend the first-page call with all its original arguments, without cursor.",
+)
 
 
 async def run(client: SodaClient, *, dataset_id: str, **kwargs: Any) -> QueryResult:
@@ -88,12 +88,13 @@ async def run(client: SodaClient, *, dataset_id: str, **kwargs: Any) -> QueryRes
 
 
 def _narrow(dataset_id: str) -> Repair:
+    """Describe finds the time and place columns to narrow on; it returns no rows (#16)."""
     return Repair(
-        next_step="narrow",
-        tool=_TOOL,
+        next_step="inspect_for_narrowing",
+        tool="seattle_data_describe_dataset",
         arguments={"dataset_id": dataset_id},
-        alternative="Aggregate server-side (count(*) with group_by) "
-        "or add a tighter where on a time column.",
+        alternative="Resend the query with every original filter, aggregated server-side "
+        "(count(*) with group_by) or split by where on a time column.",
     )
 
 
@@ -110,7 +111,7 @@ async def _run(
 ) -> QueryResult:
     state: dict[str, Any] = {}
     if cursor is not None:
-        state = cursors.decode(cursor, "query", restart=_restart(dataset_id))
+        state = cursors.decode(cursor, "query", restart=_RESTART)
         if state.get("ds") != dataset_id:
             raise SeattleDataError(
                 ErrorCode.INVALID_CURSOR,
@@ -118,7 +119,7 @@ async def _run(
                 details=ErrorDetails(
                     field="cursor", reason="dataset_id does not match the cursor."
                 ),
-                repair=_restart(dataset_id),
+                repair=_RESTART,
             )
         clauses = state["c"]
         mode = "clauses"

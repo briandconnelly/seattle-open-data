@@ -55,7 +55,23 @@ def test_upstream_mapping_repairs_are_callable(status, body, input_schemas):
 EMITTED_CASES = [
     ("seattle_data_get_reference", {"topic": "soql", "item_id": "joins"}),
     ("seattle_data_get_reference", {"item_id": "dates"}),
+    ("seattle_data_query_dataset", {"dataset_id": "kzjm-xkqj", "cursor": "not-a-cursor"}),
+    ("seattle_data_query_dataset", {"dataset_id": "kzjm-xkqj", "cursor": "eyJ4IjoxfQ.AAAA"}),
+    ("seattle_data_search_datasets", {"cursor": "not-a-cursor"}),
+    ("seattle_data_search_datasets", {"cursor": "eyJ4IjoxfQ.AAAA"}),
 ]
+
+
+#: A repair that returns rows reads as an answer; one that drops the failed call's
+#: arguments then answers a different question (#16).
+ROW_TOOLS = {"seattle_data_query_dataset", "seattle_data_search_datasets"}
+
+
+@pytest.mark.parametrize(
+    "code", [ErrorCode.QUERY_TIMEOUT, ErrorCode.CURSOR_EXPIRED, ErrorCode.INVALID_CURSOR]
+)
+def test_documented_repairs_for_lost_queries_return_no_rows(code):
+    assert ERROR_EXAMPLES[code]["repair"]["tool"] not in ROW_TOOLS
 
 
 @pytest.mark.parametrize(("tool", "args"), EMITTED_CASES)
@@ -63,6 +79,7 @@ async def test_emitted_repairs_are_callable(client, input_schemas, tool, args):
     envelope = wire(await client.call_tool_mcp(tool, args))["structuredContent"]
     assert "repair" in envelope
     assert_repair_callable(envelope["repair"], input_schemas)
+    assert envelope["repair"]["tool"] not in ROW_TOOLS
     followed = wire(
         await client.call_tool_mcp(envelope["repair"]["tool"], envelope["repair"]["arguments"])
     )
