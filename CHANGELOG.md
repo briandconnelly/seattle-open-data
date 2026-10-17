@@ -6,6 +6,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Fixed
 
+- `seattle_data_describe_dataset` now reports the Pacific timezone, with its evidence, for SPD Call Data's `cad_event_original_time_queued` and Fremont Bridge's `date`. Their guides already said so, and `time_semantics` reported the timezone as unknown, so an agent got two answers. A test now requires every timezone a guide asserts to have matching evidence (#17).
 - Repairs no longer run a different query from the one that failed. Following the `query_timeout` repair ran an unfiltered 100-row read, and following a `cursor_expired` or `invalid_cursor` repair ran a query or search without the original filters. Both calls succeeded and answered a different question. `query_timeout` now repairs to `seattle_data_describe_dataset` (`next_step: "inspect_for_narrowing"`), to find the columns to narrow on. Cursor errors on query and search now repair to the `soql/paging` reference (`next_step: "read_paging"`), which now says to resend the first-page call with all its original arguments. The capability summary's cursor rule says the same (#16).
 - `coverage_warnings` in clauses mode now flags a partial or unreliable place field in `select`, `group_by`, or `order_by`, not only in `where` and `having`, matching raw SoQL mode. In both modes, string literals and `AS alias` names no longer count as references. A breakdown by area no longer arrives without its caveat. The head rule in `instructions` now covers grouped counts too (#15).
 

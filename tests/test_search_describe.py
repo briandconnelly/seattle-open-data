@@ -5,9 +5,14 @@ Re-record with `RECORD_FIXTURES=1 uv run pytest tests/test_search_describe.py`.
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import jsonschema
 import pytest
 
+from seattle_open_data.constants import TIME_TYPES
+from seattle_open_data.core import describe
 from tests.conftest import wire
 
 
@@ -78,6 +83,17 @@ async def test_search_rejects_malformed_cursor(client):
 
 
 # --- describe ----------------------------------------------------------------
+
+
+def test_spd_time_semantics_and_coverage_use_primary_time_column():
+    fixture = Path(__file__).parent / "fixtures/http/query_spd_view.json"
+    view = json.loads(fixture.read_text())["data.seattle.gov/api/views/33kz-ixgy.json?[]"]["body"]
+    time_columns = [c for c in view["columns"] if c["dataTypeName"] in TIME_TYPES]
+    column = time_columns[0]
+    assert column["fieldName"] == "cad_event_original_time_queued"
+    semantics = describe._time("33kz-ixgy", column)
+    assert semantics.timezone == "America/Los_Angeles" and semantics.evidence
+    assert describe._coverage_columns("33kz-ixgy", time_columns) == [column]
 
 
 @pytest.mark.soda_fixture("describe_fire_summary")

@@ -99,6 +99,8 @@ Never add a fact you did not probe; label reviewer-reported facts as such.
 - (review) Fremont `65db-xm6k` has `rowsUpdatedAt` of Oct 14, but its newest `date` value is 2026-09-30T23:00.
   - Its `date` column is `calendar_date` in `/api/views` but `floating_timestamp` in `X-SODA2-Types`.
 - (review) Fire 911's `max(datetime)` tracked Pacific local time. Verified (milestone 2): Fire 911 `datetime` is Pacific wall-clock time. That is evidence for this one dataset, not a rule.
+- Verified (2026-10-16): SPD `33kz-ixgy` `cad_event_original_time_queued` is Pacific wall-clock time (`America/Los_Angeles`). On 2026-03-08, grouping 00:00–05:59 by `date_extract_hh` returned hours 0, 1, 3, 4, 5, with no nonexistent Pacific hour 2. September 2026 distinct `cad_event_number` counts by hour had a trough at 04 (380) and peak at 12 (1,813), consistent with local time; under UTC the trough would be near 11–12. Supporting only: `max()` was 2026-10-13T23:59:23 at 2026-10-16 18:05 PDT, consistent with a daily batch cut at local midnight.
+- Verified (2026-10-16): Fremont `65db-xm6k` `date` is Pacific wall-clock time (`America/Los_Angeles`). On 2026-03-08, the 02:00 row existed with empty count fields, while 01:00 and 03:00 had counts, matching the skipped Pacific hour. For 2026, hourly sums of `fremont_bridge` peaked at 08 (91,992) and 17 (119,965), with a minimum at 03, consistent with Pacific commute peaks. These observations are evidence for these columns, not a timezone rule for other datasets.
 
 ## Geography
 
