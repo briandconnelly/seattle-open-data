@@ -6,7 +6,7 @@ import httpx
 import pytest
 
 from seattle_open_data.constants import UPSTREAM_MAX_BYTES
-from seattle_open_data.core import catalog, query
+from seattle_open_data.core import cache, catalog
 from seattle_open_data.core.errors import ErrorCode, SeattleDataError
 from seattle_open_data.core.http import SodaClient, set_client
 from tests.conftest import wire
@@ -92,8 +92,8 @@ async def test_error_object_metadata_is_upstream_unavailable_and_not_cached(clie
             return httpx.Response(200, json={"error": True, "message": "upstream failure"})
         return httpx.Response(200, json=[])
 
-    query._views.clear()
+    cache.clear()
     set_client(SodaClient(transport=httpx.MockTransport(handler)))
     result = wire(await client.call_tool_mcp(tool, {"dataset_id": "aaaa-bbbb"}))
     assert result["structuredContent"]["code"] == "upstream_unavailable"
-    assert "aaaa-bbbb" not in query._views
+    assert "aaaa-bbbb" not in cache.views

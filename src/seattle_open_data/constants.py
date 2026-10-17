@@ -31,6 +31,12 @@ TOOLS_LIST_BYTE_BUDGET = 24 * 1024
 
 CACHE_TTL_SECONDS = 3600
 
+#: Dataset schemas, refreshed by every describe and on `no_such_column`.
+VIEW_TTL_SECONDS = 3600
+VIEW_CACHE_MAX = 256
+REGION_LABEL_TTL_SECONDS = 24 * 3600
+REGION_LABEL_CACHE_MAX = 4096
+
 INSTRUCTIONS_SENTINEL = "END SEATTLE OPEN DATA INSTRUCTIONS"
 
 #: Where a defect in this server is reported. Also `[project.urls] Issues` in pyproject.toml,

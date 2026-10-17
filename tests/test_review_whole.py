@@ -10,7 +10,7 @@ import httpx
 import pytest
 
 from seattle_open_data.constants import INSTRUCTIONS_SENTINEL, RESULT_BYTE_BUDGET
-from seattle_open_data.core import query
+from seattle_open_data.core import cache, query
 from seattle_open_data.core.errors import ErrorCode, SeattleDataError
 from seattle_open_data.core.http import SodaClient, set_client
 from seattle_open_data.core.reference import ERROR_CODES_BY_TOOL, INSTRUCTIONS
@@ -50,7 +50,7 @@ def portal(
             status, content=content, headers={"X-SODA2-Fields": '["name"]', **(headers or {})}
         )
 
-    query._views.clear()
+    cache.clear()
     set_client(SodaClient(transport=httpx.MockTransport(handler)))
 
 
@@ -121,7 +121,7 @@ async def test_whole_call_deadline_in_the_metadata_fetch_has_no_repair(client, m
         await anyio.sleep(2)  # the whole-call deadline expires first, inside the fetch
         return httpx.Response(200, json=VIEW)
 
-    query._views.clear()
+    cache.clear()
     set_client(SodaClient(transport=httpx.MockTransport(slow_view)))
     monkeypatch.setattr(query, "QUERY_DEADLINE_SECONDS", 0.2)
     result = await call(
@@ -269,7 +269,7 @@ async def test_emitted_codes_are_documented(client, tool, status, body, headers)
             return httpx.Response(200, json=VIEW)
         return httpx.Response(status, json=body, headers=headers)
 
-    query._views.clear()
+    cache.clear()
     set_client(SodaClient(transport=httpx.MockTransport(handler)))
     result = await call(client, tool, CALLS[tool])
     if result["isError"]:

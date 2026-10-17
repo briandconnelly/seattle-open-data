@@ -21,6 +21,7 @@ from seattle_open_data.constants import (
     TIME_EVIDENCE,
     TIME_TYPES,
 )
+from seattle_open_data.core import cache
 from seattle_open_data.core.catalog import queryability
 from seattle_open_data.core.context import make_source
 from seattle_open_data.core.errors import (
@@ -123,7 +124,8 @@ async def _describe(
     sample_rows: int,
     detail: Detail,
 ) -> DescribeResult:
-    view = await client.view(dataset_id)
+    # Always fresh: describe is where an agent checks the schema, and it reseeds query's copy.
+    view = await cache.fresh_view(client, dataset_id)
     require_queryable(view, dataset_id)
 
     # Filter views inherit their parent's curated facts.
@@ -323,14 +325,21 @@ async def _region_labels(
             )
             if not ids:
                 continue
-            labels[spec["column"]] = {}
+            layer = spec["layer_id"]
+            names = labels[spec["column"]] = {}
+            for i in ids:
+                if (label := cache.region_labels.get((layer, i))) is not None:
+                    names[i] = label
+            missing = [i for i in ids if i not in names]
+            if not missing:
+                continue
             try:
                 rows = await client.soql(
-                    spec["layer_id"],
+                    layer,
                     {
                         "$select": f"_feature_id AS id, {spec['label_column']} AS label",
-                        "$where": f"_feature_id IN ({','.join(ids)})",
-                        "$limit": len(ids),
+                        "$where": f"_feature_id IN ({','.join(missing)})",
+                        "$limit": len(missing),
                     },
                 )
             except SeattleDataError as exc:
@@ -338,9 +347,10 @@ async def _region_labels(
                     raise
                 # Values keep their numeric ids; labels_available says the names are missing.
                 continue
-            labels[spec["column"]] = {
-                str(r["id"]): clean(str(r.get("label", "")), limit=100) or "" for r in rows
-            }
+            for r in rows:
+                feature, label = str(r["id"]), clean(str(r.get("label", "")), limit=100) or ""
+                names[feature] = label
+                cache.region_labels.put((layer, feature), label)
     return labels
 
 

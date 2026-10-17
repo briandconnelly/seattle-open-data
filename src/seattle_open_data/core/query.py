@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 import re
-import time
 from decimal import Decimal
 from typing import TYPE_CHECKING, Any
 from urllib.parse import urlencode
@@ -20,6 +19,7 @@ from seattle_open_data.constants import (
     RESULT_BYTE_BUDGET,
     URL_MAX_CHARS,
 )
+from seattle_open_data.core import cache
 from seattle_open_data.core import cursor as cursors
 from seattle_open_data.core.context import make_source
 from seattle_open_data.core.describe import place_specs, require_queryable
@@ -50,26 +50,9 @@ _CLAUSE = re.compile(
 #: Clauses where a name declared by `AS` in select means the alias, not a column.
 _ALIAS_SCOPE = frozenset({"group by", "having", "order by"})
 _DIRECTION = re.compile(r"\s+(asc|desc)(\s+nulls\s+(first|last))?\s*$", re.IGNORECASE)
-_VIEW_TTL_SECONDS = 3600
 #: Room for the JSON-RPC envelope and protocol fields around the tool result.
 _ENVELOPE_RESERVE = 512
 _DEFAULT_PAGE_SIZE = 100
-
-_views: dict[str, tuple[float, dict[str, Any]]] = {}
-
-
-async def cached_view(client: SodaClient, dataset_id: str) -> dict[str, Any]:
-    hit = _views.get(dataset_id)
-    if hit and time.monotonic() - hit[0] < _VIEW_TTL_SECONDS:
-        return hit[1]
-    view = await client.view(dataset_id)
-    _views[dataset_id] = (time.monotonic(), view)
-    return view
-
-
-def forget_view(dataset_id: str) -> None:
-    _views.pop(dataset_id, None)
-
 
 #: The original clauses cannot be echoed back, and a `{dataset_id}`-only query would
 #: answer a different question, so the repair reads how to restart instead (#16).
@@ -141,7 +124,7 @@ async def _run(
     size = page_size or int(state.get("ps", _DEFAULT_PAGE_SIZE))
 
     try:
-        view = await cached_view(client, dataset_id)
+        view = await cache.cached_view(client, dataset_id)
     except SeattleDataError as exc:
         if exc.envelope.code == ErrorCode.QUERY_TIMEOUT:
             exc.envelope.details = _METADATA_TIMEOUT
@@ -158,7 +141,7 @@ async def _run(
     except SeattleDataError as exc:
         envelope = exc.envelope
         if envelope.code == ErrorCode.NO_SUCH_COLUMN:
-            forget_view(dataset_id)
+            cache.views.pop(dataset_id)
         if mode != "soql" and envelope.details is not None:
             # Upstream positions index the assembled query, which the agent never wrote.
             envelope.details.position = None

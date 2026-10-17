@@ -9,7 +9,7 @@ import httpx
 import pytest
 
 from seattle_open_data.constants import RESULT_BYTE_BUDGET
-from seattle_open_data.core import query
+from seattle_open_data.core import cache, query
 from seattle_open_data.core.http import SodaClient, set_client
 from tests.conftest import wire
 
@@ -34,7 +34,7 @@ def install(rows, fields=("name", "report_location"), types=("text", "point")):
         }
         return httpx.Response(200, headers=headers, content=rows.encode())
 
-    query._views.clear()
+    cache.clear()
     set_client(SodaClient(transport=httpx.MockTransport(handler)))
     return sent
 

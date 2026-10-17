@@ -4,6 +4,11 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Changed
+
+- `seattle_data_describe_dataset` stores the schema it fetches, so a query that follows a describe of the same dataset no longer fetches the dataset's metadata again. Describe itself still always fetches a fresh schema.
+- Region labels for computed-region place fields are cached for 24 hours, so repeated `detail: "full"` describes no longer re-request labels already resolved. Live counts, coverage, and value counts are still never cached.
+
 ## [0.2.0] - 2026-10-16
 
 ### Changed
