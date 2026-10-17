@@ -14,6 +14,13 @@ from seattle_open_data.core.guides import GUIDES
 from tests.conftest import wire
 
 EXAMPLES = [(g.guide_id, e) for g in GUIDES for e in g.examples]
+#: Words a guide may use to assert a column's timezone, and the zone each one means.
+TIMEZONE_WORDS = {
+    "Pacific": "America/Los_Angeles",
+    "America/Los_Angeles": "America/Los_Angeles",
+    "UTC": "UTC",
+}
+TIMEZONE_PATTERN = r"\b(Pacific|America/Los_Angeles|UTC)\b"
 
 
 @pytest.mark.parametrize(
@@ -32,12 +39,13 @@ def test_examples_use_their_guide_dataset():
 @pytest.mark.parametrize("guide", GUIDES, ids=[g.guide_id for g in GUIDES])
 def test_guide_timezone_claims_have_evidence(guide):
     for line in guide.render().splitlines():
-        if not re.search(r"\b(Pacific|UTC)\b", line):
+        claimed = {TIMEZONE_WORDS[w] for w in re.findall(TIMEZONE_PATTERN, line)}
+        if not claimed:
             continue
         field = re.match(r"- `([^`]+)`:", line)
         assert field is not None, f"Timezone claim needs a column: {line}"
         evidence = TIME_EVIDENCE.get(guide.dataset_id, {}).get(field[1], {})
-        assert evidence.get("timezone") == "America/Los_Angeles", (guide.guide_id, field[1])
+        assert claimed == {evidence.get("timezone")}, (guide.guide_id, field[1], claimed)
         assert evidence.get("evidence"), (guide.guide_id, field[1])
 
 
