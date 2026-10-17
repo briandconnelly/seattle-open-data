@@ -262,6 +262,11 @@ PARTIAL = [{"column": "neighborhood", "reliability": "partial", "reason": "gaps"
         ({"select": ["neighborhood AS neighborhood"], "order_by": ["neighborhood"]}, True),
         ({"select": ["precinct AS neighborhood"], "where": "neighborhood = 'X'"}, True),
         ({"select": ["precinct"], "order_by": ["neighborhood"]}, True),
+        # A backtick alias is one name, spaces and all.
+        (
+            {"select": ["precinct AS `neighborhood label`"], "order_by": ["`neighborhood label`"]},
+            False,
+        ),
     ],
 )
 def test_coverage_scan_reads_each_clause_but_not_aliases_or_literals(clauses, warns):
@@ -281,6 +286,10 @@ def test_coverage_scan_reads_each_clause_but_not_aliases_or_literals(clauses, wa
         ("SELECT precinct AS neighborhood WHERE neighborhood = 'X'", True),
         ("SELECT precinct WHERE offense = 'x order by neighborhood'", False),
         ("select precinct as neighborhood order  by neighborhood desc", False),
+        # Keywords inside a backtick identifier are not clause boundaries.
+        ("SELECT precinct AS neighborhood, precinct AS `order by`, neighborhood AS area", True),
+        ("SELECT count(*) AS `group by neighborhood`", False),
+        ("SELECT precinct AS `neighborhood label` ORDER BY `neighborhood label`", False),
     ],
 )
 def test_raw_soql_scan_resolves_select_aliases(soql, warns):

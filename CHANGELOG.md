@@ -14,9 +14,9 @@ All notable changes to this project are documented here. The format follows [Kee
 ### Fixed
 
 - A malformed catalog entry (a description that is not text, or tags, columns, or parents that are not lists) makes a search fail as `upstream_unavailable`, not as an `internal_error` that the defect guidance would treat as a server bug. Match evidence made every query-bearing search read these fields.
-- `coverage_warnings` no longer mistakes a later use of a select alias for the column of that name. With `precinct AS neighborhood`, an `order_by`, `group_by`, or `having` on `neighborhood` reads `precinct` and does not warn. `select` and `where` still always read the column. Clauses and raw SoQL modes agree.
+- `coverage_warnings` no longer mistakes a later use of a select alias for the column of that name. With `precinct AS neighborhood`, an `order_by`, `group_by`, or `having` on `neighborhood` reads `precinct` and does not warn. `select` and `where` still always read the column. Clauses and raw SoQL modes agree. A backtick identifier counts as one name, spaces included, and a keyword inside one no longer splits raw SoQL into clauses.
 - A DISTINCT query whose select names a backtick-quoted alias (``DISTINCT precinct AS `area` ``) now sorts by the alias. It sent the whole declaration as `$order`, and an `order_by` on the alias still added it again as a tie-breaker.
-- A query whose dataset metadata timed out says so in `details.reason`. It still carries no repair, now documented: describe would wait on the same metadata, so `temporary: true` means retry later.
+- A query whose dataset metadata timed out, on the fetch's deadline or the whole call's, says so in `details.reason`. It still carries no repair, now documented: describe would wait on the same metadata, so `temporary: true` means retry later.
 - An external search lead is kept only with an `http(s)` link that has a host. A lead with a malformed link no longer arrives as `completed`.
 
 - `seattle_data_describe_dataset` now reports the Pacific timezone, with its evidence, for SPD Call Data's `cad_event_original_time_queued` and Fremont Bridge's `date`. Their guides already said so, and `time_semantics` reported the timezone as unknown, so an agent got two answers. A test now requires every timezone a guide asserts to have matching evidence (#17).

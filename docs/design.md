@@ -123,6 +123,7 @@ All four tools share these properties:
      - The `$select` sent when `select` is omitted is not scanned, so an unfiltered row query does not warn on every place column.
      - Fields are matched by identifier against the cached schema; string literals and `AS alias` names (bare or backtick-quoted) are not matched, so `count(*) AS neighborhood` does not warn.
      - In `group_by`, `having`, and `order_by` (raw SoQL: those clauses), a name that `select` declares as an alias means the alias: `precinct AS neighborhood` then `order_by neighborhood` reads `precinct` and does not warn. In `select` and `where` the name is always the column.
+     - A backtick identifier is one name, spaces included (`` `neighborhood label` `` does not read `neighborhood`), and a keyword inside one (an alias named `` `order by` ``) is not a raw SoQL clause boundary.
      - Each warning carries `{column, reliability, reason}`.
      - This is the guard against the silent false zero (eval tasks `13-fire-district-3` and `14-crime-capitol-hill`) and its sibling, the silent false breakdown (a `group_by` on the field).
    - **`near?`:** `{column, latitude, longitude, radius_m}`, compiled to `within_circle`.
@@ -266,7 +267,7 @@ Upstream error mapping is endpoint-aware: SoQL codes come only from `/resource`,
 | `app_token_rejected` | false | `read_auth`: `seattle_data_get_reference({topic: "errors", item_id: "authentication"})` (operator action) |
 | `upstream_forbidden` | false | none |
 | `rate_limited` | true | none: `temporary: true` already means retry unchanged after `retry_after_ms` (from Retry-After); a literal retry repair would echo caller text |
-| `query_timeout` | true | Query: `inspect_for_narrowing`: `seattle_data_describe_dataset({dataset_id})`, which finds the time and place columns to narrow on and returns no rows; `alternative` says to resend with every original filter, aggregated or split by time. A query whose dataset metadata timed out gets none, with `details.reason` saying so: describe would wait on the same metadata. Describe and search: none; retry later |
+| `query_timeout` | true | Query: `inspect_for_narrowing`: `seattle_data_describe_dataset({dataset_id})`, which finds the time and place columns to narrow on and returns no rows; `alternative` says to resend with every original filter, aggregated or split by time. A query whose dataset metadata timed out, on its own deadline or the whole call's, gets none, with `details.reason` saying so: describe would wait on the same metadata. Describe and search: none; retry later |
 | `cursor_expired`, `invalid_cursor` | false | Query and search: `read_paging`: `seattle_data_get_reference({topic: "soql", item_id: "paging"})`, which says how to restart; `alternative` says to resend the first-page call with all its original arguments and no `cursor` |
 | `reference_not_found` | false | `list_items`: `seattle_data_get_reference({topic})`; `details.candidates` lists valid ids. Also the resource not-found code (JSON-RPC -32602) |
 | `internal_error` | false | none; logged with `request_id` |

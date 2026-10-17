@@ -116,6 +116,23 @@ async def test_trickling_stream_hits_the_whole_call_deadline(client, monkeypatch
     assert result["structuredContent"]["repair"]["next_step"] == "inspect_for_narrowing"
 
 
+async def test_whole_call_deadline_in_the_metadata_fetch_has_no_repair(client, monkeypatch):
+    async def slow_view(request: httpx.Request) -> httpx.Response:
+        await anyio.sleep(2)  # the whole-call deadline expires first, inside the fetch
+        return httpx.Response(200, json=VIEW)
+
+    query._views.clear()
+    set_client(SodaClient(transport=httpx.MockTransport(slow_view)))
+    monkeypatch.setattr(query, "QUERY_DEADLINE_SECONDS", 0.2)
+    result = await call(
+        client, "seattle_data_query_dataset", {"dataset_id": "aaaa-bbbb", "select": ["name"]}
+    )
+    envelope = result["structuredContent"]
+    assert envelope["code"] == "query_timeout"
+    assert "repair" not in envelope, "describe would wait on the same metadata"
+    assert envelope["details"]["reason"] == "The dataset's metadata did not load."
+
+
 async def test_get_json_deadline_is_total_not_per_read():
     async def trickle():
         for _ in range(50):

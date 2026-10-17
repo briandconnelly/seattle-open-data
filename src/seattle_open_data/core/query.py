@@ -38,7 +38,8 @@ if TYPE_CHECKING:
     from seattle_open_data.core.http import RowStream, SodaClient
 
 _AGGREGATE = re.compile(r"\b(count|sum|avg|min|max|stddev_pop|stddev_samp)\s*\(", re.IGNORECASE)
-_IDENTIFIER = re.compile(r"[:@A-Za-z_][\w:@]*")
+_IDENTIFIER = re.compile(r"`([^`]*)`|([:@A-Za-z_][\w:@]*)")
+_BACKTICKED = re.compile(r"`[^`]*`")
 #: A backtick identifier or string literal, in one pass so neither opens the other.
 _QUOTED = re.compile(r"`[^`]*`|'(?:[^']|'')*'")
 _ALIAS_DECLARATION = re.compile(r"\bas\s+(`[^`]*`|[A-Za-z_]\w*)", re.IGNORECASE)
@@ -82,15 +83,22 @@ _RESTART = Repair(
 
 async def run(client: SodaClient, *, dataset_id: str, **kwargs: Any) -> QueryResult:
     """One query, bounded as a whole: metadata fetch plus the upstream stream."""
+    loaded: list[bool] = []
     try:
         with anyio.fail_after(QUERY_DEADLINE_SECONDS):
-            return await _run(client, dataset_id=dataset_id, **kwargs)
+            return await _run(client, dataset_id=dataset_id, loaded=loaded, **kwargs)
     except TimeoutError as exc:
         raise SeattleDataError(
             ErrorCode.QUERY_TIMEOUT,
             f"The query did not finish within {QUERY_DEADLINE_SECONDS:.0f} s.",
-            repair=_narrow(dataset_id),
+            # The whole-call deadline can expire first, inside the metadata fetch.
+            details=None if loaded else _METADATA_TIMEOUT,
+            repair=_narrow(dataset_id) if loaded else None,
         ) from exc
+
+
+#: Describe waits on the same metadata, so no repair: `temporary` says retry later.
+_METADATA_TIMEOUT = ErrorDetails(reason="The dataset's metadata did not load.")
 
 
 def _narrow(dataset_id: str) -> Repair:
@@ -108,6 +116,7 @@ async def _run(
     client: SodaClient,
     *,
     dataset_id: str,
+    loaded: list[bool],
     mode: str,
     clauses: dict[str, Any],
     soql: str | None,
@@ -135,9 +144,9 @@ async def _run(
         view = await cached_view(client, dataset_id)
     except SeattleDataError as exc:
         if exc.envelope.code == ErrorCode.QUERY_TIMEOUT:
-            # Describe waits on the same metadata, so no repair: `temporary` says retry later.
-            exc.envelope.details = ErrorDetails(reason="The dataset's metadata did not load.")
+            exc.envelope.details = _METADATA_TIMEOUT
         raise
+    loaded.append(True)
     require_queryable(view, dataset_id)
     columns = view.get("columns") or []
     places = place_specs(view.get("modifyingViewUid") or dataset_id, columns)
@@ -487,13 +496,23 @@ def _written(clauses: dict[str, Any], where: list[str]) -> tuple[str, str]:
 
 
 def _soql_reads(soql: str) -> tuple[str, str]:
-    """Raw SoQL as (select and where, the clauses where select's aliases are in scope)."""
-    parts = _CLAUSE.split(_unquote(soql))
-    direct, aliased = [parts[0]], []
-    for keyword, body in zip(parts[1::2], parts[2::2], strict=True):
-        scope = " ".join(keyword.lower().split())
-        (aliased if scope in _ALIAS_SCOPE else direct).append(body)
+    """Raw SoQL as (select and where, the clauses where select's aliases are in scope).
+
+    Keywords inside a backtick identifier, such as an alias named `order by`, are not clauses.
+    """
+    text = _unquote(soql)
+    masked = _BACKTICKED.sub(lambda m: "`" + "_" * (len(m.group()) - 2) + "`", text)
+    direct, aliased, start, scope = [], [], 0, ""
+    for match in _CLAUSE.finditer(masked):
+        (aliased if scope in _ALIAS_SCOPE else direct).append(text[start : match.start()])
+        scope, start = " ".join(match.group().lower().split()), match.end()
+    (aliased if scope in _ALIAS_SCOPE else direct).append(text[start:])
     return " ".join(direct), " ".join(aliased)
+
+
+def _names(text: str) -> set[str]:
+    """Identifiers read; a backtick identifier is one name, spaces and all."""
+    return {quoted or bare for quoted, bare in _IDENTIFIER.findall(text)}
 
 
 def _warnings(direct: str, aliased: str, places: list[dict[str, Any]]) -> list[CoverageWarning]:
@@ -504,8 +523,7 @@ def _warnings(direct: str, aliased: str, places: list[dict[str, Any]]) -> list[C
     """
     direct, aliased = _unquote(direct), _unquote(aliased)
     aliases = {a.strip("`") for a in _ALIAS_DECLARATION.findall(direct)}
-    used = set(_IDENTIFIER.findall(_ALIAS_DECLARATION.sub(" ", direct)))
-    used |= set(_IDENTIFIER.findall(aliased)) - aliases
+    used = _names(_ALIAS_DECLARATION.sub(" ", direct)) | (_names(aliased) - aliases)
     return [
         CoverageWarning(
             column=p["column"],
