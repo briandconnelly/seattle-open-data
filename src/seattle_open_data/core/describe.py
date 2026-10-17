@@ -326,31 +326,33 @@ async def _region_labels(
             if not ids:
                 continue
             layer = spec["layer_id"]
-            names = labels[spec["column"]] = {}
-            for i in ids:
-                if (label := cache.region_labels.get((layer, i))) is not None:
-                    names[i] = label
+            # Cached names are published only once the lookup succeeds, so a failed or
+            # timed-out lookup still reads as labels_available: false.
+            labels[spec["column"]] = {}
+            names = {
+                i: label for i in ids if (label := cache.region_labels.get((layer, i))) is not None
+            }
             missing = [i for i in ids if i not in names]
-            if not missing:
-                continue
-            try:
-                rows = await client.soql(
-                    layer,
-                    {
-                        "$select": f"_feature_id AS id, {spec['label_column']} AS label",
-                        "$where": f"_feature_id IN ({','.join(missing)})",
-                        "$limit": len(missing),
-                    },
-                )
-            except SeattleDataError as exc:
-                if exc.envelope.code in _ACTIONABLE:
-                    raise
-                # Values keep their numeric ids; labels_available says the names are missing.
-                continue
-            for r in rows:
-                feature, label = str(r["id"]), clean(str(r.get("label", "")), limit=100) or ""
-                names[feature] = label
-                cache.region_labels.put((layer, feature), label)
+            if missing:
+                try:
+                    rows = await client.soql(
+                        layer,
+                        {
+                            "$select": f"_feature_id AS id, {spec['label_column']} AS label",
+                            "$where": f"_feature_id IN ({','.join(missing)})",
+                            "$limit": len(missing),
+                        },
+                    )
+                except SeattleDataError as exc:
+                    if exc.envelope.code in _ACTIONABLE:
+                        raise
+                    # Values keep their numeric ids; labels_available says the names are missing.
+                    continue
+                for r in rows:
+                    feature, label = str(r["id"]), clean(str(r.get("label", "")), limit=100) or ""
+                    names[feature] = label
+                    cache.region_labels.put((layer, feature), label)
+            labels[spec["column"]] = names
     return labels
 
 
