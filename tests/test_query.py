@@ -219,11 +219,38 @@ async def test_grouping_by_a_partial_place_field_warns_in_both_modes(client, too
     }
     soql = "SELECT neighborhood, count(*) AS n GROUP BY neighborhood ORDER BY n DESC LIMIT 3"
     raw = {"dataset_id": CRIME, "mode": "soql", "soql": soql, "page_size": 3}
-    for args in (clauses, raw):
-        out = (await q(client, tools_list, args))["structuredContent"]
+    first = (await q(client, tools_list, clauses))["structuredContent"]
+    page_two = {"dataset_id": CRIME, "cursor": first["next_cursor"]}
+    for out in (
+        first,
+        (await q(client, tools_list, page_two))["structuredContent"],
+        (await q(client, tools_list, raw))["structuredContent"],
+    ):
         assert [(w["column"], w["reliability"]) for w in out.get("coverage_warnings") or []] == [
             ("neighborhood", "partial")
-        ], args.get("mode", "clauses")
+        ]
+
+
+PARTIAL = [{"column": "neighborhood", "reliability": "partial", "reason": "gaps"}]
+
+
+@pytest.mark.parametrize(
+    ("clauses", "warns"),
+    [
+        ({"select": ["neighborhood"]}, True),
+        ({"select": ["neighborhood AS area"]}, True),
+        ({"group_by": ["neighborhood"]}, True),
+        ({"order_by": ["neighborhood DESC"]}, True),
+        ({"having": "count(neighborhood) > 1"}, True),
+        ({"where": "neighborhood = 'CAPITOL HILL'"}, True),
+        ({"select": ["count(*) AS neighborhood"]}, False),
+        ({"select": ["'neighborhood' AS label"]}, False),
+        ({"where": "offense = 'neighborhood'"}, False),
+    ],
+)
+def test_coverage_scan_reads_each_clause_but_not_aliases_or_literals(clauses, warns):
+    where = [f"({clauses['where']})"] if "where" in clauses else []
+    assert bool(query._warnings(query._written(clauses, where), PARTIAL)) is warns
 
 
 @pytest.mark.soda_fixture("query_coverage_implied_select")

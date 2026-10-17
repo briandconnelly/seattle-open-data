@@ -121,7 +121,7 @@ All four tools share these properties:
      - No server-side name resolver.
    - **`coverage_warnings[]`:** emitted when any clause the agent wrote (`select`, `where`, `group_by`, `having`, `order_by`, or raw `soql`) references a place field whose reliability is `partial` or `unreliable`.
      - The `$select` sent when `select` is omitted is not scanned, so an unfiltered row query does not warn on every place column.
-     - Fields are matched by identifier against the cached schema.
+     - Fields are matched by identifier against the cached schema; string literals and `AS alias` names are not matched, so `count(*) AS neighborhood` does not warn.
      - Each warning carries `{column, reliability, reason}`.
      - This is the guard against the silent false zero (eval tasks `13-fire-district-3` and `14-crime-capitol-hill`) and its sibling, the silent false breakdown (a `group_by` on the field).
    - **`near?`:** `{column, latitude, longitude, radius_m}`, compiled to `within_circle`.

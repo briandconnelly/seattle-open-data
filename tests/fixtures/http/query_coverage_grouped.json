@@ -2022,6 +2022,32 @@
   },
   "status": 200
  },
+ "data.seattle.gov/resource/tazs-3rd5.json?[[\"$group\", \"neighborhood\"], [\"$limit\", \"4\"], [\"$offset\", \"3\"], [\"$order\", \"n DESC, neighborhood\"], [\"$select\", \"neighborhood, count(*) AS n\"]]": {
+  "body": [
+   {
+    "n": "45417",
+    "neighborhood": "NORTHGATE"
+   },
+   {
+    "n": "42912",
+    "neighborhood": "QUEEN ANNE"
+   },
+   {
+    "n": "37903",
+    "neighborhood": "SLU/CASCADE"
+   },
+   {
+    "n": "33341",
+    "neighborhood": "UNIVERSITY"
+   }
+  ],
+  "headers": {
+   "content-type": "application/json;charset=utf-8",
+   "x-soda2-fields": "[\"neighborhood\",\"n\"]",
+   "x-soda2-types": "[\"text\",\"number\"]"
+  },
+  "status": 200
+ },
  "data.seattle.gov/resource/tazs-3rd5.json?[[\"$group\", \"neighborhood\"], [\"$limit\", \"4\"], [\"$order\", \"n DESC, neighborhood\"], [\"$select\", \"neighborhood, count(*) AS n\"]]": {
   "body": [
    {
