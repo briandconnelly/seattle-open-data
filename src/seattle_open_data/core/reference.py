@@ -102,7 +102,7 @@ CAPABILITIES = f"""\
 - When a place field has no `values`, list them with `select: [field, "count(*) AS n"]` and `group_by: [field]` before filtering.
 - For all rows, never page through them: give the user `download_url` (query with `detail: "full"`), or split the query by `where`.
 - When `truncation_reason` is `"row_cap"`, aggregate or narrow the query instead of paging further.
-- On `cursor_expired`, rerun the query from page one.
+- On `cursor_expired` or `invalid_cursor`, resend the first-page call with all its original arguments and no `cursor`; never restart with fewer arguments.
 - For raw SoQL, set LIMIT ≤ page_size (max {QUERY_PAGE_SIZE_MAX}) and advance OFFSET yourself.
 
 ## Semantics
@@ -313,17 +313,11 @@ ERROR_EXAMPLES: dict[ErrorCode, dict[str, Any]] = {
         "temporary": True,
         "retry_after_ms": None,
         "repair": {
-            "next_step": "narrow",
-            "tool": "seattle_data_query_dataset",
-            "arguments": {
-                "dataset_id": "33kz-ixgy",
-                "select": [
-                    "date_trunc_ym(cad_event_original_time_queued) AS month",
-                    "count(*) AS calls",
-                ],
-                "group_by": ["month"],
-            },
-            "alternative": "Aggregate server-side or add a tighter where on the time column.",
+            "next_step": "inspect_for_narrowing",
+            "tool": "seattle_data_describe_dataset",
+            "arguments": {"dataset_id": "33kz-ixgy"},
+            "alternative": "Resend the query with every original filter, aggregated server-side "
+            "(count(*) with group_by) or split by where on a time column.",
         },
     },
     ErrorCode.CURSOR_EXPIRED: {
@@ -336,10 +330,11 @@ ERROR_EXAMPLES: dict[ErrorCode, dict[str, Any]] = {
         "temporary": False,
         "retry_after_ms": None,
         "repair": {
-            "next_step": "restart_from_first_page",
-            "tool": "seattle_data_query_dataset",
-            "arguments": {"dataset_id": _DS},
-            "alternative": "Resend the original query arguments without cursor.",
+            "next_step": "read_paging",
+            "tool": "seattle_data_get_reference",
+            "arguments": {"topic": "soql", "item_id": "paging"},
+            "alternative": "Resend the first-page call with all its original arguments, "
+            "without cursor.",
         },
     },
     ErrorCode.INVALID_CURSOR: {
@@ -352,10 +347,11 @@ ERROR_EXAMPLES: dict[ErrorCode, dict[str, Any]] = {
         "temporary": False,
         "retry_after_ms": None,
         "repair": {
-            "next_step": "restart_from_first_page",
-            "tool": "seattle_data_query_dataset",
-            "arguments": {"dataset_id": _DS},
-            "alternative": "Resend the original query arguments without cursor.",
+            "next_step": "read_paging",
+            "tool": "seattle_data_get_reference",
+            "arguments": {"topic": "soql", "item_id": "paging"},
+            "alternative": "Resend the first-page call with all its original arguments, "
+            "without cursor.",
         },
     },
     ErrorCode.ROW_TOO_LARGE: {
@@ -496,9 +492,10 @@ Errors: an unknown column returns `no_such_column`; any other `query.soql.*` rej
     Document(
         "paging",
         "Paging",
-        "next_cursor, has_more, truncated, consistency, and raw SoQL paging.",
+        "next_cursor, has_more, truncated, consistency, cursor restarts, and raw SoQL paging.",
         f"""\
 - `has_more: true` ⇔ `next_cursor` present. Continue with `cursor` (and `dataset_id`); other query arguments are rejected.
+- Restart after `cursor_expired` or `invalid_cursor`: resend the first-page call (query or search) with all its original arguments and no `cursor`. A call with fewer arguments is a different query, not a restart. The restart begins at page one again, so rows already received come back.
 - `truncated: true` means rows beyond a cap are not reachable by paging: the {QUERY_LOGICAL_CAP:,}-row cap, or a raw SoQL page.
 - `consistency`: `stable` for unordered row queries (keyset on `:id`); `best_effort` for ordered, grouped, or DISTINCT queries; `single_page` for raw SoQL, which is never paged.
 - Without `order_by`, rows come in a stable but arbitrary order. A continuation keeps the first page's `page_size` unless you pass a new one.

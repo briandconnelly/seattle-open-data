@@ -328,7 +328,10 @@ async def test_timeout_repairs_toward_narrowing(client, tools_list, soda):
         )
     )["structuredContent"]
     assert envelope["code"] == "query_timeout" and envelope["temporary"] is True
-    assert envelope["repair"]["next_step"] == "narrow"
+    # A row-returning repair would drop the filters of the query that timed out (#16).
+    assert envelope["repair"]["next_step"] == "inspect_for_narrowing"
+    assert envelope["repair"]["tool"] == "seattle_data_describe_dataset"
+    assert envelope["repair"]["arguments"] == {"dataset_id": FIRE}
 
 
 @pytest.mark.soda_fixture("query_three_rows")
@@ -349,7 +352,7 @@ async def test_cursor_for_another_dataset_is_rejected(client, tools_list, soda):
         await q(client, tools_list, {"dataset_id": "76t5-zqzr", "cursor": first["next_cursor"]})
     )["structuredContent"]
     assert envelope["code"] == "invalid_cursor"
-    assert envelope["repair"]["arguments"] == {"dataset_id": "76t5-zqzr"}
+    assert envelope["repair"]["arguments"] == {"topic": "soql", "item_id": "paging"}
 
 
 def _json_size(clauses: dict) -> int:

@@ -113,7 +113,7 @@ async def test_trickling_stream_hits_the_whole_call_deadline(client, monkeypatch
         client, "seattle_data_query_dataset", {"dataset_id": "aaaa-bbbb", "select": ["name"]}
     )
     assert result["structuredContent"]["code"] == "query_timeout"
-    assert result["structuredContent"]["repair"]["next_step"] == "narrow"
+    assert result["structuredContent"]["repair"]["next_step"] == "inspect_for_narrowing"
 
 
 async def test_get_json_deadline_is_total_not_per_read():

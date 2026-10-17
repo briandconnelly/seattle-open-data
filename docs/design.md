@@ -251,6 +251,7 @@ Handlers raise `SeattleDataError`; `src/seattle_open_data/core/errors.py` define
 
 Every error carries `temporary`, a nullable `retry_after_ms`, and `request_id` [6.correlation].
 `repair` is a single object `{next_step, tool, arguments, alternative?}` naming a real tool with literal arguments [6.repair-object] [6.repair-intent] [6.repair-callable]; `tests/test_repairs.py` checks that every documented and emitted repair validates against the named tool's schema.
+A repair never runs a query or search with fewer arguments than the call that failed: that call succeeds and answers a different question. When the original arguments cannot be echoed [6.offending-value], the repair reads or inspects instead, and `alternative` says to resend the original call (#16).
 Framework argument-validation failures are normalized into this envelope, and forced-error wire tests check it per tool.
 Upstream error mapping is endpoint-aware: SoQL codes come only from `/resource`, and a catalog 404 is `upstream_unavailable`.
 
@@ -264,8 +265,8 @@ Upstream error mapping is endpoint-aware: SoQL codes come only from `/resource`,
 | `app_token_rejected` | false | `read_auth`: `seattle_data_get_reference({topic: "errors", item_id: "authentication"})` (operator action) |
 | `upstream_forbidden` | false | none |
 | `rate_limited` | true | none: `temporary: true` already means retry unchanged after `retry_after_ms` (from Retry-After); a literal retry repair would echo caller text |
-| `query_timeout` | true | Query: `narrow`: the same tool and `dataset_id`; `alternative` suggests aggregation or a tighter `where`. Describe and search: none; retry later |
-| `cursor_expired`, `invalid_cursor` | false | Query: `restart_from_first_page`: `seattle_data_query_dataset({dataset_id})`; `alternative` says to resend the original clauses. Search: `restart_search`: `seattle_data_search_datasets({})` |
+| `query_timeout` | true | Query: `inspect_for_narrowing`: `seattle_data_describe_dataset({dataset_id})`, which finds the time and place columns to narrow on and returns no rows; `alternative` says to resend with every original filter, aggregated or split by time. Describe and search: none; retry later |
+| `cursor_expired`, `invalid_cursor` | false | Query and search: `read_paging`: `seattle_data_get_reference({topic: "soql", item_id: "paging"})`, which says how to restart; `alternative` says to resend the first-page call with all its original arguments and no `cursor` |
 | `reference_not_found` | false | `list_items`: `seattle_data_get_reference({topic})`; `details.candidates` lists valid ids. Also the resource not-found code (JSON-RPC -32602) |
 | `internal_error` | false | none; logged with `request_id` |
 | `row_too_large`, `invalid_argument`, `upstream_unavailable` | per code | per catalog |

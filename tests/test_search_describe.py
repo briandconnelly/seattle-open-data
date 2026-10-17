@@ -67,11 +67,9 @@ async def test_search_rejects_tampered_cursor(client):
     envelope = result["structuredContent"]
     assert result["isError"] is True
     assert envelope["code"] == "cursor_expired"
-    assert envelope["repair"] == {
-        "next_step": "restart_search",
-        "tool": "seattle_data_search_datasets",
-        "arguments": {},
-    }
+    assert envelope["repair"]["next_step"] == "read_paging"
+    assert envelope["repair"]["tool"] == "seattle_data_get_reference"
+    assert envelope["repair"]["arguments"] == {"topic": "soql", "item_id": "paging"}
 
 
 async def test_search_rejects_malformed_cursor(client):
