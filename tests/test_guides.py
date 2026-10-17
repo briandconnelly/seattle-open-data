@@ -3,15 +3,24 @@
 from __future__ import annotations
 
 import json
+import re
 
 import jsonschema
 import pytest
 
+from seattle_open_data.constants import TIME_EVIDENCE
 from seattle_open_data.core import arguments
 from seattle_open_data.core.guides import GUIDES
 from tests.conftest import wire
 
 EXAMPLES = [(g.guide_id, e) for g in GUIDES for e in g.examples]
+#: Words a guide may use to assert a column's timezone, and the zone each one means.
+TIMEZONE_WORDS = {
+    "Pacific": "America/Los_Angeles",
+    "America/Los_Angeles": "America/Los_Angeles",
+    "UTC": "UTC",
+}
+TIMEZONE_PATTERN = r"\b(Pacific|America/Los_Angeles|UTC)\b"
 
 
 @pytest.mark.parametrize(
@@ -25,6 +34,19 @@ def test_example_is_a_valid_query_call(input_schemas, guide_id, example):
 def test_examples_use_their_guide_dataset():
     for guide in GUIDES:
         assert all(e.arguments["dataset_id"] == guide.dataset_id for e in guide.examples)
+
+
+@pytest.mark.parametrize("guide", GUIDES, ids=[g.guide_id for g in GUIDES])
+def test_guide_timezone_claims_have_evidence(guide):
+    for line in guide.render().splitlines():
+        claimed = {TIMEZONE_WORDS[w] for w in re.findall(TIMEZONE_PATTERN, line)}
+        if not claimed:
+            continue
+        field = re.match(r"- `([^`]+)`:", line)
+        assert field is not None, f"Timezone claim needs a column: {line}"
+        evidence = TIME_EVIDENCE.get(guide.dataset_id, {}).get(field[1], {})
+        assert claimed == {evidence.get("timezone")}, (guide.guide_id, field[1], claimed)
+        assert evidence.get("evidence"), (guide.guide_id, field[1])
 
 
 @pytest.mark.parametrize("guide", GUIDES, ids=[g.guide_id for g in GUIDES])

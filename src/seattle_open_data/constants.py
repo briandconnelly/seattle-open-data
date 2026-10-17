@@ -123,6 +123,24 @@ TIME_EVIDENCE: dict[str, dict[str, dict[str, str]]] = {
             "evidence": "max(datetime) tracked Pacific wall-clock time when probed 2026-10-15.",
         },
     },
+    "33kz-ixgy": {
+        "cad_event_original_time_queued": {
+            "timezone": "America/Los_Angeles",
+            "evidence": (
+                "Spring-forward gap and local diurnal profile matched Pacific wall-clock time "
+                "when probed 2026-10-16."
+            ),
+        },
+    },
+    "65db-xm6k": {
+        "date": {
+            "timezone": "America/Los_Angeles",
+            "evidence": (
+                "Empty spring-forward hour and commute peaks matched Pacific wall-clock time "
+                "when probed 2026-10-16."
+            ),
+        },
+    },
 }
 
 GEO_TYPES = frozenset({"point", "location"})
