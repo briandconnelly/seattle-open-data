@@ -2,7 +2,7 @@
   "manifest_version": "0.4",
   "name": "seattle-open-data",
   "display_name": "Seattle Open Data",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Agent-friendly MCP server for Seattle Open Data (data.seattle.gov, Socrata SODA).",
   "author": {
     "name": "Brian Connelly",

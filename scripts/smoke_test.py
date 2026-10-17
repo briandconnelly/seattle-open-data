@@ -1,13 +1,16 @@
 """Start the server from a built artifact, the way a user would, and check it answers.
 
 - `--wheel PATH`: install the wheel into a fresh venv and run its console script.
+- `--sdist PATH`: the same from the sdist, which builds it first, as an installer without a
+  matching wheel would.
 - `--bundle PATH`: unpack the .mcpb and run the command its manifest gives the host, with the
   app token left as the unexpanded placeholder a host passes when the user leaves it blank.
 
 Either way the server must complete the handshake, list exactly the tools in
 `tests/snapshots/tools_list.json`, and serve the reference index. None of that touches the network.
 
-Usage: uv run python scripts/smoke_test.py (--wheel dist/*.whl | --bundle dist/*.mcpb)
+Usage: uv run python scripts/smoke_test.py (--wheel dist/*.whl | --sdist dist/*.tar.gz |
+       --bundle dist/*.mcpb)
 """
 
 from __future__ import annotations
@@ -33,12 +36,12 @@ def expected_tools() -> list[str]:
     return sorted(tool["name"] for tool in json.loads(SNAPSHOT.read_text())["tools"])
 
 
-def wheel_command(wheel: Path, work: Path) -> tuple[str, list[str], dict[str, str]]:
+def package_command(package: Path, work: Path) -> tuple[str, list[str], dict[str, str]]:
     venv = work / "venv"
     subprocess.run(["uv", "venv", "--quiet", str(venv)], check=True)
     python = venv / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
     subprocess.run(
-        ["uv", "pip", "install", "--quiet", "--python", str(python), str(wheel)], check=True
+        ["uv", "pip", "install", "--quiet", "--python", str(python), str(package)], check=True
     )
     script = venv / (
         "Scripts/seattle-open-data.exe" if os.name == "nt" else "bin/seattle-open-data"
@@ -71,11 +74,12 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     kind = parser.add_mutually_exclusive_group(required=True)
     kind.add_argument("--wheel", type=Path)
+    kind.add_argument("--sdist", type=Path)
     kind.add_argument("--bundle", type=Path)
     opts = parser.parse_args()
-    artifact: Path = opts.wheel or opts.bundle
+    artifact: Path = opts.wheel or opts.sdist or opts.bundle
     with tempfile.TemporaryDirectory() as tmp:
-        build = wheel_command if opts.wheel else bundle_command
+        build = bundle_command if opts.bundle else package_command
         command, args, env = build(artifact.resolve(), Path(tmp))
         problems = asyncio.run(check(command, args, env))
     if problems:

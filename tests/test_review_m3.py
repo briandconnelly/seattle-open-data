@@ -89,6 +89,14 @@ def test_distinct_orders_by_every_selected_key():
     assert two["kind"] == "offset"
 
 
+def test_distinct_orders_by_a_backtick_alias_not_its_declaration():
+    assert plan(["DISTINCT name AS `area`"])["params"]["$order"] == "`area`"
+    assert plan(["DISTINCT name AS `area`"], order_by=["area DESC"])["params"]["$order"] == (
+        "area DESC"
+    )
+    assert plan(["DISTINCT name AS `area`"], order_by=["`area`"])["params"]["$order"] == "`area`"
+
+
 @pytest.mark.parametrize("value", [1, 2.5, -122.33])
 def test_plain_numbers(value):
     from decimal import Decimal

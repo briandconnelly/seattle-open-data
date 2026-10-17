@@ -38,10 +38,17 @@ if TYPE_CHECKING:
     from seattle_open_data.core.http import RowStream, SodaClient
 
 _AGGREGATE = re.compile(r"\b(count|sum|avg|min|max|stddev_pop|stddev_samp)\s*\(", re.IGNORECASE)
-_IDENTIFIER = re.compile(r"[:@A-Za-z_][\w:@]*")
+_IDENTIFIER = re.compile(r"`([^`]*)`|([:@A-Za-z_][\w:@]*)")
+_BACKTICKED = re.compile(r"`[^`]*`")
 #: A backtick identifier or string literal, in one pass so neither opens the other.
 _QUOTED = re.compile(r"`[^`]*`|'(?:[^']|'')*'")
-_ALIAS_DECLARATION = re.compile(r"\bas\s+(?:`[^`]*`|[A-Za-z_]\w*)", re.IGNORECASE)
+_ALIAS_DECLARATION = re.compile(r"\bas\s+(`[^`]*`|[A-Za-z_]\w*)", re.IGNORECASE)
+#: Raw SoQL clause keywords; string literals are blanked before splitting on them.
+_CLAUSE = re.compile(
+    r"\b(select|where|group\s+by|having|order\s+by|limit|offset|search)\b", re.IGNORECASE
+)
+#: Clauses where a name declared by `AS` in select means the alias, not a column.
+_ALIAS_SCOPE = frozenset({"group by", "having", "order by"})
 _DIRECTION = re.compile(r"\s+(asc|desc)(\s+nulls\s+(first|last))?\s*$", re.IGNORECASE)
 _VIEW_TTL_SECONDS = 3600
 #: Room for the JSON-RPC envelope and protocol fields around the tool result.
@@ -76,15 +83,22 @@ _RESTART = Repair(
 
 async def run(client: SodaClient, *, dataset_id: str, **kwargs: Any) -> QueryResult:
     """One query, bounded as a whole: metadata fetch plus the upstream stream."""
+    loaded: list[bool] = []
     try:
         with anyio.fail_after(QUERY_DEADLINE_SECONDS):
-            return await _run(client, dataset_id=dataset_id, **kwargs)
+            return await _run(client, dataset_id=dataset_id, loaded=loaded, **kwargs)
     except TimeoutError as exc:
         raise SeattleDataError(
             ErrorCode.QUERY_TIMEOUT,
             f"The query did not finish within {QUERY_DEADLINE_SECONDS:.0f} s.",
-            repair=_narrow(dataset_id),
+            # The whole-call deadline can expire first, inside the metadata fetch.
+            details=None if loaded else _METADATA_TIMEOUT,
+            repair=_narrow(dataset_id) if loaded else None,
         ) from exc
+
+
+#: Describe waits on the same metadata, so no repair: `temporary` says retry later.
+_METADATA_TIMEOUT = ErrorDetails(reason="The dataset's metadata did not load.")
 
 
 def _narrow(dataset_id: str) -> Repair:
@@ -102,6 +116,7 @@ async def _run(
     client: SodaClient,
     *,
     dataset_id: str,
+    loaded: list[bool],
     mode: str,
     clauses: dict[str, Any],
     soql: str | None,
@@ -125,7 +140,13 @@ async def _run(
         mode = "clauses"
     size = page_size or int(state.get("ps", _DEFAULT_PAGE_SIZE))
 
-    view = await cached_view(client, dataset_id)
+    try:
+        view = await cached_view(client, dataset_id)
+    except SeattleDataError as exc:
+        if exc.envelope.code == ErrorCode.QUERY_TIMEOUT:
+            exc.envelope.details = _METADATA_TIMEOUT
+        raise
+    loaded.append(True)
     require_queryable(view, dataset_id)
     columns = view.get("columns") or []
     places = place_specs(view.get("modifyingViewUid") or dataset_id, columns)
@@ -188,7 +209,7 @@ async def _run_clauses(
         has_more=False,
         truncated=False,
         consistency="stable" if plan["kind"] == "keyset" else "best_effort",
-        coverage_warnings=_warnings(_written(clauses, where), places) or None,
+        coverage_warnings=_warnings(*_written(clauses, where), places) or None,
         source=make_source(retrieved=True),
     )
     if detail == "full":
@@ -276,7 +297,7 @@ def _plan(
     return {"params": params, "where": where, "kind": kind, "hidden": hidden}
 
 
-_ALIAS = re.compile(r"\s+as\s+([A-Za-z_][\w]*)\s*$", re.IGNORECASE)
+_ALIAS = re.compile(r"\s+as\s+(`[^`]*`|[A-Za-z_]\w*)\s*$", re.IGNORECASE)
 
 
 def _select_keys(select: list[str]) -> list[str]:
@@ -292,7 +313,8 @@ def _select_keys(select: list[str]) -> list[str]:
 
 
 def _bare(expression: str) -> str:
-    return _DIRECTION.sub("", expression).strip().lower()
+    """A sort key for comparison: no direction, case, or backtick quoting."""
+    return _DIRECTION.sub("", expression).strip().strip("`").lower()
 
 
 def _within_circle(
@@ -357,7 +379,7 @@ async def _run_soql(
         has_more=False,
         truncated=False,
         consistency="single_page",
-        coverage_warnings=_warnings(soql, places) or None,
+        coverage_warnings=_warnings(*_soql_reads(soql), places) or None,
         source=make_source(retrieved=True),
     )
     if detail == "full":
@@ -457,16 +479,51 @@ def _fit(result: QueryResult, rows: list[dict[str, Any]], settle: Callable[[int]
         )
 
 
-def _written(clauses: dict[str, Any], where: list[str]) -> str:
-    """Every clause the agent wrote, as raw SoQL mode would scan it; an omitted select is not."""
-    lists = [clauses.get(k) or [] for k in ("select", "group_by", "order_by")]
-    return " ".join([*where, clauses.get("having") or "", *(item for x in lists for item in x)])
+def _unquote(text: str) -> str:
+    """Blank string literals; backtick identifiers stay."""
+    return _QUOTED.sub(lambda m: m.group() if m.group().startswith("`") else " ", text)
 
 
-def _warnings(text: str, places: list[dict[str, Any]]) -> list[CoverageWarning]:
-    """Warn on place fields the text reads; string literals and `AS alias` names are not reads."""
-    unquoted = _QUOTED.sub(lambda m: m.group() if m.group().startswith("`") else " ", text)
-    used = set(_IDENTIFIER.findall(_ALIAS_DECLARATION.sub(" ", unquoted)))
+def _written(clauses: dict[str, Any], where: list[str]) -> tuple[str, str]:
+    """Every clause the agent wrote, split as `_soql_reads` splits raw SoQL.
+
+    An omitted select is not scanned.
+    """
+    later = [clauses.get("having") or ""]
+    for key in ("group_by", "order_by"):
+        later += clauses.get(key) or []
+    return " ".join([*where, *(clauses.get("select") or [])]), " ".join(later)
+
+
+def _soql_reads(soql: str) -> tuple[str, str]:
+    """Raw SoQL as (select and where, the clauses where select's aliases are in scope).
+
+    Keywords inside a backtick identifier, such as an alias named `order by`, are not clauses.
+    """
+    text = _unquote(soql)
+    masked = _BACKTICKED.sub(lambda m: "`" + "_" * (len(m.group()) - 2) + "`", text)
+    direct, aliased, start, scope = [], [], 0, ""
+    for match in _CLAUSE.finditer(masked):
+        (aliased if scope in _ALIAS_SCOPE else direct).append(text[start : match.start()])
+        scope, start = " ".join(match.group().lower().split()), match.end()
+    (aliased if scope in _ALIAS_SCOPE else direct).append(text[start:])
+    return " ".join(direct), " ".join(aliased)
+
+
+def _names(text: str) -> set[str]:
+    """Identifiers read; a backtick identifier is one name, spaces and all."""
+    return {quoted or bare for quoted, bare in _IDENTIFIER.findall(text)}
+
+
+def _warnings(direct: str, aliased: str, places: list[dict[str, Any]]) -> list[CoverageWarning]:
+    """Warn on place fields the text reads (docs/design.md: coverage warnings).
+
+    String literals and `AS alias` names are not reads, nor, in `aliased`, a name select
+    declared as an alias: `precinct AS neighborhood` then `order_by neighborhood` reads precinct.
+    """
+    direct, aliased = _unquote(direct), _unquote(aliased)
+    aliases = {a.strip("`") for a in _ALIAS_DECLARATION.findall(direct)}
+    used = _names(_ALIAS_DECLARATION.sub(" ", direct)) | (_names(aliased) - aliases)
     return [
         CoverageWarning(
             column=p["column"],

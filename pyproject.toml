@@ -1,6 +1,6 @@
 [project]
 name = "seattle-open-data"
-version = "0.1.0"
+version = "0.2.0"
 description = "Agent-friendly MCP server for Seattle Open Data (data.seattle.gov, Socrata SODA)."
 readme = "README.md"
 requires-python = ">=3.13"

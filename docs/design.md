@@ -70,7 +70,7 @@ All four tools share these properties:
        - Emitted on every page, for that page's results.
      - **`external_matches[]`** and **`external_search_status`** (`completed | unavailable`): first page of a `tabular` search only.
        - A second catalog request with `only=federated_href,href` and `limit: 3` runs concurrently with the primary, keeping `query` and `category`. Most of the catalog (498 of 699 entries) is federated, so a tabular search alone hides most leads.
-       - It has its own 5 s timeout. Any failure gives `unavailable`, including an entry that is not an external asset with a valid id and link, and leaves the primary result intact; a primary failure cancels it.
+       - It has its own 5 s timeout. Any failure gives `unavailable`, including an entry that is not an external asset with a valid id and an `http(s)` link with a host, and leaves the primary result intact; a primary failure cancels it.
        - Entries use the `datasets` shape, with `queryability: "external"` and `external_url`.
      - **`suggestion`:** first page only, when no result has a matched term (including an empty page). One literal call in the repair shape [6.repair-intent]: `drop_category` (same query and scope, no category) when a category was given, otherwise `browse` (`{}`). Its `alternative` says the result still needs checking and that Seattle may not publish the data. It is an alternative, not a repair, and never an error: an empty search is a true answer.
 
@@ -122,6 +122,8 @@ All four tools share these properties:
    - **`coverage_warnings[]`:** emitted when any clause the agent wrote (`select`, `where`, `group_by`, `having`, `order_by`, or raw `soql`) references a place field whose reliability is `partial` or `unreliable`.
      - The `$select` sent when `select` is omitted is not scanned, so an unfiltered row query does not warn on every place column.
      - Fields are matched by identifier against the cached schema; string literals and `AS alias` names (bare or backtick-quoted) are not matched, so `count(*) AS neighborhood` does not warn.
+     - In `group_by`, `having`, and `order_by` (raw SoQL: those clauses), a name that `select` declares as an alias means the alias: `precinct AS neighborhood` then `order_by neighborhood` reads `precinct` and does not warn. In `select` and `where` the name is always the column.
+     - A backtick identifier is one name, spaces included (`` `neighborhood label` `` does not read `neighborhood`), and a keyword inside one (an alias named `` `order by` ``) is not a raw SoQL clause boundary.
      - Each warning carries `{column, reliability, reason}`.
      - This is the guard against the silent false zero (eval tasks `13-fire-district-3` and `14-crime-capitol-hill`) and its sibling, the silent false breakdown (a `group_by` on the field).
    - **`near?`:** `{column, latitude, longitude, radius_m}`, compiled to `within_circle`.
@@ -187,7 +189,7 @@ Old or sparse region layers stay visible, flagged `partial` or `unreliable` with
 **Response handling**
 - Responses are read with an incremental JSON parser (ijson), never line by line: filter views pretty-print.
 - The server stops reading as soon as the page is full, then closes the connection.
-- Upstream shapes are validated: an error object or `null` where rows belong is `upstream_unavailable`, never an empty success.
+- Upstream shapes are validated: an error object or `null` where rows belong is `upstream_unavailable`, never an empty success. A catalog entry that is not an object, or whose description is not text or whose tag, column, or parent lists are not lists, is `upstream_unavailable` too, not an `internal_error`.
 - Generated queries send an explicit `$select` built from a per-process cached schema (TTL 1 h, refreshed on `no_such_column`). Missing keys are filled with null from that schema.
 - Raw SoQL column descriptors come from `X-SODA2-Fields`/`X-SODA2-Types`, so no metadata call is needed.
 
@@ -265,7 +267,7 @@ Upstream error mapping is endpoint-aware: SoQL codes come only from `/resource`,
 | `app_token_rejected` | false | `read_auth`: `seattle_data_get_reference({topic: "errors", item_id: "authentication"})` (operator action) |
 | `upstream_forbidden` | false | none |
 | `rate_limited` | true | none: `temporary: true` already means retry unchanged after `retry_after_ms` (from Retry-After); a literal retry repair would echo caller text |
-| `query_timeout` | true | Query: `inspect_for_narrowing`: `seattle_data_describe_dataset({dataset_id})`, which finds the time and place columns to narrow on and returns no rows; `alternative` says to resend with every original filter, aggregated or split by time. Describe and search: none; retry later |
+| `query_timeout` | true | Query: `inspect_for_narrowing`: `seattle_data_describe_dataset({dataset_id})`, which finds the time and place columns to narrow on and returns no rows; `alternative` says to resend with every original filter, aggregated or split by time. A query whose dataset metadata timed out, on its own deadline or the whole call's, gets none, with `details.reason` saying so: describe would wait on the same metadata. Describe and search: none; retry later |
 | `cursor_expired`, `invalid_cursor` | false | Query and search: `read_paging`: `seattle_data_get_reference({topic: "soql", item_id: "paging"})`, which says how to restart; `alternative` says to resend the first-page call with all its original arguments and no `cursor` |
 | `reference_not_found` | false | `list_items`: `seattle_data_get_reference({topic})`; `details.candidates` lists valid ids. Also the resource not-found code (JSON-RPC -32602) |
 | `internal_error` | false | none; logged with `request_id` |
