@@ -4,6 +4,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Fixed
+
+- `coverage_warnings` in clauses mode now flags a partial or unreliable place field in `select`, `group_by`, or `order_by`, not only in `where` and `having`, matching raw SoQL mode. A breakdown by area no longer arrives without its caveat. The head rule in `instructions` now covers grouped counts too (#15).
+
 ### Added
 
 - `seattle_data_search_datasets` helps agents tell a real match from a near miss:

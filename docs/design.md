@@ -119,10 +119,11 @@ All four tools share these properties:
      - Text field example: `dispatch_neighborhood = 'CAPITOL HILL'`.
      - Computed-region example: `:@computed_region_ru88_fbhk IN ('8','44')`, using `values` from describe.
      - No server-side name resolver.
-   - **`coverage_warnings[]`:** emitted when `where` (or `having`, or raw `soql`) references a place field whose reliability is `partial` or `unreliable`.
+   - **`coverage_warnings[]`:** emitted when any clause the agent wrote (`select`, `where`, `group_by`, `having`, `order_by`, or raw `soql`) references a place field whose reliability is `partial` or `unreliable`.
+     - The `$select` sent when `select` is omitted is not scanned, so an unfiltered row query does not warn on every place column.
      - Fields are matched by identifier against the cached schema.
      - Each warning carries `{column, reliability, reason}`.
-     - This is the guard against the silent false zero (eval tasks `13-fire-district-3` and `14-crime-capitol-hill`).
+     - This is the guard against the silent false zero (eval tasks `13-fire-district-3` and `14-crime-capitol-hill`) and its sibling, the silent false breakdown (a `group_by` on the field).
    - **`near?`:** `{column, latitude, longitude, radius_m}`, compiled to `within_circle`.
      - The column is validated against `geo_columns`.
      - A text-typed, redacted, or unknown column fails with `column_not_geographic`.

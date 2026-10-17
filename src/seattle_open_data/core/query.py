@@ -184,8 +184,7 @@ async def _run_clauses(
         has_more=False,
         truncated=False,
         consistency="stable" if plan["kind"] == "keyset" else "best_effort",
-        coverage_warnings=_warnings(" ".join([*where, clauses.get("having") or ""]), places)
-        or None,
+        coverage_warnings=_warnings(_written(clauses, where), places) or None,
         source=make_source(retrieved=True),
     )
     if detail == "full":
@@ -452,6 +451,12 @@ def _fit(result: QueryResult, rows: list[dict[str, Any]], settle: Callable[[int]
                 arguments={"dataset_id": result.dataset_id},
             ),
         )
+
+
+def _written(clauses: dict[str, Any], where: list[str]) -> str:
+    """Every clause the agent wrote, as raw SoQL mode would scan it; an omitted select is not."""
+    lists = [clauses.get(k) or [] for k in ("select", "group_by", "order_by")]
+    return " ".join([*where, clauses.get("having") or "", *(item for x in lists for item in x)])
 
 
 def _warnings(text: str, places: list[dict[str, Any]]) -> list[CoverageWarning]:
