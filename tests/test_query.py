@@ -244,6 +244,7 @@ PARTIAL = [{"column": "neighborhood", "reliability": "partial", "reason": "gaps"
         ({"having": "count(neighborhood) > 1"}, True),
         ({"where": "neighborhood = 'CAPITOL HILL'"}, True),
         ({"select": ["count(*) AS neighborhood"]}, False),
+        ({"select": ["offense_id AS `offense's id`", "neighborhood", "'a' AS note"]}, True),
         ({"select": ["count(*) AS `neighborhood`"]}, False),
         ({"select": ["`neighborhood`"]}, True),
         ({"select": ["'neighborhood' AS label"]}, False),
