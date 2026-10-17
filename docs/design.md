@@ -190,7 +190,7 @@ Old or sparse region layers stay visible, flagged `partial` or `unreliable` with
 - Responses are read with an incremental JSON parser (ijson), never line by line: filter views pretty-print.
 - The server stops reading as soon as the page is full, then closes the connection.
 - Upstream shapes are validated: an error object or `null` where rows belong is `upstream_unavailable`, never an empty success. A catalog entry that is not an object, or whose description is not text or whose tag, column, or parent lists are not lists, is `upstream_unavailable` too, not an `internal_error`.
-- Generated queries send an explicit `$select` built from a per-process cached schema (TTL 1 h, refreshed on `no_such_column`). Missing keys are filled with null from that schema.
+- Generated queries send an explicit `$select` built from a per-process cached schema (TTL 1 h, refreshed on `no_such_column` and by every describe of the dataset). Missing keys are filled with null from that schema.
 - Raw SoQL column descriptors come from `X-SODA2-Fields`/`X-SODA2-Types`, so no metadata call is needed.
 
 **Paging by query kind.** Only clauses-mode queries are paged.
@@ -319,7 +319,11 @@ All calls are blocking `tools/call` [7.execution-mode].
 
 ## Implicit state
 
-- The per-process schema cache (1 h TTL) and the in-memory cursor signing key. Both are lost on restart, which invalidates outstanding cursors.
+- Per-process metadata caches in `core/cache.py`, lost on restart:
+  - Dataset schemas: 1 h TTL, at most 256 datasets. Describe always fetches the schema and stores it; query reads the stored copy.
+  - Computed-region labels, keyed by layer and feature id: 24 h TTL, at most 4,096 labels. Describe requests only the ids it has no label for.
+  - Rows, counts, coverage, and place-field value counts are never cached; they are always `live_query`.
+- The in-memory cursor signing key. It is lost on restart, which invalidates outstanding cursors.
 - No prompts, subscriptions, idempotency keys, version preconditions, or patch operations: the server is read-only and its resources change only on upgrade.
 
 ## Stack and testing

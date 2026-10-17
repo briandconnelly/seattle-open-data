@@ -12,7 +12,7 @@ import jsonschema
 import pytest
 
 from seattle_open_data.constants import RESULT_BYTE_BUDGET
-from seattle_open_data.core import query
+from seattle_open_data.core import cache, query
 from tests.conftest import wire
 
 TOOL = "seattle_data_query_dataset"
@@ -355,7 +355,7 @@ async def test_unknown_column_repairs_to_describe(client, tools_list, soda):
     assert envelope["code"] == "no_such_column"
     assert envelope["repair"]["tool"] == "seattle_data_describe_dataset"
     assert "position" not in envelope["details"], "positions of the assembled query are hidden"
-    assert FIRE not in query._views, "a stale schema is dropped"
+    assert FIRE not in cache.views, "a stale schema is dropped"
 
 
 @pytest.mark.soda_fixture("query_three_rows", overrides={"/resource/": "timeout"})

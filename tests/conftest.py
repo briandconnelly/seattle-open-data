@@ -56,8 +56,10 @@ class _NoNetwork:
 
 @pytest.fixture(autouse=True)
 def no_network():
+    from seattle_open_data.core import cache
     from seattle_open_data.core.http import SodaClient, set_client
 
+    cache.clear()
     set_client(SodaClient(transport=_NoNetwork()))  # ty: ignore[invalid-argument-type]
     yield
     set_client(None)
@@ -66,11 +68,9 @@ def no_network():
 @pytest.fixture
 def soda(request, no_network):
     """Record or replay the HTTP fixture named by the test's `soda_fixture` marker."""
-    from seattle_open_data.core import query
     from seattle_open_data.core.http import SodaClient, set_client
     from tests.http_fixtures import RECORDING, Recorder, Replay
 
-    query._views.clear()
     marker = request.node.get_closest_marker("soda_fixture")
     assert marker is not None, "use @pytest.mark.soda_fixture(name)"
     name, overrides = marker.args[0], marker.kwargs.get("overrides")

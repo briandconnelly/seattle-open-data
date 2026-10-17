@@ -21,6 +21,7 @@ from seattle_open_data.constants import (
     TIME_EVIDENCE,
     TIME_TYPES,
 )
+from seattle_open_data.core import cache
 from seattle_open_data.core.catalog import queryability
 from seattle_open_data.core.context import make_source
 from seattle_open_data.core.errors import (
@@ -123,7 +124,8 @@ async def _describe(
     sample_rows: int,
     detail: Detail,
 ) -> DescribeResult:
-    view = await client.view(dataset_id)
+    # Always fresh: describe is where an agent checks the schema, and it reseeds query's copy.
+    view = await cache.fresh_view(client, dataset_id)
     require_queryable(view, dataset_id)
 
     # Filter views inherit their parent's curated facts.
@@ -323,24 +325,34 @@ async def _region_labels(
             )
             if not ids:
                 continue
+            layer = spec["layer_id"]
+            # Cached names are published only once the lookup succeeds, so a failed or
+            # timed-out lookup still reads as labels_available: false.
             labels[spec["column"]] = {}
-            try:
-                rows = await client.soql(
-                    spec["layer_id"],
-                    {
-                        "$select": f"_feature_id AS id, {spec['label_column']} AS label",
-                        "$where": f"_feature_id IN ({','.join(ids)})",
-                        "$limit": len(ids),
-                    },
-                )
-            except SeattleDataError as exc:
-                if exc.envelope.code in _ACTIONABLE:
-                    raise
-                # Values keep their numeric ids; labels_available says the names are missing.
-                continue
-            labels[spec["column"]] = {
-                str(r["id"]): clean(str(r.get("label", "")), limit=100) or "" for r in rows
+            names = {
+                i: label for i in ids if (label := cache.region_labels.get((layer, i))) is not None
             }
+            missing = [i for i in ids if i not in names]
+            if missing:
+                try:
+                    rows = await client.soql(
+                        layer,
+                        {
+                            "$select": f"_feature_id AS id, {spec['label_column']} AS label",
+                            "$where": f"_feature_id IN ({','.join(missing)})",
+                            "$limit": len(missing),
+                        },
+                    )
+                except SeattleDataError as exc:
+                    if exc.envelope.code in _ACTIONABLE:
+                        raise
+                    # Values keep their numeric ids; labels_available says the names are missing.
+                    continue
+                for r in rows:
+                    feature, label = str(r["id"]), clean(str(r.get("label", "")), limit=100) or ""
+                    names[feature] = label
+                    cache.region_labels.put((layer, feature), label)
+            labels[spec["column"]] = names
     return labels
 
 
