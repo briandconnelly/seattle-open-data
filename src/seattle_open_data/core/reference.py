@@ -11,6 +11,7 @@ from typing import Any
 from seattle_open_data import __version__
 from seattle_open_data.constants import (
     INSTRUCTIONS_SENTINEL,
+    ISSUES_URL,
     QUERY_LOGICAL_CAP,
     QUERY_PAGE_SIZE_MAX,
     URI_SCHEME,
@@ -64,6 +65,9 @@ HEAD_RULES: tuple[str, ...] = (
     "On isError, branch on structuredContent.code. temporary=false: never retry unchanged. "
     "temporary=true: the same call may succeed later, after retry_after_ms when set. "
     "Follow repair when present.",
+    f"For a defect in this server (capabilities ## Defects), offer the user {ISSUES_URL} "
+    "with the error code, request_id, and server version; never file unasked: "
+    "the tracker is public.",
 )
 
 _HEAD_RULE_LINES = "\n".join(f"- {rule}" for rule in HEAD_RULES)
@@ -112,6 +116,11 @@ CAPABILITIES = f"""\
 - Tool errors: `isError: true` with the envelope in `structuredContent` (`code`, `message`, `temporary`, `retry_after_ms`, optional `details`, `repair`, `request_id`).
 - Resource errors: JSON-RPC `error.data` with the same envelope, `code`/`message` renamed `machine_code`/`human_message`.
 - Full catalog: seattle_data_get_reference(topic="errors").
+
+## Defects
+- A defect in this server: an `internal_error`; a failure outside the envelope above, or with a code its tool's catalog does not list; a `repair` call its tool rejects as invalid; a result that contradicts its tool's output schema or the semantics above; a guide's verified query that fails, unless with a code listed as not a defect.
+- Not a defect: `upstream_unavailable`, `rate_limited`, `query_timeout`, or `upstream_forbidden` reported as documented; `app_token_rejected` (the operator's token); `invalid_argument` for a malformed call; missing, stale, or unreliable values in a dataset (the publisher's data); a search that finds no fitting dataset.
+- Report to: {ISSUES_URL}. Include the error code, `request_id`, server version (this summary's title), and the tool call once the user has reviewed it.
 
 ## Context
 - Transport: stdio. Protocol: MCP 2026-07-28, compatible with 2025-11-25; no extensions required. Long-running tasks: not used.

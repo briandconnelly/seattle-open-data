@@ -297,7 +297,9 @@ All calls are blocking `tools/call` [7.execution-mode].
     - for "in <area>" questions, filter only on listed place values, or on values listed by a `group_by` query when describe omits them;
     - never report an `unreliable` field's count as the answer, and caveat a `partial` one;
     - use `now_local` for relative dates, and `data_coverage` for freshness;
-    - on `isError`, branch on `code` and `temporary`, and follow `repair`.
+    - on `isError`, branch on `code` and `temporary`, and follow `repair`;
+    - for a defect in this server, offer the user the issue tracker (`ISSUES_URL` in `constants.py`) with the error code, `request_id`, and version, and never file unasked, because the tracker is public.
+  - The capability summary's `## Defects` section says what counts as a server defect (`internal_error`, an off-catalog code or broken envelope, a `repair` its tool rejects, a result that contradicts its schema, a guide query that fails other than with a non-defect code) and what does not (correctly reported upstream failures, `app_token_rejected`, `invalid_argument`, the publisher's data quality, a search with no fitting dataset). `tests/test_issues_url.py` pins the URL to the pyproject `Issues` URL and the manifest `support` field.
   - The capability summary restates every head rule verbatim under `## Rules`, and keeps facts under `## Semantics`, so a client that drops `instructions` loses no rule [2.instructions-advisory]. A test enforces the restatement.
 - **`tools/list` byte budget:** 24 KiB, enforced in CI [2.compact-baseline]. Measured at 15,303 bytes on 2026-10-16; `tests/test_contract.py` prints the current size.
 - **Host behavior:** host captures are in `docs/host-captures/`.
