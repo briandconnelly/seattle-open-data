@@ -9,6 +9,7 @@ import httpx
 import jsonschema
 import pytest
 
+from seattle_open_data.core import catalog
 from seattle_open_data.core.http import SodaClient, set_client
 from tests.conftest import wire
 from tests.test_repairs import assert_repair_callable
@@ -277,6 +278,75 @@ async def test_any_external_failure_keeps_the_primary_result(client, tools_list,
     out = await search(client, tools_list, {"query": "street trees"})
     assert [d["dataset_id"] for d in out["datasets"]] == ["aaaa-aaaa"]
     assert out["external_search_status"] == "unavailable"
+
+
+def linked(dataset_id: str, link: str) -> dict[str, Any]:
+    """An external entry whose only link is the catalog `link`."""
+    entry = item(dataset_id, "Linked", "href")
+    entry["metadata"] = {}
+    entry["link"] = link
+    return entry
+
+
+@pytest.mark.parametrize("link", ["not a URL", "ftp://example.com/x", "javascript:alert(1)"])
+async def test_an_external_lead_without_a_web_link_is_rejected(client, tools_list, link):
+    install(Catalog([item("aaaa-aaaa", "Street Trees")], external=[linked("bbbb-bbbb", link)]))
+    out = await search(client, tools_list, {"query": "street trees"})
+    assert out["external_search_status"] == "unavailable"
+    assert "external_matches" not in out
+
+
+async def test_an_external_lead_with_a_web_link_is_kept(client, tools_list):
+    lead = linked("bbbb-bbbb", "http://example.com/trees")
+    install(Catalog([item("aaaa-aaaa", "Street Trees")], external=[lead]))
+    out = await search(client, tools_list, {"query": "street trees"})
+    assert [d["external_url"] for d in out["external_matches"]] == ["http://example.com/trees"]
+
+
+async def test_a_slow_external_lookup_stops_at_its_deadline(client, tools_list, monkeypatch):
+    async def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.params.get("only") == "federated_href,href":
+            await anyio.sleep(5)
+        return httpx.Response(200, json=body([item("aaaa-aaaa", "Street Trees")]))
+
+    monkeypatch.setattr(catalog, "SEARCH_EXTERNAL_TIMEOUT_SECONDS", 0.2)
+    set_client(SodaClient(transport=httpx.MockTransport(handler)))
+    with anyio.fail_after(2):
+        out = await search(client, tools_list, {"query": "street trees"})
+    assert out["external_search_status"] == "unavailable"
+    assert [d["dataset_id"] for d in out["datasets"]] == ["aaaa-aaaa"]
+
+
+def _malformed(path: str, value: Any) -> dict[str, Any]:
+    entry = item("aaaa-aaaa", "Street Trees")
+    if path == "entry":
+        return value
+    part, _, key = path.partition(".")
+    if key:
+        entry[part][key] = value
+    else:
+        entry[part] = value
+    return entry
+
+
+@pytest.mark.parametrize(
+    ("path", "value"),
+    [
+        ("entry", None),
+        ("resource", "nope"),
+        ("resource.description", {"html": "x"}),
+        ("resource.columns_name", 7),
+        ("resource.parent_fxf", "aaaa-bbbb"),
+        ("classification", ["x"]),
+        ("classification.tags", 7),
+    ],
+)
+@pytest.mark.parametrize("detail", ["summary", "full"])
+async def test_a_malformed_primary_entry_is_an_upstream_failure(client, path, value, detail):
+    install(Catalog([_malformed(path, value)]))
+    result = wire(await client.call_tool_mcp(TOOL, {"query": "street trees", "detail": detail}))
+    # The upstream sent it, so it is never an `internal_error` (a server defect).
+    assert result["structuredContent"]["code"] == "upstream_unavailable"
 
 
 async def test_primary_failure_is_still_an_error(client):

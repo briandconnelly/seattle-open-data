@@ -85,5 +85,8 @@ jobs:
       - name: Start the server from the wheel
         run: uv run python scripts/smoke_test.py --wheel dist/*.whl
 
+      - name: Start the server from the sdist
+        run: uv run python scripts/smoke_test.py --sdist dist/*.tar.gz
+
       - name: Start the server from the .mcpb bundle
         run: uv run python scripts/smoke_test.py --bundle dist/*.mcpb

@@ -249,11 +249,42 @@ PARTIAL = [{"column": "neighborhood", "reliability": "partial", "reason": "gaps"
         ({"select": ["`neighborhood`"]}, True),
         ({"select": ["'neighborhood' AS label"]}, False),
         ({"where": "offense = 'neighborhood'"}, False),
+        # A later use of a select alias reads the aliased expression, not the column.
+        (
+            {
+                "select": ["precinct AS neighborhood", "count(*) AS n"],
+                "group_by": ["precinct"],
+                "order_by": ["neighborhood"],
+            },
+            False,
+        ),
+        ({"select": ["precinct AS `neighborhood`"], "having": "`neighborhood` > 'A'"}, False),
+        ({"select": ["neighborhood AS neighborhood"], "order_by": ["neighborhood"]}, True),
+        ({"select": ["precinct AS neighborhood"], "where": "neighborhood = 'X'"}, True),
+        ({"select": ["precinct"], "order_by": ["neighborhood"]}, True),
     ],
 )
 def test_coverage_scan_reads_each_clause_but_not_aliases_or_literals(clauses, warns):
     where = [f"({clauses['where']})"] if "where" in clauses else []
-    assert bool(query._warnings(query._written(clauses, where), PARTIAL)) is warns
+    assert bool(query._warnings(*query._written(clauses, where), PARTIAL)) is warns
+
+
+@pytest.mark.parametrize(
+    ("soql", "warns"),
+    [
+        ("SELECT neighborhood, count(*) GROUP BY neighborhood", True),
+        ("SELECT precinct WHERE neighborhood = 'X'", True),
+        (
+            "SELECT precinct AS neighborhood, count(*) GROUP BY precinct ORDER BY neighborhood",
+            False,
+        ),
+        ("SELECT precinct AS neighborhood WHERE neighborhood = 'X'", True),
+        ("SELECT precinct WHERE offense = 'x order by neighborhood'", False),
+        ("select precinct as neighborhood order  by neighborhood desc", False),
+    ],
+)
+def test_raw_soql_scan_resolves_select_aliases(soql, warns):
+    assert bool(query._warnings(*query._soql_reads(soql), PARTIAL)) is warns
 
 
 @pytest.mark.soda_fixture("query_coverage_implied_select")
@@ -332,6 +363,17 @@ async def test_timeout_repairs_toward_narrowing(client, tools_list, soda):
     assert envelope["repair"]["next_step"] == "inspect_for_narrowing"
     assert envelope["repair"]["tool"] == "seattle_data_describe_dataset"
     assert envelope["repair"]["arguments"] == {"dataset_id": FIRE}
+
+
+@pytest.mark.soda_fixture("query_three_rows", overrides={"/api/views/": "timeout"})
+async def test_metadata_timeout_has_no_narrowing_repair(client, tools_list, soda):
+    envelope = (await q(client, tools_list, {"dataset_id": FIRE, "select": ["incident_number"]}))[
+        "structuredContent"
+    ]
+    # Describe would wait on the same metadata; `temporary` alone says retry later.
+    assert envelope["code"] == "query_timeout" and envelope["temporary"] is True
+    assert "repair" not in envelope
+    assert envelope["details"]["reason"] == "The dataset's metadata did not load."
 
 
 @pytest.mark.soda_fixture("query_three_rows")

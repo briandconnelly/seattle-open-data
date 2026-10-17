@@ -76,7 +76,30 @@ def _catalog_body(body: Any) -> dict[str, Any]:
         or not str(body.get("resultSetSize", "")).isdigit()
     ):
         raise shape_error("Expected a Discovery API result object.")
+    if not all(_well_formed(item) for item in body["results"]):
+        raise shape_error("Expected catalog entries with text and list metadata.")
     return body
+
+
+#: Entry fields read as lists or text; another type would surface as an `internal_error`.
+_LISTS = {
+    "resource": ("parent_fxf", "columns_name", "columns_field_name"),
+    "classification": ("domain_tags", "tags"),
+}
+
+
+def _well_formed(item: Any) -> bool:
+    if not isinstance(item, dict):
+        return False
+    for part, keys in _LISTS.items():
+        section = item.get(part)
+        if section is None:
+            continue
+        if not isinstance(section, dict):
+            return False
+        if any(not isinstance(section.get(k), list | None) for k in keys):
+            return False
+    return isinstance((item.get("resource") or {}).get("description"), str | None)
 
 
 def queryability(asset_type: str) -> Queryability:
@@ -257,8 +280,13 @@ def _is_lead(summary: DatasetSummary) -> bool:
     return (
         re.fullmatch(DATASET_ID_PATTERN, summary.dataset_id) is not None
         and summary.queryability == "external"
-        and summary.external_url is not None
+        and _is_web_url(summary.external_url)
     )
+
+
+def _is_web_url(url: str | None) -> bool:
+    parts = urlsplit(url or "")
+    return parts.scheme in {"http", "https"} and bool(parts.hostname)
 
 
 def _suggest(query: str, asset_scope: AssetScope, category: str | None) -> Repair:
