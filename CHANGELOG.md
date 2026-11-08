@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-08
+
+### Deprecated
+
+- This project is deprecated and no longer maintained. It is superseded by [opendata-atlas](https://github.com/briandconnelly/opendata-atlas). 0.2.1 is the final release.
+
 ### Changed
 
 - `seattle_data_describe_dataset` stores the schema it fetches, so a query that follows a describe of the same dataset no longer fetches the dataset's metadata again. Describe itself still always fetches a fresh schema.
